@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress History</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#58a76d",
+                    "primary-foreground": "#ffffff",
+                    "secondary": "#54c43b",
+                    "secondary-foreground": "#ffffff",
+                    "accent": "#a1e619",
+                    "accent-foreground": "#1a1a1a",
+                    "destructive": "#ef4444",
+                    "destructive-foreground": "#ffffff",
+                    "background": "#f8f9fa",
+                    "foreground": "#1a1a1a",
+                    "card": "#ffffff",
+                    "card-foreground": "#1a1a1a",
+                    "muted": "#f1f3f5",
+                    "muted-foreground": "#6c757d",
+                    "border": "#e8e3e3",
+                    "input": "#f8f9fa",
+                }
+            }
+        }
+    }
+    </script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        ::-webkit-scrollbar { display: none;}
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 40;
+        }
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100%;
+            background: #ffffff;
+            transition: left 0.3s;
+            z-index: 50;
+            overflow-y: auto;
+        }
+        .sidebar-drawer.active {
+            left: 0;
+        }
+        .timeline-line {
+            position: absolute;
+            left: 19px;
+            top: 48px;
+            bottom: -24px;
+            width: 2px;
+            background: #e8e3e3;
+        }
+        .timeline-entry {
+            position: relative;
+            padding-left: 52px;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 12px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 3px solid #58a76d;
+            z-index: 2;
+        }
+        .timeline-dot.secondary {
+            border-color: #54c43b;
+        }
+        .timeline-dot.accent {
+            border-color: #a1e619;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Select Player</h3>
+            <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm font-semibold">
+                <option value="sarah-johnson">Sarah Johnson (Age 14)</option>
+                <option value="mike-johnson">Mike Johnson (Age 11)</option>
+            </select>
+        </div>
+        
+        <div class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">This Month</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Sessions</span>
+                        <span class="text-primary font-bold text-lg">8</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Progress Reports</span>
+                        <span class="text-secondary font-bold text-lg">3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Schedule</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-chart-line text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Progress</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Messages</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-credit-card text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Payments</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen pb-24">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <h1 class="text-card-foreground font-bold text-base">Progress History</h1>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section id="player-selector-section" class="px-5 pt-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+        <label class="text-card-foreground font-bold text-sm mb-2 block">Select Player</label>
+        <select id="player-select" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm font-semibold">
+            <option value="sarah-johnson">Sarah Johnson (Age 14)</option>
+            <option value="mike-johnson">Mike Johnson (Age 11)</option>
+        </select>
+    </div>
+</section>
+
+<section id="search-filter-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+        <div class="mb-4">
+            <div class="relative">
+                <input type="text" id="search-input" placeholder="Search sessions, trainers, notes..." class="w-full bg-input border border-border rounded-lg pl-11 pr-4 py-3 text-card-foreground text-sm font-medium placeholder:text-muted-foreground">
+                <i class="fa-solid fa-search text-muted-foreground absolute left-4 top-1/2 -translate-y-1/2"></i>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label class="text-card-foreground font-bold text-xs mb-2 block">Date Range</label>
+            <div class="grid grid-cols-2 gap-2">
+                <input type="date" class="bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-xs font-semibold">
+                <input type="date" class="bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-xs font-semibold">
+            </div>
+        </div>
+        
+        <div>
+            <label class="text-card-foreground font-bold text-xs mb-2 block">Skill Category</label>
+            <select class="w-full bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-xs font-semibold">
+                <option value="all">All Skills</option>
+                <option value="shot-stopping">Shot Stopping</option>
+                <option value="distribution">Distribution</option>
+                <option value="positioning">Positioning</option>
+                <option value="decision-making">Decision Making</option>
+                <option value="agility">Agility</option>
+                <option value="communication">Communication</option>
+            </select>
+        </div>
+    </div>
+</section>
+
+<section id="timeline-header-section" class="px-5 pb-3 bg-background">
+    <div class="flex items-center justify-between">
+        <div>
+            <h3 class="text-card-foreground font-bold text-base">Session Timeline</h3>
+            <p class="text-muted-foreground text-xs">47 total sessions</p>
+        </div>
+        <button class="text-primary text-xs font-semibold flex items-center gap-1">
+            <span>View All</span>
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
+</section>
+
+<section id="timeline-section" class="px-5 pb-4 bg-background relative">
+    <div class="timeline-line"></div>
+    
+    <div class="timeline-entry mb-6">
+        <div class="timeline-dot"></div>
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-12 h-12 rounded-full object-cover border-2 border-primary flex-shrink-0">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm">Coach Marcus Thompson</h4>
+                    <div class="flex items-center gap-2 text-xs mt-1">
+                        <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                        <span class="text-muted-foreground">Feb 9, 2024</span>
+                        <span class="text-muted-foreground">•</span>
+                        <span class="text-primary font-semibold">Session #47</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Skill Updates</h5>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Shot Stopping</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Diving Technique</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Session Notes</h5>
+                <p class="text-card-foreground text-xs leading-relaxed">Outstanding session today! Sarah's diving form has improved dramatically. She's now consistently landing properly and recovering quickly. Her reaction time to low shots is exceptional.</p>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Key Achievements</h5>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span>Perfect diving form</span>
+                    </span>
+                    <span class="bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Quick recovery</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div>
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Next Session Focus</h5>
+                <p class="text-muted-foreground text-xs leading-relaxed">Continue refining diving technique. Introduce advanced positioning drills for crosses and corner kicks.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline-entry mb-6">
+        <div class="timeline-dot secondary"></div>
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Coach" class="w-12 h-12 rounded-full object-cover border-2 border-secondary flex-shrink-0">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm">Coach David Chen</h4>
+                    <div class="flex items-center gap-2 text-xs mt-1">
+                        <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                        <span class="text-muted-foreground">Feb 5, 2024</span>
+                        <span class="text-muted-foreground">•</span>
+                        <span class="text-secondary font-semibold">Session #46</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Skill Updates</h5>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Distribution</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Communication</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Session Notes</h5>
+                <p class="text-card-foreground text-xs leading-relaxed">Fantastic progress on distribution! Sarah's throws are now reaching 30+ yards with accuracy. Her decision-making on when to throw vs kick has improved significantly.</p>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Key Achievements</h5>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-accent/20 text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <span>Accurate long throws</span>
+                    </span>
+                    <span class="bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-comments"></i>
+                        <span>Clear communication</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div>
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Next Session Focus</h5>
+                <p class="text-muted-foreground text-xs leading-relaxed">Work on distribution under pressure. Practice quick releases and decision-making with approaching forwards.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline-entry mb-6">
+        <div class="timeline-dot accent"></div>
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Coach" class="w-12 h-12 rounded-full object-cover border-2 border-accent flex-shrink-0">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm">Coach Sarah Martinez</h4>
+                    <div class="flex items-center gap-2 text-xs mt-1">
+                        <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                        <span class="text-muted-foreground">Feb 1, 2024</span>
+                        <span class="text-muted-foreground">•</span>
+                        <span class="text-accent-foreground font-semibold">Session #45</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Skill Updates</h5>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Decision Making</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Positioning</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Session Notes</h5>
+                <p class="text-card-foreground text-xs leading-relaxed">Excellent mental preparation today. Sarah showed remarkable improvement in reading the game and making split-second decisions. Her positioning awareness during set pieces was outstanding.</p>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Key Achievements</h5>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-brain"></i>
+                        <span>Smart decisions</span>
+                    </span>
+                    <span class="bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>Better anticipation</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div>
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Next Session Focus</h5>
+                <p class="text-muted-foreground text-xs leading-relaxed">Continue mental game development. Work on staying calm under high-pressure situations.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline-entry mb-6">
+        <div class="timeline-dot"></div>
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="Coach" class="w-12 h-12 rounded-full object-cover border-2 border-primary flex-shrink-0">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm">Coach James Wilson</h4>
+                    <div class="flex items-center gap-2 text-xs mt-1">
+                        <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                        <span class="text-muted-foreground">Jan 28, 2024</span>
+                        <span class="text-muted-foreground">•</span>
+                        <span class="text-primary font-semibold">Session #44</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Skill Updates</h5>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Agility</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-minus text-muted-foreground" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Footwork</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Session Notes</h5>
+                <p class="text-card-foreground text-xs leading-relaxed">Good session focusing on agility drills. Sarah's lateral movement speed has improved. We worked on quick directional changes and reaction drills.</p>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Key Achievements</h5>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-running"></i>
+                        <span>Faster movements</span>
+                    </span>
+                    <span class="bg-accent/20 text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-shoe-prints"></i>
+                        <span>Better footwork</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div>
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Next Session Focus</h5>
+                <p class="text-muted-foreground text-xs leading-relaxed">Increase intensity of agility drills. Add plyometric exercises to enhance explosive power.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline-entry mb-6">
+        <div class="timeline-dot secondary"></div>
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg" alt="Coach" class="w-12 h-12 rounded-full object-cover border-2 border-secondary flex-shrink-0">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm">Coach Emily Roberts</h4>
+                    <div class="flex items-center gap-2 text-xs mt-1">
+                        <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                        <span class="text-muted-foreground">Jan 24, 2024</span>
+                        <span class="text-muted-foreground">•</span>
+                        <span class="text-secondary font-semibold">Session #43</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Skill Updates</h5>
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Shot Stopping</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-minus text-muted-foreground" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-medium">Reflexes</span>
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                                <i class="fa-regular fa-star text-muted-foreground" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-muted-foreground" style="font-size: 10px;"></i>
+                            <div class="flex items-center gap-0.5">
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-star text-accent" style="font-size: 10px;"></i>
+                            </div>
+                            <i class="fa-solid fa-arrow-up text-secondary" style="font-size: 10px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Session Notes</h5>
+                <p class="text-card-foreground text-xs leading-relaxed">Phenomenal reflexes today! Sarah made several incredible saves during rapid-fire drills. Her hand-eye coordination is exceptional.</p>
+            </div>
+            
+            <div class="mb-3">
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Key Achievements</h5>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Lightning reflexes</span>
+                    </span>
+                    <span class="bg-accent/20 text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                        <i class="fa-solid fa-hand"></i>
+                        <span>Perfect saves</span>
+                    </span>
+                </div>
+            </div>
+            
+            <div>
+                <h5 class="text-card-foreground font-bold text-xs mb-2">Next Session Focus</h5>
+                <p class="text-muted-foreground text-xs leading-relaxed">Maintain reflex training intensity. Combine reflexes with positioning drills.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="load-more-section" class="px-5 pb-6 bg-background">
+    <button class="w-full bg-primary text-primary-foreground rounded-2xl py-4 font-bold text-sm shadow-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-arrow-down"></i>
+        <span>Load More Sessions</span>
+    </button>
+</section>
+
+</main>
+
+<footer id="footer" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-30">
+    <div class="flex items-center justify-between">
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span class="text-xs">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <i class="fa-solid fa-chart-line text-lg"></i>
+            <span class="text-xs font-semibold">Progress</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-xs">Profile</span>
+        </button>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+    try {
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeDrawer = document.getElementById('close-drawer');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        const sidebarDrawer = document.getElementById('sidebar-drawer');
+        const backBtn = document.getElementById('back-btn');
+        
+        menuToggle.addEventListener('click', function() {
+            sidebarDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+        });
+        
+        closeDrawer.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        drawerOverlay.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        backBtn.addEventListener('click', function() {
+            window.history.back();
+        });
+    } catch(e) {
+        console.error('Error initializing:', e);
+    }
+});
+</script>
+
+</body>
+</html>

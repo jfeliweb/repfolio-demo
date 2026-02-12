@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f4f1f1;
+            --foreground: #705c5d;
+            --card: #ffffff;
+            --card-foreground: #1c1717;
+            --primary: #58a76d;
+            --primary-foreground: #ffffff;
+            --secondary: #54c43b;
+            --secondary-foreground: #ffffff;
+            --muted: #f4f1f1;
+            --muted-foreground: #705c5d;
+            --accent: #a1e619;
+            --accent-foreground: #1c1717;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --border: #d1c7c8;
+            --input: #e8e3e3;
+            --ring: #58a76d;
+            --font-sans: Inter, sans-serif;
+            --font-serif: Georgia, serif;
+            --font-mono: JetBrains Mono, monospace;
+            --radius: 0.5rem;
+            --shadow: -2px 4px 12px 4px rgba(51,51,51,0.05);
+        }
+        ::-webkit-scrollbar { display: none; }
+        
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 85%;
+            max-width: 320px;
+            height: 100vh;
+            background: var(--card);
+            z-index: 50;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-drawer.active {
+            left: 0;
+        }
+        
+        .message-bubble {
+            max-width: 75%;
+            word-wrap: break-word;
+            animation: slideIn 0.2s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-input-container {
+            position: fixed;
+            bottom: 72px;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            z-index: 30;
+        }
+        
+        .messages-container {
+            padding-bottom: 180px;
+        }
+        
+        .fab-container {
+            position: fixed;
+            bottom: 140px;
+            right: 20px;
+            z-index: 25;
+        }
+        
+        .fab-main {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 4px 12px rgba(88, 167, 109, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .fab-main:active {
+            transform: scale(0.95);
+        }
+        
+        .fab-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .fab-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .fab-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        
+        .fab-item-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--card);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .fab-item-button:active {
+            transform: scale(0.95);
+        }
+        
+        .fab-label {
+            background: var(--card);
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .quick-action-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            z-index: 35;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .quick-action-modal.active {
+            transform: translateY(0);
+        }
+        
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted-foreground);
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .attachment-preview {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .message-action-btn {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .message-bubble:hover .message-action-btn {
+            opacity: 1;
+        }
+        
+        .reaction-picker {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s;
+        }
+        
+        .reaction-picker.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-8px);
+        }
+        
+        .reaction-btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 20px;
+        }
+        
+        .reaction-btn:hover {
+            background: var(--muted);
+            transform: scale(1.2);
+        }
+        
+        .message-reactions {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        
+        .reaction-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+    </style>
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="sidebar-quick-stats" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Today's Overview</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Unread Messages</span>
+                        <span class="text-primary font-bold text-lg">12</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Active Chats</span>
+                        <span class="text-secondary font-bold text-lg">8</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-navigation" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-house text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Home</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Schedule</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-primary rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary-foreground"></i>
+                    <span class="text-primary-foreground text-sm font-medium">Messages</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-credit-card text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Payments</span>
+                </button>
+            </div>
+        </div>
+        
+        <div id="sidebar-settings" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Message Settings</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-bell text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Notifications</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-archive text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Archived Chats</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-star text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Starred Messages</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen pb-24">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <div class="flex items-center gap-2 flex-1 mx-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach Marcus" class="w-9 h-9 rounded-full object-cover">
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-card-foreground font-bold text-sm truncate">Coach Marcus</h1>
+                    <div class="flex items-center gap-1">
+                        <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                        <span class="text-secondary text-xs font-semibold">Active now</span>
+                    </div>
+                </div>
+            </div>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-ellipsis-vertical text-card-foreground"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section id="coach-info-banner" class="px-5 pt-3 pb-2 bg-background">
+    <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach Marcus" class="w-16 h-16 rounded-full object-cover border-2 border-primary">
+            <div class="flex-1 min-w-0">
+                <h2 class="text-card-foreground font-bold text-base mb-1">Coach Marcus Thompson</h2>
+                <div class="flex items-center gap-2 text-xs text-muted-foreground mb-1">
+                    <i class="fa-solid fa-certificate text-primary"></i>
+                    <span>Certified Goalkeeper Coach</span>
+                </div>
+                <div class="flex items-center gap-2 text-xs text-muted-foreground">
+                    <i class="fa-solid fa-star text-accent"></i>
+                    <span>4.9 Rating • 12 Years Experience</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="flex-1 bg-primary text-primary-foreground rounded-lg py-2.5 text-xs font-bold">
+                <i class="fa-solid fa-phone mr-1"></i> Call Coach
+            </button>
+            <button class="flex-1 bg-muted text-card-foreground rounded-lg py-2.5 text-xs font-bold">
+                <i class="fa-solid fa-user mr-1"></i> View Profile
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="upcoming-session-card" class="px-5 pt-3 pb-2 bg-background">
+    <div class="bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl p-4 border border-primary/30 shadow-sm">
+        <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-calendar-check text-primary-foreground text-xs"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-sm">Next Training Session</span>
+            </div>
+            <span class="bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full">Tomorrow</span>
+        </div>
+        <div class="bg-card rounded-xl p-3 mb-3">
+            <div class="flex items-center justify-between mb-2">
+                <div>
+                    <div class="text-card-foreground font-bold text-base">Monday, Feb 10</div>
+                    <div class="text-muted-foreground text-xs">4:00 PM - 5:30 PM</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-card-foreground font-bold text-sm">Advanced Goalkeeper</div>
+                    <div class="text-muted-foreground text-xs">Riverside Field #2</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-muted-foreground">
+                <i class="fa-solid fa-location-dot text-primary"></i>
+                <span>123 Sports Complex Dr, Downtown</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="flex-1 bg-primary text-primary-foreground rounded-lg py-2 text-xs font-bold">
+                <i class="fa-solid fa-check mr-1"></i> Confirm
+            </button>
+            <button class="flex-1 bg-card text-card-foreground border border-border rounded-lg py-2 text-xs font-bold">
+                <i class="fa-solid fa-clock mr-1"></i> Reschedule
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="messages-section" class="messages-container px-5 pt-4 bg-background">
+    
+    <div class="flex justify-center mb-4">
+        <div class="bg-muted rounded-full px-4 py-2">
+            <span class="text-muted-foreground text-xs font-semibold">Yesterday</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">Hi Coach Marcus! Sarah had a great time at yesterday's session. Thank you!</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">9:15 AM</span>
+            <div class="message-reactions">
+                <div class="reaction-badge">
+                    <span>👍</span>
+                    <span class="text-card-foreground font-semibold">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">So glad to hear that! Sarah is making excellent progress. Her diving technique has really improved.</p>
+            <span class="text-muted-foreground text-xs mt-1 block">9:20 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">That's wonderful! She's been practicing at home too. Quick question - what time should we arrive for tomorrow's session?</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">9:25 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Please arrive about 10 minutes early so Sarah can warm up properly. We start at 4:00 PM sharp.</p>
+            <span class="text-muted-foreground text-xs mt-1 block">9:30 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex justify-center mb-4">
+        <div class="bg-muted rounded-full px-4 py-2">
+            <span class="text-muted-foreground text-xs font-semibold">Today</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">Perfect! We'll be there at 3:50 PM. Should she bring any special equipment?</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">10:15 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Just her goalkeeper gloves, water bottle, and comfortable athletic wear. I'll provide all the training equipment.</p>
+            <span class="text-muted-foreground text-xs mt-1 block">10:18 AM</span>
+            <div class="message-reactions">
+                <div class="reaction-badge">
+                    <span>👌</span>
+                    <span class="text-card-foreground font-semibold">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed mb-2">Also, here's Sarah's progress report from last month. I've highlighted areas of improvement and goals for the next sessions.</p>
+            <div class="bg-muted rounded-lg p-3 mb-2">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-file-pdf text-destructive text-2xl"></i>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-card-foreground font-bold text-xs truncate">Sarah_Progress_Report_Jan_2024.pdf</div>
+                        <div class="text-muted-foreground text-xs">2.4 MB • 8 pages</div>
+                    </div>
+                </div>
+                <button class="w-full bg-primary text-primary-foreground rounded-lg py-2 text-xs font-bold">
+                    <i class="fa-solid fa-download mr-1"></i> Download Report
+                </button>
+            </div>
+            <span class="text-muted-foreground text-xs mt-1 block">10:20 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">Thank you so much! I'll review it tonight. Your detailed feedback really helps us support her training at home.</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">10:25 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">You're very welcome! Parent support is crucial for athlete development. Feel free to reach out if you have any questions about the report.</p>
+            <span class="text-muted-foreground text-xs mt-1 block">10:30 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">Will do! Also, Sarah mentioned you're planning some special drills tomorrow. She's very excited! 🎯</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">11:00 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Yes! We're going to work on reaction training and penalty saves. I have some new equipment that will really challenge her reflexes.</p>
+            <span class="text-muted-foreground text-xs mt-1 block">11:05 AM</span>
+            <div class="message-reactions">
+                <div class="reaction-badge">
+                    <span>🔥</span>
+                    <span class="text-card-foreground font-semibold">1</span>
+                </div>
+                <div class="reaction-badge">
+                    <span>💪</span>
+                    <span class="text-card-foreground font-semibold">1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed mb-2">Here's a preview of the training plan for tomorrow:</p>
+            <div class="bg-primary/10 rounded-lg p-3 border border-primary/30 mb-2">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-clipboard-list text-primary text-lg"></i>
+                    <span class="text-card-foreground font-bold text-xs">Tomorrow's Training Plan</span>
+                </div>
+                <div class="space-y-2 text-xs">
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-check text-secondary text-xs mt-0.5"></i>
+                        <span class="text-card-foreground">Warm-up & Dynamic Stretching (10 min)</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-check text-secondary text-xs mt-0.5"></i>
+                        <span class="text-card-foreground">Reaction Drills with Light Board (20 min)</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-check text-secondary text-xs mt-0.5"></i>
+                        <span class="text-card-foreground">Penalty Save Practice (25 min)</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-check text-secondary text-xs mt-0.5"></i>
+                        <span class="text-card-foreground">Distribution & Footwork (20 min)</span>
+                    </div>
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-check text-secondary text-xs mt-0.5"></i>
+                        <span class="text-card-foreground">Cool-down & Feedback (15 min)</span>
+                    </div>
+                </div>
+            </div>
+            <span class="text-muted-foreground text-xs mt-1 block">11:10 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">This looks fantastic! Sarah will love the variety. Thank you for always being so organized and thorough.</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">11:15 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">My pleasure! Structure and variety keep training engaging and effective. See you both tomorrow! 👍</p>
+            <span class="text-muted-foreground text-xs mt-1 block">11:20 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex justify-center mb-4">
+        <div class="bg-muted rounded-full px-4 py-2">
+            <span class="text-muted-foreground text-xs font-semibold">1 hour ago</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">One more quick question - is there parking available near Field #2?</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">1:30 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Yes! There's a large parking lot right next to Field #2. It's free and usually has plenty of space. Look for the green "Field Access" signs.</p>
+            <span class="text-muted-foreground text-xs mt-1 block">1:35 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Parent" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">Perfect! That's all I needed to know. Thanks again, Coach! 😊</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">1:40 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <div class="w-9 h-9 flex-shrink-0"></div>
+        <div class="message-bubble bg-muted rounded-2xl rounded-tl-sm p-3">
+            <div class="typing-indicator flex items-center gap-1">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+</main>
+
+<div class="fab-container">
+    <div id="fab-menu" class="fab-menu">
+        <div class="fab-item" data-action="next-session">
+            <span class="fab-label text-card-foreground">Ask about next session</span>
+            <div class="fab-item-button">
+                <i class="fa-solid fa-calendar-plus text-primary text-lg"></i>
+            </div>
+        </div>
+        <div class="fab-item" data-action="reschedule">
+            <span class="fab-label text-card-foreground">Request reschedule</span>
+            <div class="fab-item-button">
+                <i class="fa-solid fa-clock-rotate-left text-secondary text-lg"></i>
+            </div>
+        </div>
+    </div>
+    <div id="fab-main" class="fab-main">
+        <i class="fa-solid fa-plus text-primary-foreground text-xl"></i>
+    </div>
+</div>
+
+<div class="message-input-container px-5 py-3">
+    <div class="flex items-end gap-2">
+        <button id="emoji-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-regular fa-face-smile text-primary text-lg"></i>
+        </button>
+        <button id="attachment-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-paperclip text-primary text-lg"></i>
+        </button>
+        <div class="flex-1 relative">
+            <textarea id="message-input" placeholder="Type a message..." class="w-full bg-input border border-border rounded-xl px-4 py-3 text-sm text-card-foreground placeholder-muted-foreground resize-none" rows="1" style="max-height: 120px;"></textarea>
+        </div>
+        <button id="voice-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-microphone text-primary text-lg"></i>
+        </button>
+        <button id="send-btn" class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-paper-plane text-primary-foreground"></i>
+        </button>
+    </div>
+</div>
+
+<div id="quick-action-modal" class="quick-action-modal">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-card-foreground font-bold text-base">Quick Action</h3>
+            <button id="close-quick-action" class="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="next-session-template" class="action-template hidden">
+            <div class="bg-primary/10 rounded-xl p-4 border border-primary/30 mb-4">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-calendar-plus text-primary text-xl"></i>
+                    <span class="text-card-foreground font-bold text-sm">Ask About Next Session</span>
+                </div>
+                <p class="text-muted-foreground text-xs mb-4">Select a question template or write your own:</p>
+                <div class="space-y-2">
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">When is our next scheduled session?</p>
+                    </button>
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">Can we schedule an additional session this week?</p>
+                    </button>
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">What should we focus on in the next session?</p>
+                    </button>
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">Are there any openings for next week?</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="reschedule-template" class="action-template hidden">
+            <div class="bg-secondary/10 rounded-xl p-4 border border-secondary/30 mb-4">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-clock-rotate-left text-secondary text-xl"></i>
+                    <span class="text-card-foreground font-bold text-sm">Request Reschedule</span>
+                </div>
+                <p class="text-muted-foreground text-xs mb-4">Select a reschedule request template:</p>
+                <div class="space-y-2">
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">Could we reschedule tomorrow's session? Something came up.</p>
+                    </button>
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">We need to reschedule due to a family emergency. When are you available?</p>
+                    </button>
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">Can we move our session to a different time this week?</p>
+                    </button>
+                    <button class="template-btn w-full bg-card border border-border rounded-lg p-3 text-left">
+                        <p class="text-card-foreground text-sm">Would it be possible to reschedule to next week instead?</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer id="footer" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-30">
+    <div class="flex items-center justify-between">
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span class="text-xs">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <i class="fa-solid fa-message text-lg"></i>
+            <span class="text-xs font-semibold">Messages</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-xs">Profile</span>
+        </button>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const closeDrawer = document.getElementById('close-drawer');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const sidebarDrawer = document.getElementById('sidebar-drawer');
+    const backBtn = document.getElementById('back-btn');
+    const fabMain = document.getElementById('fab-main');
+    const fabMenu = document.getElementById('fab-menu');
+    const fabItems = document.querySelectorAll('.fab-item');
+    const quickActionModal = document.getElementById('quick-action-modal');
+    const closeQuickAction = document.getElementById('close-quick-action');
+    const nextSessionTemplate = document.getElementById('next-session-template');
+    const rescheduleTemplate = document.getElementById('reschedule-template');
+    const templateBtns = document.querySelectorAll('.template-btn');
+    const messageInput = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+    const emojiBtn = document.getElementById('emoji-btn');
+    const attachmentBtn = document.getElementById('attachment-btn');
+    const voiceBtn = document.getElementById('voice-btn');
+    
+    let fabMenuOpen = false;
+    
+    menuToggle.addEventListener('click', function() {
+        sidebarDrawer.classList.add('active');
+        drawerOverlay.classList.add('active');
+    });
+    
+    closeDrawer.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    drawerOverlay.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+        quickActionModal.classList.remove('active');
+        fabMenu.classList.remove('active');
+        fabMenuOpen = false;
+        fabMain.querySelector('i').classList.remove('fa-times');
+        fabMain.querySelector('i').classList.add('fa-plus');
+    });
+    
+    backBtn.addEventListener('click', function() {
+        window.history.back();
+    });
+    
+    fabMain.addEventListener('click', function() {
+        fabMenuOpen = !fabMenuOpen;
+        if (fabMenuOpen) {
+            fabMenu.classList.add('active');
+            drawerOverlay.classList.add('active');
+            this.querySelector('i').classList.remove('fa-plus');
+            this.querySelector('i').classList.add('fa-times');
+        } else {
+            fabMenu.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            this.querySelector('i').classList.remove('fa-times');
+            this.querySelector('i').classList.add('fa-plus');
+        }
+    });
+    
+    fabItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const action = this.getAttribute('data-action');
+            fabMenu.classList.remove('active');
+            fabMenuOpen = false;
+            fabMain.querySelector('i').classList.remove('fa-times');
+            fabMain.querySelector('i').classList.add('fa-plus');
+            
+            nextSessionTemplate.classList.add('hidden');
+            rescheduleTemplate.classList.add('hidden');
+            
+            if (action === 'next-session') {
+                nextSessionTemplate.classList.remove('hidden');
+            } else if (action === 'reschedule') {
+                rescheduleTemplate.classList.remove('hidden');
+            }
+            
+            quickActionModal.classList.add('active');
+        });
+    });
+    
+    closeQuickAction.addEventListener('click', function() {
+        quickActionModal.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    templateBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const messageText = this.querySelector('p').textContent;
+            messageInput.value = messageText;
+            quickActionModal.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            messageInput.focus();
+        });
+    });
+    
+    messageInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+    
+    sendBtn.addEventListener('click', function() {
+        const message = messageInput.value.trim();
+        if (message) {
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+        }
+    });
+    
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendBtn.click();
+        }
+    });
+    
+    emojiBtn.addEventListener('click', function() {
+        console.log('Emoji picker would open here');
+    });
+    
+    attachmentBtn.addEventListener('click', function() {
+        console.log('Attachment options would open here');
+    });
+    
+    voiceBtn.addEventListener('click', function() {
+        console.log('Voice recording would start here');
+    });
+});
+</script>
+
+</body>
+</html>

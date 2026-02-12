@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest'
+        };
+      </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Setup</title>
+    
+    
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="sidebar-quick-stats" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Today's Stats</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Sessions Today</span>
+                        <span class="text-primary font-bold text-lg">3</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Upcoming</span>
+                        <span class="text-secondary font-bold text-lg">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-navigation" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Calendar</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-users text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Clients</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Messages</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen pb-20">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+            </div>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section id="page-header-section" class="px-5 pt-5 pb-4 bg-background">
+    <div class="flex items-center gap-3 mb-2">
+        <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-tags text-primary text-xl"></i>
+        </div>
+        <div>
+            <h1 class="text-card-foreground font-bold text-xl">Pricing & Packages</h1>
+            <p class="text-muted-foreground text-sm">Manage your service pricing</p>
+        </div>
+    </div>
+</section>
+
+<section id="create-package-section" class="px-5 pb-4 bg-background">
+    <button id="create-package-btn" class="w-full bg-primary text-primary-foreground font-bold py-4 px-6 rounded-xl text-base flex items-center justify-center gap-2 shadow-sm">
+        <i class="fa-solid fa-plus"></i>
+        <span>Create New Package</span>
+    </button>
+</section>
+
+<section id="session-packages-section" class="px-5 pb-4 bg-background">
+    <div class="mb-4">
+        <h2 class="text-card-foreground font-bold text-base mb-1">Session Packages</h2>
+        <p class="text-muted-foreground text-xs">Edit your package offerings</p>
+    </div>
+    
+    <div class="space-y-4">
+        <div id="single-session-card" class="bg-card rounded-2xl border border-border shadow-sm overflow-hidden package-card">
+            <div class="p-5 border-b border-border bg-primary/5">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-card-foreground font-bold text-lg">Single Session</h3>
+                    <div class="flex items-center gap-2">
+                        <button class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-pencil text-primary text-sm"></i>
+                        </button>
+                        <button class="w-9 h-9 bg-destructive/10 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-trash text-destructive text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-muted-foreground text-xs">One-time training session</p>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Price</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-card-foreground font-bold">$</span>
+                        <input type="number" value="75" class="w-full bg-input border border-border rounded-lg pl-8 pr-4 py-3 text-card-foreground text-sm font-semibold">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Discount (%)</label>
+                    <input type="number" value="0" min="0" max="100" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <p class="text-muted-foreground text-xs mt-1">No discount applied</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Description</label>
+                    <textarea rows="3" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm resize-none" placeholder="Package description...">Perfect for trying out goalkeeper training. Includes 60 minutes of personalized coaching.</textarea>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Cancellation Policy</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="flexible">Flexible - Free 24h before</option>
+                        <option value="moderate" selected>Moderate - Free 48h before</option>
+                        <option value="strict">Strict - Free 72h before</option>
+                        <option value="no-refund">No refunds</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Active Package</div>
+                        <div class="text-muted-foreground text-xs">Visible to clients</div>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="single-active"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="five-session-card" class="bg-card rounded-2xl border border-border shadow-sm overflow-hidden package-card">
+            <div class="p-5 border-b border-border bg-secondary/5">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-card-foreground font-bold text-lg">5-Session Pack</h3>
+                        <span class="bg-secondary/20 text-secondary text-xs font-bold px-2 py-1 rounded-md discount-badge">SAVE 10%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="w-9 h-9 bg-secondary/10 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-pencil text-secondary text-sm"></i>
+                        </button>
+                        <button class="w-9 h-9 bg-destructive/10 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-trash text-destructive text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-muted-foreground text-xs">Five training sessions</p>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Price</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-card-foreground font-bold">$</span>
+                        <input type="number" value="340" class="w-full bg-input border border-border rounded-lg pl-8 pr-4 py-3 text-card-foreground text-sm font-semibold">
+                    </div>
+                    <p class="text-muted-foreground text-xs mt-1">Regular price: $375 (Save $35)</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Discount (%)</label>
+                    <input type="number" value="10" min="0" max="100" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <p class="text-secondary text-xs mt-1 font-semibold">10% discount applied</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Description</label>
+                    <textarea rows="3" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm resize-none" placeholder="Package description...">Great value for committed athletes. Five 60-minute sessions to develop your skills. Valid for 2 months.</textarea>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Cancellation Policy</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="flexible">Flexible - Free 24h before</option>
+                        <option value="moderate" selected>Moderate - Free 48h before</option>
+                        <option value="strict">Strict - Free 72h before</option>
+                        <option value="no-refund">No refunds</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Package Validity</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="30">30 days</option>
+                        <option value="60" selected>60 days</option>
+                        <option value="90">90 days</option>
+                        <option value="180">6 months</option>
+                        <option value="365">1 year</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Active Package</div>
+                        <div class="text-muted-foreground text-xs">Visible to clients</div>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="five-active"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="ten-session-card" class="bg-card rounded-2xl border border-border shadow-sm overflow-hidden package-card">
+            <div class="p-5 border-b border-border bg-accent/5">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-card-foreground font-bold text-lg">10-Session Pack</h3>
+                        <span class="bg-accent/30 text-accent-foreground text-xs font-bold px-2 py-1 rounded-md discount-badge">SAVE 20%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="w-9 h-9 bg-accent/20 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-pencil text-accent-foreground text-sm"></i>
+                        </button>
+                        <button class="w-9 h-9 bg-destructive/10 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-trash text-destructive text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-muted-foreground text-xs">Ten training sessions</p>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Price</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-card-foreground font-bold">$</span>
+                        <input type="number" value="600" class="w-full bg-input border border-border rounded-lg pl-8 pr-4 py-3 text-card-foreground text-sm font-semibold">
+                    </div>
+                    <p class="text-muted-foreground text-xs mt-1">Regular price: $750 (Save $150)</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Discount (%)</label>
+                    <input type="number" value="20" min="0" max="100" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <p class="text-accent-foreground text-xs mt-1 font-semibold">20% discount applied</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Description</label>
+                    <textarea rows="3" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm resize-none" placeholder="Package description...">Best value for serious goalkeepers. Ten 60-minute sessions for comprehensive skill development. Valid for 3 months.</textarea>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Cancellation Policy</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="flexible">Flexible - Free 24h before</option>
+                        <option value="moderate">Moderate - Free 48h before</option>
+                        <option value="strict" selected>Strict - Free 72h before</option>
+                        <option value="no-refund">No refunds</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Package Validity</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="30">30 days</option>
+                        <option value="60">60 days</option>
+                        <option value="90" selected>90 days</option>
+                        <option value="180">6 months</option>
+                        <option value="365">1 year</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Active Package</div>
+                        <div class="text-muted-foreground text-xs">Visible to clients</div>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="ten-active"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="subscription-plans-section" class="px-5 pb-4 bg-background">
+    <div class="mb-4">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-repeat text-secondary"></i>
+            </div>
+            <div>
+                <h2 class="text-card-foreground font-bold text-base">Subscription Plans</h2>
+                <p class="text-muted-foreground text-xs">Recurring billing options</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="space-y-4">
+        <div id="monthly-subscription-card" class="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-border bg-primary/5">
+                <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-card-foreground font-bold text-lg">Monthly Subscription</h3>
+                    <div class="flex items-center gap-2">
+                        <button class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-pencil text-primary text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-muted-foreground text-xs">Unlimited sessions per month</p>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Monthly Price</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-card-foreground font-bold">$</span>
+                        <input type="number" value="499" class="w-full bg-input border border-border rounded-lg pl-8 pr-4 py-3 text-card-foreground text-sm font-semibold">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">/month</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Billing Frequency</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="monthly" selected>Monthly</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-weekly</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Sessions Included</label>
+                    <input type="number" value="8" min="1" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <p class="text-muted-foreground text-xs mt-1">Number of sessions per month</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Description</label>
+                    <textarea rows="3" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm resize-none" placeholder="Plan description...">Unlimited training sessions each month. Perfect for dedicated athletes looking for consistent development. Cancel anytime.</textarea>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Minimum Commitment</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="none" selected>No commitment</option>
+                        <option value="1">1 month</option>
+                        <option value="3">3 months</option>
+                        <option value="6">6 months</option>
+                        <option value="12">12 months</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Active Plan</div>
+                        <div class="text-muted-foreground text-xs">Visible to clients</div>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="monthly-sub-active"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="quarterly-subscription-card" class="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5 border-b border-border bg-secondary/5">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <h3 class="text-card-foreground font-bold text-lg">Quarterly Subscription</h3>
+                        <span class="bg-secondary/20 text-secondary text-xs font-bold px-2 py-1 rounded-md discount-badge">SAVE 15%</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="w-9 h-9 bg-secondary/10 rounded-lg flex items-center justify-center">
+                            <i class="fa-solid fa-pencil text-secondary text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                <p class="text-muted-foreground text-xs">3-month commitment plan</p>
+            </div>
+            
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Quarterly Price</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-card-foreground font-bold">$</span>
+                        <input type="number" value="1275" class="w-full bg-input border border-border rounded-lg pl-8 pr-4 py-3 text-card-foreground text-sm font-semibold">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">/3 months</span>
+                    </div>
+                    <p class="text-muted-foreground text-xs mt-1">Regular price: $1,497 (Save $222)</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Billing Frequency</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="quarterly" selected>Every 3 months</option>
+                        <option value="monthly">Monthly installments</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Sessions Included</label>
+                    <input type="number" value="24" min="1" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <p class="text-muted-foreground text-xs mt-1">Total sessions over 3 months (8 per month)</p>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Description</label>
+                    <textarea rows="3" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm resize-none" placeholder="Plan description...">Best value for long-term development. 24 sessions over 3 months with 15% savings. Priority booking and personalized training plans included.</textarea>
+                </div>
+                
+                <div>
+                    <label class="text-card-foreground font-semibold text-sm mb-2 block">Minimum Commitment</label>
+                    <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                        <option value="3" selected>3 months</option>
+                        <option value="6">6 months</option>
+                        <option value="12">12 months</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Active Plan</div>
+                        <div class="text-muted-foreground text-xs">Visible to clients</div>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="quarterly-sub-active"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pricing-features-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Additional Features</h3>
+        
+        <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Accept Payment Plans</div>
+                    <div class="text-muted-foreground text-xs">Allow split payments for packages</div>
+                </div>
+                <div class="toggle-switch active" data-toggle="payment-plans"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Early Bird Discounts</div>
+                    <div class="text-muted-foreground text-xs">Offer discounts for advance bookings</div>
+                </div>
+                <div class="toggle-switch" data-toggle="early-bird"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Referral Rewards</div>
+                    <div class="text-muted-foreground text-xs">Give discounts for client referrals</div>
+                </div>
+                <div class="toggle-switch active" data-toggle="referrals"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Family Discounts</div>
+                    <div class="text-muted-foreground text-xs">Special rates for multiple family members</div>
+                </div>
+                <div class="toggle-switch" data-toggle="family-discount"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="tax-settings-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Tax & Fees</h3>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Sales Tax Rate (%)</label>
+                <input type="number" value="8.5" min="0" max="100" step="0.1" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                <p class="text-muted-foreground text-xs mt-1">Applied to all transactions</p>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Processing Fee</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="included" selected>Included in price</option>
+                    <option value="client">Pass to client</option>
+                    <option value="split">Split 50/50</option>
+                </select>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Display Prices with Tax</div>
+                    <div class="text-muted-foreground text-xs">Show tax-inclusive pricing</div>
+                </div>
+                <div class="toggle-switch active" data-toggle="tax-inclusive"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="payment-methods-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Accepted Payment Methods</h3>
+        
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-credit-card text-primary"></i>
+                    </div>
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm">Credit/Debit Cards</div>
+                        <div class="text-muted-foreground text-xs">Visa, Mastercard, Amex</div>
+                    </div>
+                </div>
+                <div class="toggle-switch active" data-toggle="cards"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
+                        <i class="fa-brands fa-paypal text-secondary"></i>
+                    </div>
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm">PayPal</div>
+                        <div class="text-muted-foreground text-xs">Online payment</div>
+                    </div>
+                </div>
+                <div class="toggle-switch active" data-toggle="paypal"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-building-columns text-accent-foreground"></i>
+                    </div>
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm">Bank Transfer</div>
+                        <div class="text-muted-foreground text-xs">Direct bank payment</div>
+                    </div>
+                </div>
+                <div class="toggle-switch" data-toggle="bank"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center border border-border">
+                        <i class="fa-solid fa-money-bill text-card-foreground"></i>
+                    </div>
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm">Cash</div>
+                        <div class="text-muted-foreground text-xs">Pay in person</div>
+                    </div>
+                </div>
+                <div class="toggle-switch active" data-toggle="cash"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pricing-analytics-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-chart-line text-primary"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-base">Pricing Performance</h3>
+                <p class="text-muted-foreground text-xs">Last 30 days</p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-primary/5 rounded-lg p-4">
+                <div class="text-muted-foreground text-xs mb-1">Most Popular</div>
+                <div class="text-card-foreground font-bold text-lg mb-1">5-Session Pack</div>
+                <div class="text-primary text-xs font-semibold">42 sold</div>
+            </div>
+            
+            <div class="bg-secondary/5 rounded-lg p-4">
+                <div class="text-muted-foreground text-xs mb-1">Revenue</div>
+                <div class="text-card-foreground font-bold text-lg mb-1">$18,450</div>
+                <div class="text-secondary text-xs font-semibold">+12% vs last month</div>
+            </div>
+            
+            <div class="bg-accent/5 rounded-lg p-4">
+                <div class="text-muted-foreground text-xs mb-1">Avg. Package Value</div>
+                <div class="text-card-foreground font-bold text-lg mb-1">$385</div>
+                <div class="text-accent-foreground text-xs font-semibold">Up from $340</div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-4">
+                <div class="text-muted-foreground text-xs mb-1">Active Subscriptions</div>
+                <div class="text-card-foreground font-bold text-lg mb-1">12</div>
+                <div class="text-primary text-xs font-semibold">$5,988/month</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pricing-comparison-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Package Comparison</h3>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b border-border">
+                        <th class="text-left text-card-foreground text-xs font-semibold py-3 pr-4">Package</th>
+                        <th class="text-center text-card-foreground text-xs font-semibold py-3 px-2">Price</th>
+                        <th class="text-center text-card-foreground text-xs font-semibold py-3 px-2">Per Session</th>
+                        <th class="text-center text-card-foreground text-xs font-semibold py-3 pl-2">Savings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-border">
+                        <td class="text-card-foreground text-sm py-3 pr-4">Single</td>
+                        <td class="text-center text-card-foreground text-sm font-semibold py-3 px-2">$75</td>
+                        <td class="text-center text-card-foreground text-sm py-3 px-2">$75</td>
+                        <td class="text-center text-muted-foreground text-sm py-3 pl-2">-</td>
+                    </tr>
+                    <tr class="border-b border-border bg-secondary/5">
+                        <td class="text-card-foreground text-sm py-3 pr-4">5-Pack</td>
+                        <td class="text-center text-card-foreground text-sm font-semibold py-3 px-2">$340</td>
+                        <td class="text-center text-card-foreground text-sm py-3 px-2">$68</td>
+                        <td class="text-center text-secondary text-sm font-semibold py-3 pl-2">$35</td>
+                    </tr>
+                    <tr class="bg-accent/5">
+                        <td class="text-card-foreground text-sm py-3 pr-4">10-Pack</td>
+                        <td class="text-center text-card-foreground text-sm font-semibold py-3 px-2">$600</td>
+                        <td class="text-center text-card-foreground text-sm py-3 px-2">$60</td>
+                        <td class="text-center text-accent-foreground text-sm font-semibold py-3 pl-2">$150</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<section id="discount-codes-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-card-foreground font-bold text-base mb-1">Discount Codes</h3>
+                <p class="text-muted-foreground text-xs">Manage promotional codes</p>
+            </div>
+            <button id="add-discount-btn" class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-plus text-primary-foreground"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded font-mono">WELCOME10</span>
+                        <span class="text-primary text-xs font-semibold">10% OFF</span>
+                    </div>
+                    <button class="w-8 h-8 bg-card rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-pencil text-primary text-xs"></i>
+                    </button>
+                </div>
+                <div class="text-muted-foreground text-xs">New clients only • Valid until Mar 31, 2024</div>
+            </div>
+            
+            <div class="bg-secondary/5 border border-secondary/20 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-secondary text-secondary-foreground text-xs font-bold px-2 py-1 rounded font-mono">SPRING25</span>
+                        <span class="text-secondary text-xs font-semibold">25% OFF</span>
+                    </div>
+                    <button class="w-8 h-8 bg-card rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-pencil text-secondary text-xs"></i>
+                    </button>
+                </div>
+                <div class="text-muted-foreground text-xs">10-session packs only • 15 uses remaining</div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-4 opacity-60">
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="bg-card border border-border text-card-foreground text-xs font-bold px-2 py-1 rounded font-mono">SUMMER20</span>
+                        <span class="text-card-foreground text-xs font-semibold">20% OFF</span>
+                    </div>
+                    <button class="w-8 h-8 bg-card rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-pencil text-card-foreground text-xs"></i>
+                    </button>
+                </div>
+                <div class="text-muted-foreground text-xs">Expired • Jan 31, 2024</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="save-action-section" class="px-5 pb-6 bg-background">
+    <div class="space-y-3">
+        <button id="save-pricing-btn" class="w-full bg-primary text-primary-foreground font-bold py-4 px-6 rounded-xl text-base flex items-center justify-center gap-2 shadow-sm">
+            <i class="fa-solid fa-check"></i>
+            <span>Save All Changes</span>
+        </button>
+        
+        <button class="w-full bg-card border-2 border-border text-card-foreground font-semibold py-3 px-6 rounded-xl text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-eye"></i>
+            <span>Preview Client View</span>
+        </button>
+    </div>
+</section>
+
+<section id="pricing-tips-section" class="px-5 pb-6 bg-background">
+    <div class="bg-accent/10 border border-accent/30 rounded-2xl p-5">
+        <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-lightbulb text-accent-foreground"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-sm mb-1">Pricing Tips</h3>
+                <p class="text-muted-foreground text-xs">Maximize your revenue</p>
+            </div>
+        </div>
+        
+        <div class="space-y-3 ml-13">
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Offer larger discounts on bigger packages to encourage commitment</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Subscriptions provide predictable monthly income</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Use discount codes strategically for promotions and referrals</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Review pricing analytics monthly to optimize your packages</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Clear cancellation policies build trust with clients</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<div id="create-package-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="p-5 border-b border-border">
+            <div class="flex items-center justify-between">
+                <h3 class="text-card-foreground font-bold text-lg">Create New Package</h3>
+                <button class="close-modal w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-times text-card-foreground"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-5 space-y-4">
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Package Name</label>
+                <input type="text" placeholder="e.g., 3-Session Pack" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Number of Sessions</label>
+                <input type="number" value="3" min="1" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Price</label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-card-foreground font-bold">$</span>
+                    <input type="number" placeholder="0.00" class="w-full bg-input border border-border rounded-lg pl-8 pr-4 py-3 text-card-foreground text-sm">
+                </div>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Discount (%)</label>
+                <input type="number" value="0" min="0" max="100" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Description</label>
+                <textarea rows="3" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm resize-none" placeholder="Describe this package..."></textarea>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Package Type</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="session-pack">Session Pack</option>
+                    <option value="subscription">Subscription</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="p-5 border-t border-border">
+            <button class="w-full bg-primary text-primary-foreground font-bold py-3 px-4 rounded-xl text-sm">
+                Create Package
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="add-discount-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="p-5 border-b border-border">
+            <div class="flex items-center justify-between">
+                <h3 class="text-card-foreground font-bold text-lg">New Discount Code</h3>
+                <button class="close-modal w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-times text-card-foreground"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-5 space-y-4">
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Code</label>
+                <input type="text" placeholder="e.g., SAVE20" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm font-mono uppercase">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Discount Type</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="percentage">Percentage</option>
+                    <option value="fixed">Fixed Amount</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Discount Value</label>
+                <input type="number" placeholder="20" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Valid Until</label>
+                <input type="date" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Usage Limit</label>
+                <input type="number" placeholder="Unlimited" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Applies To</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="all">All packages</option>
+                    <option value="single">Single sessions only</option>
+                    <option value="packs">Session packs only</option>
+                    <option value="subscriptions">Subscriptions only</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="p-5 border-t border-border">
+            <button class="w-full bg-primary text-primary-foreground font-bold py-3 px-4 rounded-xl text-sm">
+                Create Discount Code
+            </button>
+        </div>
+    </div>
+</div>
+
+<footer id="footer" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-30">
+    <div class="flex items-center justify-between">
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-xs">Profile</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span class="text-xs">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <i class="fa-solid fa-tags text-lg"></i>
+            <span class="text-xs font-semibold">Pricing</span>
+        </button>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+    try {
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeDrawer = document.getElementById('close-drawer');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        const sidebarDrawer = document.getElementById('sidebar-drawer');
+        const backBtn = document.getElementById('back-btn');
+        const createPackageBtn = document.getElementById('create-package-btn');
+        const addDiscountBtn = document.getElementById('add-discount-btn');
+        const createPackageModal = document.getElementById('create-package-modal');
+        const addDiscountModal = document.getElementById('add-discount-modal');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+        const savePricingBtn = document.getElementById('save-pricing-btn');
+        
+        menuToggle.addEventListener('click', function() {
+            sidebarDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+        });
+        
+        closeDrawer.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        drawerOverlay.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        backBtn.addEventListener('click', function() {
+            window.history.back();
+        });
+        
+        const toggleSwitches = document.querySelectorAll('.toggle-switch');
+        toggleSwitches.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+        
+        createPackageBtn.addEventListener('click', function() {
+            createPackageModal.classList.add('active');
+        });
+        
+        addDiscountBtn.addEventListener('click', function() {
+            addDiscountModal.classList.add('active');
+        });
+        
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                createPackageModal.classList.remove('active');
+                addDiscountModal.classList.remove('active');
+            });
+        });
+        
+        createPackageModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        addDiscountModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        savePricingBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Saving...</span>';
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="fa-solid fa-check"></i><span>Saved Successfully!</span>';
+                this.classList.remove('bg-primary');
+                this.classList.add('bg-secondary');
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fa-solid fa-check"></i><span>Save All Changes</span>';
+                    this.classList.remove('bg-secondary');
+                    this.classList.add('bg-primary');
+                }, 2000);
+            }, 1500);
+        });
+        
+        const discountInputs = document.querySelectorAll('input[type="number"][value]');
+        discountInputs.forEach(input => {
+            if (input.previousElementSibling && input.previousElementSibling.textContent.includes('Discount')) {
+                input.addEventListener('input', function() {
+                    const discountValue = parseFloat(this.value) || 0;
+                    const messageEl = this.parentElement.querySelector('p');
+                    if (messageEl) {
+                        if (discountValue > 0) {
+                            messageEl.textContent = `${discountValue}% discount applied`;
+                            messageEl.classList.remove('text-muted-foreground');
+                            messageEl.classList.add('text-secondary', 'font-semibold');
+                        } else {
+                            messageEl.textContent = 'No discount applied';
+                            messageEl.classList.remove('text-secondary', 'font-semibold');
+                            messageEl.classList.add('text-muted-foreground');
+                        }
+                    }
+                });
+            }
+        });
+        
+    } catch(e) {
+        console.error('Error initializing:', e);
+    }
+});
+</script>
+
+</body>
+</html>

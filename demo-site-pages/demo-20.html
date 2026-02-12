@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f4f1f1;
+            --foreground: #705c5d;
+            --card: #ffffff;
+            --card-foreground: #1c1717;
+            --primary: #58a76d;
+            --primary-foreground: #ffffff;
+            --secondary: #54c43b;
+            --secondary-foreground: #ffffff;
+            --muted: #f4f1f1;
+            --muted-foreground: #705c5d;
+            --accent: #a1e619;
+            --accent-foreground: #1c1717;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --border: #d1c7c8;
+            --input: #e8e3e3;
+            --ring: #58a76d;
+            --font-sans: Inter, sans-serif;
+            --font-serif: Georgia, serif;
+            --font-mono: JetBrains Mono, monospace;
+            --radius: 0.5rem;
+            --shadow: -2px 4px 12px 4px rgba(51,51,51,0.05);
+        }
+        ::-webkit-scrollbar { display: none; }
+        
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 85%;
+            max-width: 320px;
+            height: 100vh;
+            background: var(--card);
+            z-index: 50;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-drawer.active {
+            left: 0;
+        }
+        
+        .clients-sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100vh;
+            background: var(--card);
+            z-index: 45;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .clients-sidebar.active {
+            left: 0;
+        }
+        
+        .client-item {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .client-item:active {
+            transform: scale(0.98);
+            background: var(--muted);
+        }
+        
+        .client-item.active {
+            background: var(--primary);
+        }
+        
+        .client-item.active .client-name,
+        .client-item.active .client-preview,
+        .client-item.active .client-time {
+            color: var(--primary-foreground);
+        }
+        
+        .message-bubble {
+            max-width: 75%;
+            word-wrap: break-word;
+            animation: slideIn 0.2s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message-input-container {
+            position: fixed;
+            bottom: 72px;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            z-index: 30;
+        }
+        
+        .messages-container {
+            padding-bottom: 140px;
+        }
+        
+        .quick-reply-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            z-index: 35;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        
+        .quick-reply-modal.active {
+            transform: translateY(0);
+        }
+        
+        .attachment-modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            z-index: 35;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .attachment-modal.active {
+            transform: translateY(0);
+        }
+        
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted-foreground);
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .unread-badge {
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+        
+        .context-card {
+            position: sticky;
+            top: 60px;
+            z-index: 20;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="sidebar-quick-stats" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Today's Overview</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Unread Messages</span>
+                        <span class="text-primary font-bold text-lg">12</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Active Chats</span>
+                        <span class="text-secondary font-bold text-lg">8</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-navigation" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Schedule</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-chart-line text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Progress</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-primary rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary-foreground"></i>
+                    <span class="text-primary-foreground text-sm font-medium">Messages</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-credit-card text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Payments</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<aside id="clients-sidebar" class="clients-sidebar">
+    <div class="sticky top-0 bg-card border-b border-border z-10">
+        <div class="px-5 py-4">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-card-foreground font-bold text-lg">Conversations</h2>
+                <button id="close-clients-sidebar" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-times text-card-foreground"></i>
+                </button>
+            </div>
+            <div class="relative">
+                <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground text-sm"></i>
+                <input type="text" placeholder="Search clients..." class="w-full bg-input border border-border rounded-lg pl-10 pr-4 py-3 text-sm text-card-foreground placeholder-muted-foreground">
+            </div>
+        </div>
+    </div>
+    
+    <div id="clients-list" class="p-3">
+        <div class="client-item active flex items-center gap-3 p-3 rounded-lg mb-2" data-client="sarah-johnson">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah Johnson" class="w-14 h-14 rounded-full object-cover border-2 border-primary">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-secondary border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-primary-foreground font-bold text-sm truncate">Sarah Johnson</span>
+                    <span class="client-time text-primary-foreground text-xs">2:45 PM</span>
+                </div>
+                <p class="client-preview text-primary-foreground/80 text-xs truncate">Great progress today! See you next...</p>
+            </div>
+            <div class="unread-badge bg-accent text-accent-foreground rounded-full px-2 py-0.5 font-bold">3</div>
+        </div>
+        
+        <div class="client-item flex items-center gap-3 p-3 rounded-lg mb-2" data-client="mike-anderson">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="Mike Anderson" class="w-14 h-14 rounded-full object-cover">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-muted border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-card-foreground font-bold text-sm truncate">Mike Anderson</span>
+                    <span class="client-time text-muted-foreground text-xs">Yesterday</span>
+                </div>
+                <p class="client-preview text-muted-foreground text-xs truncate">Thanks for rescheduling!</p>
+            </div>
+        </div>
+        
+        <div class="client-item flex items-center gap-3 p-3 rounded-lg mb-2" data-client="emily-davis">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg" alt="Emily Davis" class="w-14 h-14 rounded-full object-cover">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-secondary border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-card-foreground font-bold text-sm truncate">Emily Davis</span>
+                    <span class="client-time text-muted-foreground text-xs">Yesterday</span>
+                </div>
+                <p class="client-preview text-muted-foreground text-xs truncate">Can we add an extra session?</p>
+            </div>
+            <div class="unread-badge bg-accent text-accent-foreground rounded-full px-2 py-0.5 font-bold">1</div>
+        </div>
+        
+        <div class="client-item flex items-center gap-3 p-3 rounded-lg mb-2" data-client="james-wilson">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="James Wilson" class="w-14 h-14 rounded-full object-cover">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-muted border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-card-foreground font-bold text-sm truncate">James Wilson</span>
+                    <span class="client-time text-muted-foreground text-xs">Feb 8</span>
+                </div>
+                <p class="client-preview text-muted-foreground text-xs truncate">Looking forward to Monday's session</p>
+            </div>
+        </div>
+        
+        <div class="client-item flex items-center gap-3 p-3 rounded-lg mb-2" data-client="lisa-brown">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-7.jpg" alt="Lisa Brown" class="w-14 h-14 rounded-full object-cover">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-secondary border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-card-foreground font-bold text-sm truncate">Lisa Brown</span>
+                    <span class="client-time text-muted-foreground text-xs">Feb 7</span>
+                </div>
+                <p class="client-preview text-muted-foreground text-xs truncate">Thank you for the progress report!</p>
+            </div>
+            <div class="unread-badge bg-accent text-accent-foreground rounded-full px-2 py-0.5 font-bold">2</div>
+        </div>
+        
+        <div class="client-item flex items-center gap-3 p-3 rounded-lg mb-2" data-client="david-martinez">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-4.jpg" alt="David Martinez" class="w-14 h-14 rounded-full object-cover">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-muted border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-card-foreground font-bold text-sm truncate">David Martinez</span>
+                    <span class="client-time text-muted-foreground text-xs">Feb 6</span>
+                </div>
+                <p class="client-preview text-muted-foreground text-xs truncate">Sounds good, see you then!</p>
+            </div>
+        </div>
+        
+        <div class="client-item flex items-center gap-3 p-3 rounded-lg mb-2" data-client="rachel-taylor">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Rachel Taylor" class="w-14 h-14 rounded-full object-cover">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-muted border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-card-foreground font-bold text-sm truncate">Rachel Taylor</span>
+                    <span class="client-time text-muted-foreground text-xs">Feb 5</span>
+                </div>
+                <p class="client-preview text-muted-foreground text-xs truncate">Perfect timing!</p>
+            </div>
+        </div>
+        
+        <div class="client-item flex items-center gap-3 p-3 rounded-lg mb-2" data-client="kevin-thomas">
+            <div class="relative flex-shrink-0">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-9.jpg" alt="Kevin Thomas" class="w-14 h-14 rounded-full object-cover">
+                <div class="absolute bottom-0 right-0 w-4 h-4 bg-muted border-2 border-card rounded-full"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="client-name text-card-foreground font-bold text-sm truncate">Kevin Thomas</span>
+                    <span class="client-time text-muted-foreground text-xs">Feb 4</span>
+                </div>
+                <p class="client-preview text-muted-foreground text-xs truncate">Got it, thanks coach!</p>
+            </div>
+            <div class="unread-badge bg-accent text-accent-foreground rounded-full px-2 py-0.5 font-bold">5</div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen pb-24">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between">
+            <button id="show-clients-sidebar" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+            <div class="flex items-center gap-2 flex-1 mx-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah Johnson" class="w-9 h-9 rounded-full object-cover">
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-card-foreground font-bold text-sm truncate">Sarah Johnson</h1>
+                    <div class="flex items-center gap-1">
+                        <div class="w-2 h-2 bg-secondary rounded-full"></div>
+                        <span class="text-secondary text-xs font-semibold">Online</span>
+                    </div>
+                </div>
+            </div>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-ellipsis-vertical text-card-foreground"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section id="client-context-card" class="context-card px-5 pt-3 pb-2 bg-background">
+    <div class="bg-primary/10 rounded-2xl p-4 border border-primary/30 shadow-sm">
+        <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check text-primary text-sm"></i>
+                <span class="text-card-foreground font-bold text-xs">Next Session</span>
+            </div>
+            <button class="text-primary text-xs font-semibold">View Details</button>
+        </div>
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="text-card-foreground font-bold text-sm">Tomorrow, Feb 10</div>
+                <div class="text-muted-foreground text-xs">4:00 PM - 5:00 PM</div>
+            </div>
+            <div class="text-right">
+                <div class="text-card-foreground font-bold text-xs">Goalkeeper Training</div>
+                <div class="text-muted-foreground text-xs">Field #2</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="messages-section" class="messages-container px-5 pt-4 bg-background">
+    
+    <div class="flex justify-center mb-4">
+        <div class="bg-muted rounded-full px-4 py-2">
+            <span class="text-muted-foreground text-xs font-semibold">Today</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Hi Coach! Just wanted to check in about tomorrow's session. Is it still on?</p>
+            <span class="text-muted-foreground text-xs mt-1 block">10:30 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">Hey Sarah! Yes, we're all set for tomorrow at 4 PM. Looking forward to it!</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">10:32 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Perfect! I've been practicing the diving techniques you showed me last week.</p>
+            <span class="text-muted-foreground text-xs mt-1 block">10:35 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">That's great to hear! We'll work on refining those tomorrow. Don't forget to bring your gloves and water bottle.</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">10:38 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Will do! 👍</p>
+            <span class="text-muted-foreground text-xs mt-1 block">10:40 AM</span>
+        </div>
+    </div>
+    
+    <div class="flex justify-center mb-4">
+        <div class="bg-muted rounded-full px-4 py-2">
+            <span class="text-muted-foreground text-xs font-semibold">2 hours ago</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Quick question - should I warm up before coming or will we do that together?</p>
+            <span class="text-muted-foreground text-xs mt-1 block">12:15 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">We'll warm up together! I have a new dynamic stretching routine I want to show you. Just come ready to train 💪</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">12:20 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Awesome! Can't wait to learn it. See you tomorrow!</p>
+            <span class="text-muted-foreground text-xs mt-1 block">12:25 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex justify-center mb-4">
+        <div class="bg-muted rounded-full px-4 py-2">
+            <span class="text-muted-foreground text-xs font-semibold">30 minutes ago</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">By the way, I've uploaded your progress report from last month. Check it out when you get a chance!</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">2:15 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <div class="bg-primary-foreground/20 rounded-lg p-3 mb-2">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-file-pdf text-primary-foreground text-xl"></i>
+                    <div class="flex-1 min-w-0">
+                        <div class="text-primary-foreground font-bold text-xs truncate">Progress_Report_Jan_2024.pdf</div>
+                        <div class="text-primary-foreground/70 text-xs">2.4 MB</div>
+                    </div>
+                </div>
+                <button class="w-full bg-primary-foreground text-primary rounded-lg py-2 text-xs font-bold">
+                    <i class="fa-solid fa-download mr-1"></i> Download
+                </button>
+            </div>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">2:16 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Thank you so much! I'll review it tonight with my parents. Really appreciate all the detailed feedback!</p>
+            <span class="text-muted-foreground text-xs mt-1 block">2:20 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">You're welcome! You've made excellent progress. Keep up the great work! 🌟</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">2:25 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">One more thing - is there anything specific I should focus on before tomorrow?</p>
+            <span class="text-muted-foreground text-xs mt-1 block">2:30 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4 flex-row-reverse">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-primary rounded-2xl rounded-tr-sm p-3 shadow-sm">
+            <p class="text-primary-foreground text-sm leading-relaxed">Just get good rest tonight! We'll be doing some high-intensity drills, so come with lots of energy. 😊</p>
+            <span class="text-primary-foreground/80 text-xs mt-1 block text-right">2:35 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+        <div class="message-bubble bg-card border border-border rounded-2xl rounded-tl-sm p-3 shadow-sm">
+            <p class="text-card-foreground text-sm leading-relaxed">Great progress today! See you next week 🎯</p>
+            <span class="text-muted-foreground text-xs mt-1 block">2:45 PM</span>
+        </div>
+    </div>
+    
+    <div class="flex items-start gap-3 mb-4">
+        <div class="w-9 h-9 flex-shrink-0"></div>
+        <div class="message-bubble bg-muted rounded-2xl rounded-tl-sm p-3">
+            <div class="typing-indicator flex items-center gap-1">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+</main>
+
+<div class="message-input-container px-5 py-3">
+    <div class="flex items-end gap-2">
+        <button id="attachment-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-paperclip text-primary text-lg"></i>
+        </button>
+        <button id="quick-reply-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-bolt text-primary text-lg"></i>
+        </button>
+        <div class="flex-1 relative">
+            <textarea id="message-input" placeholder="Type a message..." class="w-full bg-input border border-border rounded-xl px-4 py-3 text-sm text-card-foreground placeholder-muted-foreground resize-none" rows="1" style="max-height: 120px;"></textarea>
+        </div>
+        <button id="send-btn" class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-paper-plane text-primary-foreground"></i>
+        </button>
+    </div>
+</div>
+
+<div id="quick-reply-modal" class="quick-reply-modal">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-card-foreground font-bold text-base">Quick Replies</h3>
+            <button id="close-quick-reply" class="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-2">
+            <button class="quick-reply-item w-full bg-muted border border-border rounded-lg p-4 text-left">
+                <div class="text-card-foreground font-semibold text-sm mb-1">Confirm Session</div>
+                <p class="text-muted-foreground text-xs">Yes, I'll see you at [time] for our session!</p>
+            </button>
+            
+            <button class="quick-reply-item w-full bg-muted border border-border rounded-lg p-4 text-left">
+                <div class="text-card-foreground font-semibold text-sm mb-1">Running Late</div>
+                <p class="text-muted-foreground text-xs">I'm running about 10 minutes late. Be there soon!</p>
+            </button>
+            
+            <button class="quick-reply-item w-full bg-muted border border-border rounded-lg p-4 text-left">
+                <div class="text-card-foreground font-semibold text-sm mb-1">Need to Reschedule</div>
+                <p class="text-muted-foreground text-xs">Could we reschedule today's session? Something came up.</p>
+            </button>
+            
+            <button class="quick-reply-item w-full bg-muted border border-border rounded-lg p-4 text-left">
+                <div class="text-card-foreground font-semibold text-sm mb-1">Thank You</div>
+                <p class="text-muted-foreground text-xs">Thanks for the great session today! See you next time.</p>
+            </button>
+            
+            <button class="quick-reply-item w-full bg-muted border border-border rounded-lg p-4 text-left">
+                <div class="text-card-foreground font-semibold text-sm mb-1">Progress Update Request</div>
+                <p class="text-muted-foreground text-xs">When will the next progress report be available?</p>
+            </button>
+            
+            <button class="quick-reply-item w-full bg-muted border border-border rounded-lg p-4 text-left">
+                <div class="text-card-foreground font-semibold text-sm mb-1">Equipment Question</div>
+                <p class="text-muted-foreground text-xs">What equipment should I bring to the next session?</p>
+            </button>
+            
+            <button class="quick-reply-item w-full bg-muted border border-border rounded-lg p-4 text-left">
+                <div class="text-card-foreground font-semibold text-sm mb-1">Weather Check</div>
+                <p class="text-muted-foreground text-xs">Are we still on for today given the weather?</p>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="attachment-modal" class="attachment-modal">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-card-foreground font-bold text-base">Send Attachment</h3>
+            <button id="close-attachment" class="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-3">
+            <button class="attachment-option flex flex-col items-center gap-2 bg-muted rounded-xl p-4">
+                <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-camera text-primary text-xl"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold">Camera</span>
+            </button>
+            
+            <button class="attachment-option flex flex-col items-center gap-2 bg-muted rounded-xl p-4">
+                <div class="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-image text-secondary text-xl"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold">Gallery</span>
+            </button>
+            
+            <button class="attachment-option flex flex-col items-center gap-2 bg-muted rounded-xl p-4">
+                <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-file text-accent-foreground text-xl"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold">Document</span>
+            </button>
+            
+            <button class="attachment-option flex flex-col items-center gap-2 bg-muted rounded-xl p-4">
+                <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-video text-primary text-xl"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold">Video</span>
+            </button>
+            
+            <button class="attachment-option flex flex-col items-center gap-2 bg-muted rounded-xl p-4">
+                <div class="w-12 h-12 bg-secondary/20 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-location-dot text-secondary text-xl"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold">Location</span>
+            </button>
+            
+            <button class="attachment-option flex flex-col items-center gap-2 bg-muted rounded-xl p-4">
+                <div class="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-user text-accent-foreground text-xl"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold">Contact</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<footer id="footer" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-30">
+    <div class="flex items-center justify-between">
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span class="text-xs">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <i class="fa-solid fa-message text-lg"></i>
+            <span class="text-xs font-semibold">Messages</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-xs">Profile</span>
+        </button>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const closeDrawer = document.getElementById('close-drawer');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const sidebarDrawer = document.getElementById('sidebar-drawer');
+    const showClientsSidebar = document.getElementById('show-clients-sidebar');
+    const closeClientsSidebar = document.getElementById('close-clients-sidebar');
+    const clientsSidebar = document.getElementById('clients-sidebar');
+    const clientItems = document.querySelectorAll('.client-item');
+    const quickReplyBtn = document.getElementById('quick-reply-btn');
+    const quickReplyModal = document.getElementById('quick-reply-modal');
+    const closeQuickReply = document.getElementById('close-quick-reply');
+    const quickReplyItems = document.querySelectorAll('.quick-reply-item');
+    const attachmentBtn = document.getElementById('attachment-btn');
+    const attachmentModal = document.getElementById('attachment-modal');
+    const closeAttachment = document.getElementById('close-attachment');
+    const messageInput = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+    
+    menuToggle.addEventListener('click', function() {
+        sidebarDrawer.classList.add('active');
+        drawerOverlay.classList.add('active');
+    });
+    
+    closeDrawer.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    drawerOverlay.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+        clientsSidebar.classList.remove('active');
+        quickReplyModal.classList.remove('active');
+        attachmentModal.classList.remove('active');
+    });
+    
+    showClientsSidebar.addEventListener('click', function() {
+        clientsSidebar.classList.add('active');
+        drawerOverlay.classList.add('active');
+    });
+    
+    closeClientsSidebar.addEventListener('click', function() {
+        clientsSidebar.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    clientItems.forEach(item => {
+        item.addEventListener('click', function() {
+            clientItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            clientsSidebar.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+    });
+    
+    quickReplyBtn.addEventListener('click', function() {
+        quickReplyModal.classList.add('active');
+        drawerOverlay.classList.add('active');
+    });
+    
+    closeQuickReply.addEventListener('click', function() {
+        quickReplyModal.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    quickReplyItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const replyText = this.querySelector('p').textContent;
+            messageInput.value = replyText;
+            quickReplyModal.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+            messageInput.focus();
+        });
+    });
+    
+    attachmentBtn.addEventListener('click', function() {
+        attachmentModal.classList.add('active');
+        drawerOverlay.classList.add('active');
+    });
+    
+    closeAttachment.addEventListener('click', function() {
+        attachmentModal.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    messageInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+    
+    sendBtn.addEventListener('click', function() {
+        const message = messageInput.value.trim();
+        if (message) {
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+        }
+    });
+    
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendBtn.click();
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Availability Settings</title>
+    
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f4f1f1;
+            --foreground: #705c5d;
+            --card: #ffffff;
+            --card-foreground: #1c1717;
+            --primary: #58a76d;
+            --primary-foreground: #ffffff;
+            --secondary: #54c43b;
+            --secondary-foreground: #ffffff;
+            --muted: #f4f1f1;
+            --muted-foreground: #705c5d;
+            --accent: #a1e619;
+            --accent-foreground: #1c1717;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --border: #d1c7c8;
+            --input: #e8e3e3;
+            --ring: #58a76d;
+            --font-sans: Inter, sans-serif;
+            --font-serif: Georgia, serif;
+            --font-mono: JetBrains Mono, monospace;
+            --radius: 0.5rem;
+            --shadow: -2px 4px 12px 4px rgba(51,51,51,0.05);
+        }
+        ::-webkit-scrollbar { display: none; }
+        
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100%;
+            background: var(--card);
+            z-index: 50;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-drawer.active {
+            left: 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: var(--muted);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: var(--primary);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+        
+        .time-block {
+            transition: all 0.2s ease;
+        }
+        
+        .time-block:active {
+            transform: scale(0.98);
+        }
+        
+        .location-tag {
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 60;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--card);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 335px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideUp 0.3s ease;
+        }
+        
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="sidebar-quick-stats" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Today's Stats</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Sessions Today</span>
+                        <span class="text-primary font-bold text-lg">3</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Upcoming</span>
+                        <span class="text-secondary font-bold text-lg">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-navigation" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Calendar</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-users text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Clients</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Messages</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen pb-20">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+            </div>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section id="page-header-section" class="px-5 pt-5 pb-4 bg-background">
+    <div class="flex items-center gap-3 mb-2">
+        <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+            <i class="fa-solid fa-calendar-clock text-primary text-xl"></i>
+        </div>
+        <div>
+            <h1 class="text-card-foreground font-bold text-xl">Availability Settings</h1>
+            <p class="text-muted-foreground text-sm">Set your weekly schedule</p>
+        </div>
+    </div>
+</section>
+
+<section id="weekly-calendar-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-border">
+            <h2 class="text-card-foreground font-bold text-base mb-1">Weekly Schedule</h2>
+            <p class="text-muted-foreground text-xs">Toggle days and set time ranges</p>
+        </div>
+        
+        <div class="divide-y divide-border">
+            <div class="p-4 day-row" data-day="monday">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-sm">M</span>
+                        </div>
+                        <span class="text-card-foreground font-semibold text-sm">Monday</span>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="monday"></div>
+                </div>
+                <div class="ml-13 space-y-2 time-slots-container">
+                    <div class="flex items-center gap-2">
+                        <input type="time" value="09:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                        <span class="text-muted-foreground text-xs">to</span>
+                        <input type="time" value="17:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 day-row" data-day="tuesday">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-sm">T</span>
+                        </div>
+                        <span class="text-card-foreground font-semibold text-sm">Tuesday</span>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="tuesday"></div>
+                </div>
+                <div class="ml-13 space-y-2 time-slots-container">
+                    <div class="flex items-center gap-2">
+                        <input type="time" value="09:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                        <span class="text-muted-foreground text-xs">to</span>
+                        <input type="time" value="17:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 day-row" data-day="wednesday">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-sm">W</span>
+                        </div>
+                        <span class="text-card-foreground font-semibold text-sm">Wednesday</span>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="wednesday"></div>
+                </div>
+                <div class="ml-13 space-y-2 time-slots-container">
+                    <div class="flex items-center gap-2">
+                        <input type="time" value="09:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                        <span class="text-muted-foreground text-xs">to</span>
+                        <input type="time" value="17:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 day-row" data-day="thursday">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-sm">T</span>
+                        </div>
+                        <span class="text-card-foreground font-semibold text-sm">Thursday</span>
+                    </div>
+                    <div class="toggle-switch" data-toggle="thursday"></div>
+                </div>
+                <div class="ml-13 space-y-2 time-slots-container" style="display: none;">
+                    <div class="flex items-center gap-2">
+                        <input type="time" value="09:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                        <span class="text-muted-foreground text-xs">to</span>
+                        <input type="time" value="17:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 day-row" data-day="friday">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-sm">F</span>
+                        </div>
+                        <span class="text-card-foreground font-semibold text-sm">Friday</span>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="friday"></div>
+                </div>
+                <div class="ml-13 space-y-2 time-slots-container">
+                    <div class="flex items-center gap-2">
+                        <input type="time" value="09:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                        <span class="text-muted-foreground text-xs">to</span>
+                        <input type="time" value="17:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 day-row" data-day="saturday">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-sm">S</span>
+                        </div>
+                        <span class="text-card-foreground font-semibold text-sm">Saturday</span>
+                    </div>
+                    <div class="toggle-switch active" data-toggle="saturday"></div>
+                </div>
+                <div class="ml-13 space-y-2 time-slots-container">
+                    <div class="flex items-center gap-2">
+                        <input type="time" value="10:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                        <span class="text-muted-foreground text-xs">to</span>
+                        <input type="time" value="14:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-4 day-row" data-day="sunday">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <span class="text-primary font-bold text-sm">S</span>
+                        </div>
+                        <span class="text-card-foreground font-semibold text-sm">Sunday</span>
+                    </div>
+                    <div class="toggle-switch" data-toggle="sunday"></div>
+                </div>
+                <div class="ml-13 space-y-2 time-slots-container" style="display: none;">
+                    <div class="flex items-center gap-2">
+                        <input type="time" value="10:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                        <span class="text-muted-foreground text-xs">to</span>
+                        <input type="time" value="14:00" class="flex-1 bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="break-times-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-card-foreground font-bold text-base mb-1">Break Times</h3>
+                <p class="text-muted-foreground text-xs">Add breaks to your schedule</p>
+            </div>
+            <button id="add-break-btn" class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-plus text-primary-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="breaks-container" class="space-y-3">
+            <div class="bg-muted rounded-xl p-4 break-item">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-card-foreground font-semibold text-sm">Lunch Break</span>
+                    <button class="w-8 h-8 bg-destructive/10 rounded-lg flex items-center justify-center delete-break-btn">
+                        <i class="fa-solid fa-trash text-destructive text-xs"></i>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="time" value="12:00" class="flex-1 bg-card border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                    <span class="text-muted-foreground text-xs">to</span>
+                    <input type="time" value="13:00" class="flex-1 bg-card border border-border rounded-lg px-3 py-2 text-card-foreground text-sm">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="session-settings-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Session Settings</h3>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Session Duration</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60" selected>60 minutes</option>
+                    <option value="90">90 minutes</option>
+                    <option value="120">120 minutes</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Buffer Time Between Sessions</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="0">No buffer</option>
+                    <option value="15" selected>15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">60 minutes</option>
+                </select>
+                <p class="text-muted-foreground text-xs mt-2">Time needed between sessions for preparation</p>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Advance Booking Window</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="1">1 day ahead</option>
+                    <option value="2">2 days ahead</option>
+                    <option value="7" selected>1 week ahead</option>
+                    <option value="14">2 weeks ahead</option>
+                    <option value="30">1 month ahead</option>
+                    <option value="60">2 months ahead</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Minimum Notice Period</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="2">2 hours</option>
+                    <option value="4">4 hours</option>
+                    <option value="12">12 hours</option>
+                    <option value="24" selected>24 hours</option>
+                    <option value="48">48 hours</option>
+                </select>
+                <p class="text-muted-foreground text-xs mt-2">How far in advance clients must book</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="location-settings-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h3 class="text-card-foreground font-bold text-base mb-1">Training Locations</h3>
+                <p class="text-muted-foreground text-xs">Manage available locations</p>
+            </div>
+            <button id="add-location-btn" class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-plus text-primary-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="locations-container" class="space-y-3">
+            <div class="bg-primary/10 rounded-xl p-4 location-item location-tag">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-start gap-3 flex-1">
+                        <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-location-dot text-primary"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-card-foreground font-semibold text-sm mb-1">Main Training Ground</div>
+                            <div class="text-muted-foreground text-xs mb-2">123 Sports Complex, Downtown</div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-primary/20 text-primary text-xs font-medium px-2 py-1 rounded-md">Primary</span>
+                                <span class="bg-secondary/20 text-secondary text-xs font-medium px-2 py-1 rounded-md">Indoor</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-8 h-8 bg-card rounded-lg flex items-center justify-center ml-2 delete-location-btn">
+                        <i class="fa-solid fa-pencil text-primary text-xs"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-secondary/10 rounded-xl p-4 location-item location-tag">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-start gap-3 flex-1">
+                        <div class="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-location-dot text-secondary"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-card-foreground font-semibold text-sm mb-1">Outdoor Field</div>
+                            <div class="text-muted-foreground text-xs mb-2">456 Park Avenue, North Side</div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-secondary/20 text-secondary text-xs font-medium px-2 py-1 rounded-md">Outdoor</span>
+                                <span class="bg-accent/20 text-accent-foreground text-xs font-medium px-2 py-1 rounded-md">Grass</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-8 h-8 bg-card rounded-lg flex items-center justify-center ml-2 delete-location-btn">
+                        <i class="fa-solid fa-pencil text-secondary text-xs"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-accent/10 rounded-xl p-4 location-item location-tag">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-start gap-3 flex-1">
+                        <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <i class="fa-solid fa-location-dot text-accent-foreground"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-card-foreground font-semibold text-sm mb-1">Community Center</div>
+                            <div class="text-muted-foreground text-xs mb-2">789 Community Blvd, East District</div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-accent/20 text-accent-foreground text-xs font-medium px-2 py-1 rounded-md">Indoor</span>
+                                <span class="bg-primary/20 text-primary text-xs font-medium px-2 py-1 rounded-md">Turf</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-8 h-8 bg-card rounded-lg flex items-center justify-center ml-2 delete-location-btn">
+                        <i class="fa-solid fa-pencil text-accent-foreground text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="booking-preview-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-calendar-check text-secondary"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-base">Bookable Slots Preview</h3>
+                <p class="text-muted-foreground text-xs">Next 7 days availability</p>
+            </div>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="bg-muted rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Monday, Feb 12</div>
+                        <div class="text-muted-foreground text-xs">6 available slots</div>
+                    </div>
+                    <div class="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
+                        <span class="text-secondary font-bold text-xs">6</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">9:00 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">10:15 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">11:30 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">1:15 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">2:30 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">3:45 PM</span>
+                </div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Tuesday, Feb 13</div>
+                        <div class="text-muted-foreground text-xs">6 available slots</div>
+                    </div>
+                    <div class="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
+                        <span class="text-secondary font-bold text-xs">6</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">9:00 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">10:15 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">11:30 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">1:15 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">2:30 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">3:45 PM</span>
+                </div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Wednesday, Feb 14</div>
+                        <div class="text-muted-foreground text-xs">6 available slots</div>
+                    </div>
+                    <div class="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
+                        <span class="text-secondary font-bold text-xs">6</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">9:00 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">10:15 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">11:30 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">1:15 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">2:30 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">3:45 PM</span>
+                </div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Friday, Feb 16</div>
+                        <div class="text-muted-foreground text-xs">6 available slots</div>
+                    </div>
+                    <div class="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
+                        <span class="text-secondary font-bold text-xs">6</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">9:00 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">10:15 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">11:30 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">1:15 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">2:30 PM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">3:45 PM</span>
+                </div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Saturday, Feb 17</div>
+                        <div class="text-muted-foreground text-xs">3 available slots</div>
+                    </div>
+                    <div class="w-8 h-8 bg-secondary/20 rounded-lg flex items-center justify-center">
+                        <span class="text-secondary font-bold text-xs">3</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">10:00 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">11:15 AM</span>
+                    <span class="bg-card border border-border text-card-foreground text-xs font-medium px-3 py-1 rounded-md">12:30 PM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="advanced-settings-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Advanced Settings</h3>
+        
+        <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Auto-Accept Bookings</div>
+                    <div class="text-muted-foreground text-xs">Automatically confirm new bookings</div>
+                </div>
+                <div class="toggle-switch active" data-toggle="auto-accept"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Allow Same-Day Bookings</div>
+                    <div class="text-muted-foreground text-xs">Let clients book sessions today</div>
+                </div>
+                <div class="toggle-switch" data-toggle="same-day"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Send Booking Reminders</div>
+                    <div class="text-muted-foreground text-xs">Notify clients 24h before session</div>
+                </div>
+                <div class="toggle-switch active" data-toggle="reminders"></div>
+            </div>
+            
+            <div class="flex items-center justify-between p-4 bg-muted rounded-lg">
+                <div>
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Block Holidays</div>
+                    <div class="text-muted-foreground text-xs">Automatically block public holidays</div>
+                </div>
+                <div class="toggle-switch active" data-toggle="holidays"></div>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Max Sessions Per Day</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="unlimited">Unlimited</option>
+                    <option value="2">2 sessions</option>
+                    <option value="3">3 sessions</option>
+                    <option value="4">4 sessions</option>
+                    <option value="5">5 sessions</option>
+                    <option value="6" selected>6 sessions</option>
+                    <option value="8">8 sessions</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Cancellation Policy</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="flexible">Flexible - Free cancellation 24h before</option>
+                    <option value="moderate" selected>Moderate - Free cancellation 48h before</option>
+                    <option value="strict">Strict - Free cancellation 72h before</option>
+                    <option value="no-refund">No refunds</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="timezone-settings-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Time Zone & Display</h3>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Time Zone</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="est" selected>Eastern Time (ET)</option>
+                    <option value="cst">Central Time (CT)</option>
+                    <option value="mst">Mountain Time (MT)</option>
+                    <option value="pst">Pacific Time (PT)</option>
+                    <option value="utc">UTC</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Time Format</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-lg text-sm">
+                        12-hour
+                    </button>
+                    <button class="bg-muted text-card-foreground font-semibold py-3 px-4 rounded-lg text-sm">
+                        24-hour
+                    </button>
+                </div>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Week Starts On</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="sunday" selected>Sunday</option>
+                    <option value="monday">Monday</option>
+                    <option value="saturday">Saturday</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="save-action-section" class="px-5 pb-6 bg-background">
+    <div class="space-y-3">
+        <button id="save-availability-btn" class="w-full bg-primary text-primary-foreground font-bold py-4 px-6 rounded-xl text-base flex items-center justify-center gap-2 shadow-sm">
+            <i class="fa-solid fa-check"></i>
+            <span>Save Availability</span>
+        </button>
+        
+        <button class="w-full bg-card border-2 border-border text-card-foreground font-semibold py-3 px-6 rounded-xl text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span>Reset to Default</span>
+        </button>
+    </div>
+</section>
+
+<section id="quick-tips-section" class="px-5 pb-6 bg-background">
+    <div class="bg-accent/10 border border-accent/30 rounded-2xl p-5">
+        <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-lightbulb text-accent-foreground"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-sm mb-1">Pro Tips</h3>
+                <p class="text-muted-foreground text-xs">Optimize your availability</p>
+            </div>
+        </div>
+        
+        <div class="space-y-3 ml-13">
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Set buffer times to avoid back-to-back sessions</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Add multiple locations to give clients flexibility</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Block lunch breaks to maintain energy levels</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle text-accent-foreground text-[6px] mt-1.5"></i>
+                <p class="text-card-foreground text-xs">Review your bookable slots preview before saving</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<div id="add-break-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="p-5 border-b border-border">
+            <div class="flex items-center justify-between">
+                <h3 class="text-card-foreground font-bold text-lg">Add Break Time</h3>
+                <button class="close-modal w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-times text-card-foreground"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-5 space-y-4">
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Break Name</label>
+                <input type="text" placeholder="e.g., Lunch Break" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Start Time</label>
+                <input type="time" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">End Time</label>
+                <input type="time" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Apply to Days</label>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-3 p-3 bg-muted rounded-lg cursor-pointer">
+                        <input type="checkbox" checked class="w-5 h-5 text-primary rounded">
+                        <span class="text-card-foreground text-sm">All Days</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-5 border-t border-border">
+            <button class="w-full bg-primary text-primary-foreground font-bold py-3 px-4 rounded-xl text-sm">
+                Add Break
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="add-location-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="p-5 border-b border-border">
+            <div class="flex items-center justify-between">
+                <h3 class="text-card-foreground font-bold text-lg">Add Location</h3>
+                <button class="close-modal w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-times text-card-foreground"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-5 space-y-4">
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Location Name</label>
+                <input type="text" placeholder="e.g., Main Training Ground" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Address</label>
+                <input type="text" placeholder="Full address" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Location Type</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="indoor">Indoor</option>
+                    <option value="outdoor">Outdoor</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="text-card-foreground font-semibold text-sm mb-2 block">Surface Type</label>
+                <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm">
+                    <option value="grass">Grass</option>
+                    <option value="turf">Turf</option>
+                    <option value="indoor">Indoor Court</option>
+                    <option value="mixed">Mixed</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="flex items-center gap-3 p-3 bg-muted rounded-lg cursor-pointer">
+                    <input type="checkbox" class="w-5 h-5 text-primary rounded">
+                    <span class="text-card-foreground text-sm">Set as primary location</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="p-5 border-t border-border">
+            <button class="w-full bg-primary text-primary-foreground font-bold py-3 px-4 rounded-xl text-sm">
+                Add Location
+            </button>
+        </div>
+    </div>
+</div>
+
+<footer id="footer" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-30">
+    <div class="flex items-center justify-between">
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-xs">Profile</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span class="text-xs font-semibold">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-message text-lg"></i>
+            <span class="text-xs">Messages</span>
+        </button>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+    try {
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeDrawer = document.getElementById('close-drawer');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        const sidebarDrawer = document.getElementById('sidebar-drawer');
+        const backBtn = document.getElementById('back-btn');
+        const addBreakBtn = document.getElementById('add-break-btn');
+        const addLocationBtn = document.getElementById('add-location-btn');
+        const addBreakModal = document.getElementById('add-break-modal');
+        const addLocationModal = document.getElementById('add-location-modal');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+        const saveAvailabilityBtn = document.getElementById('save-availability-btn');
+        
+        menuToggle.addEventListener('click', function() {
+            sidebarDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+        });
+        
+        closeDrawer.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        drawerOverlay.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        backBtn.addEventListener('click', function() {
+            window.history.back();
+        });
+        
+        const toggleSwitches = document.querySelectorAll('.toggle-switch');
+        toggleSwitches.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                const day = this.getAttribute('data-toggle');
+                const dayRow = document.querySelector(`.day-row[data-day="${day}"]`);
+                if (dayRow) {
+                    const timeSlotsContainer = dayRow.querySelector('.time-slots-container');
+                    if (timeSlotsContainer) {
+                        if (this.classList.contains('active')) {
+                            timeSlotsContainer.style.display = 'block';
+                        } else {
+                            timeSlotsContainer.style.display = 'none';
+                        }
+                    }
+                }
+            });
+        });
+        
+        addBreakBtn.addEventListener('click', function() {
+            addBreakModal.classList.add('active');
+        });
+        
+        addLocationBtn.addEventListener('click', function() {
+            addLocationModal.classList.add('active');
+        });
+        
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                addBreakModal.classList.remove('active');
+                addLocationModal.classList.remove('active');
+            });
+        });
+        
+        addBreakModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        addLocationModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        const deleteBreakBtns = document.querySelectorAll('.delete-break-btn');
+        deleteBreakBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const breakItem = this.closest('.break-item');
+                if (breakItem && confirm('Delete this break?')) {
+                    breakItem.remove();
+                }
+            });
+        });
+        
+        saveAvailabilityBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Saving...</span>';
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="fa-solid fa-check"></i><span>Saved Successfully!</span>';
+                this.classList.remove('bg-primary');
+                this.classList.add('bg-secondary');
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fa-solid fa-check"></i><span>Save Availability</span>';
+                    this.classList.remove('bg-secondary');
+                    this.classList.add('bg-primary');
+                }, 2000);
+            }, 1500);
+        });
+        
+    } catch(e) {
+        console.error('Error initializing:', e);
+    }
+});
+</script>
+
+</body>
+</html>

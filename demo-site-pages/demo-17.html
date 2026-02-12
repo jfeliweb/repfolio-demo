@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#58a76d",
+                    "primary-foreground": "#ffffff",
+                    "secondary": "#54c43b",
+                    "secondary-foreground": "#ffffff",
+                    "accent": "#a1e619",
+                    "accent-foreground": "#1a1a1a",
+                    "destructive": "#ef4444",
+                    "destructive-foreground": "#ffffff",
+                    "background": "#f8f9fa",
+                    "foreground": "#1a1a1a",
+                    "card": "#ffffff",
+                    "card-foreground": "#1a1a1a",
+                    "muted": "#f1f3f5",
+                    "muted-foreground": "#6c757d",
+                    "border": "#e8e3e3",
+                    "input": "#f8f9fa",
+                }
+            }
+        }
+    }
+    </script>
+    <script src="https://cdn.plot.ly/plotly-3.1.1.min.js"></script>
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        ::-webkit-scrollbar { display: none;}
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 40;
+        }
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100%;
+            background: #ffffff;
+            transition: left 0.3s;
+            z-index: 50;
+            overflow-y: auto;
+        }
+        .sidebar-drawer.active {
+            left: 0;
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Select Player</h3>
+            <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm font-semibold">
+                <option value="sarah-johnson">Sarah Johnson (Age 14)</option>
+                <option value="mike-johnson">Mike Johnson (Age 11)</option>
+            </select>
+        </div>
+        
+        <div class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">This Month</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Sessions</span>
+                        <span class="text-primary font-bold text-lg">8</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Progress Reports</span>
+                        <span class="text-secondary font-bold text-lg">3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Schedule</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-chart-line text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Progress</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Messages</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-credit-card text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Payments</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen pb-24">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <h1 class="text-card-foreground font-bold text-base">Progress Dashboard</h1>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section id="player-selector-section" class="px-5 pt-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+        <label class="text-card-foreground font-bold text-sm mb-2 block">Select Player</label>
+        <select id="player-select" class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm font-semibold">
+            <option value="sarah-johnson">Sarah Johnson (Age 14)</option>
+            <option value="mike-johnson">Mike Johnson (Age 11)</option>
+        </select>
+    </div>
+</section>
+
+<section id="date-range-filter-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+        <label class="text-card-foreground font-bold text-sm mb-2 block">Date Range</label>
+        <div class="grid grid-cols-2 gap-3">
+            <select class="bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-xs font-semibold">
+                <option value="last-3-months">Last 3 Months</option>
+                <option value="last-6-months">Last 6 Months</option>
+                <option value="last-year">Last Year</option>
+                <option value="all-time">All Time</option>
+            </select>
+            <button class="bg-primary text-primary-foreground font-bold text-xs py-2 px-4 rounded-lg flex items-center justify-center gap-2">
+                <i class="fa-solid fa-calendar-alt"></i>
+                <span>Custom Range</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="skills-overview-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Skills Overview</h3>
+        <p class="text-muted-foreground text-xs">Current performance ratings</p>
+    </div>
+    
+    <div class="grid grid-cols-2 gap-3">
+        <div id="skill-card-1" class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-hands text-primary text-lg"></i>
+                </div>
+                <i class="fa-solid fa-arrow-up text-secondary text-lg"></i>
+            </div>
+            <h4 class="text-card-foreground font-bold text-sm mb-2">Shot Stopping</h4>
+            <div class="flex items-center gap-1 mb-2">
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+            </div>
+            <button class="text-primary text-xs font-semibold flex items-center gap-1">
+                <span>See Details</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+        
+        <div id="skill-card-2" class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-futbol text-secondary text-lg"></i>
+                </div>
+                <i class="fa-solid fa-arrow-up text-secondary text-lg"></i>
+            </div>
+            <h4 class="text-card-foreground font-bold text-sm mb-2">Distribution</h4>
+            <div class="flex items-center gap-1 mb-2">
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+            </div>
+            <button class="text-primary text-xs font-semibold flex items-center gap-1">
+                <span>See Details</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+        
+        <div id="skill-card-3" class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-person-running text-accent-foreground text-lg"></i>
+                </div>
+                <i class="fa-solid fa-minus text-muted-foreground text-lg"></i>
+            </div>
+            <h4 class="text-card-foreground font-bold text-sm mb-2">Positioning</h4>
+            <div class="flex items-center gap-1 mb-2">
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+            </div>
+            <button class="text-primary text-xs font-semibold flex items-center gap-1">
+                <span>See Details</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+        
+        <div id="skill-card-4" class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-brain text-primary text-lg"></i>
+                </div>
+                <i class="fa-solid fa-arrow-up text-secondary text-lg"></i>
+            </div>
+            <h4 class="text-card-foreground font-bold text-sm mb-2">Decision Making</h4>
+            <div class="flex items-center gap-1 mb-2">
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+            </div>
+            <button class="text-primary text-xs font-semibold flex items-center gap-1">
+                <span>See Details</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+        
+        <div id="skill-card-5" class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-dumbbell text-secondary text-lg"></i>
+                </div>
+                <i class="fa-solid fa-arrow-down text-destructive text-lg"></i>
+            </div>
+            <h4 class="text-card-foreground font-bold text-sm mb-2">Agility</h4>
+            <div class="flex items-center gap-1 mb-2">
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+                <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+            </div>
+            <button class="text-primary text-xs font-semibold flex items-center gap-1">
+                <span>See Details</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+        
+        <div id="skill-card-6" class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-comments text-accent-foreground text-lg"></i>
+                </div>
+                <i class="fa-solid fa-arrow-up text-secondary text-lg"></i>
+            </div>
+            <h4 class="text-card-foreground font-bold text-sm mb-2">Communication</h4>
+            <div class="flex items-center gap-1 mb-2">
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+                <i class="fa-solid fa-star text-accent text-sm"></i>
+            </div>
+            <button class="text-primary text-xs font-semibold flex items-center gap-1">
+                <span>See Details</span>
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="progress-chart-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Overall Progress</h3>
+        <p class="text-muted-foreground text-xs">Last 3 months trend</p>
+    </div>
+    
+    <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+        <div id="progress-chart" style="height: 300px;"></div>
+    </div>
+</section>
+
+<section id="recent-achievements-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Recent Achievements</h3>
+        <p class="text-muted-foreground text-xs">Milestones unlocked</p>
+    </div>
+    
+    <div class="grid grid-cols-3 gap-3">
+        <div class="bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl p-4 border border-accent/30 shadow-sm text-center">
+            <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-medal text-accent-foreground text-xl"></i>
+            </div>
+            <div class="text-card-foreground font-bold text-xs mb-1">Perfect Week</div>
+            <div class="text-muted-foreground text-xs">5 sessions</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl p-4 border border-primary/30 shadow-sm text-center">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-star text-primary-foreground text-xl"></i>
+            </div>
+            <div class="text-card-foreground font-bold text-xs mb-1">Star Player</div>
+            <div class="text-muted-foreground text-xs">Top rated</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-2xl p-4 border border-secondary/30 shadow-sm text-center">
+            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-fire text-secondary-foreground text-xl"></i>
+            </div>
+            <div class="text-card-foreground font-bold text-xs mb-1">On Fire</div>
+            <div class="text-muted-foreground text-xs">10 day streak</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-accent/20 to-accent/5 rounded-2xl p-4 border border-accent/30 shadow-sm text-center">
+            <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-trophy text-accent-foreground text-xl"></i>
+            </div>
+            <div class="text-card-foreground font-bold text-xs mb-1">Champion</div>
+            <div class="text-muted-foreground text-xs">25 sessions</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl p-4 border border-primary/30 shadow-sm text-center">
+            <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-rocket text-primary-foreground text-xl"></i>
+            </div>
+            <div class="text-card-foreground font-bold text-xs mb-1">Fast Learner</div>
+            <div class="text-muted-foreground text-xs">Quick progress</div>
+        </div>
+        
+        <div class="bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-2xl p-4 border border-secondary/30 shadow-sm text-center">
+            <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center mx-auto mb-2">
+                <i class="fa-solid fa-heart text-secondary-foreground text-xl"></i>
+            </div>
+            <div class="text-card-foreground font-bold text-xs mb-1">Dedicated</div>
+            <div class="text-muted-foreground text-xs">Never missed</div>
+        </div>
+    </div>
+</section>
+
+<section id="latest-session-notes-section" class="px-5 pb-6 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Latest Session Notes</h3>
+        <p class="text-muted-foreground text-xs">Recent coach feedback</p>
+    </div>
+    
+    <div class="space-y-3">
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-10 h-10 rounded-full object-cover border-2 border-primary flex-shrink-0">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">Coach Marcus Thompson</h4>
+                    <div class="flex items-center gap-2 text-xs">
+                        <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                        <span class="text-muted-foreground">Feb 5, 2024</span>
+                    </div>
+                </div>
+            </div>
+            <p class="text-card-foreground text-xs leading-relaxed mb-3">Excellent progress on shot stopping technique. Sarah showed great improvement in diving form and reaction time. Focus on footwork positioning for next session.</p>
+            <div class="flex items-center gap-2">
+                <span class="bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full">Shot Stopping</span>
+                <span class="bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">Diving</span>
+            </div>
+        </div>
+        
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Coach" class="w-10 h-10 rounded-full object-cover border-2 border-secondary flex-shrink-0">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">Coach David Chen</h4>
+                    <div class="flex items-center gap-2 text-xs">
+                        <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                        <span class="text-muted-foreground">Feb 1, 2024</span>
+                    </div>
+                </div>
+            </div>
+            <p class="text-card-foreground text-xs leading-relaxed mb-3">Great session today! Distribution skills are really coming along. Accurate throws and kicks under pressure. Keep working on communication with defenders.</p>
+            <div class="flex items-center gap-2">
+                <span class="bg-accent/20 text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">Distribution</span>
+                <span class="bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full">Communication</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer id="footer" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-30">
+    <div class="flex items-center justify-between">
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span class="text-xs">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <i class="fa-solid fa-chart-line text-lg"></i>
+            <span class="text-xs font-semibold">Progress</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-xs">Profile</span>
+        </button>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+    try {
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeDrawer = document.getElementById('close-drawer');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        const sidebarDrawer = document.getElementById('sidebar-drawer');
+        const backBtn = document.getElementById('back-btn');
+        
+        menuToggle.addEventListener('click', function() {
+            sidebarDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+        });
+        
+        closeDrawer.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        drawerOverlay.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        backBtn.addEventListener('click', function() {
+            window.history.back();
+        });
+        
+        Plotly.newPlot('progress-chart', [{
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Overall Rating',
+            x: ['Nov 9', 'Nov 23', 'Dec 7', 'Dec 21', 'Jan 4', 'Jan 18', 'Feb 1', 'Feb 9'],
+            y: [3.2, 3.4, 3.6, 3.8, 3.7, 4.0, 4.2, 4.3],
+            line: {
+                color: '#58a76d',
+                width: 3
+            },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(88, 167, 109, 0.1)'
+        }], {
+            title: {
+                text: '',
+                font: { size: 0 }
+            },
+            xaxis: {
+                title: '',
+                gridcolor: '#e8e3e3'
+            },
+            yaxis: {
+                title: 'Rating',
+                range: [0, 5],
+                gridcolor: '#e8e3e3'
+            },
+            margin: { t: 20, r: 20, b: 40, l: 50 },
+            plot_bgcolor: '#ffffff',
+            paper_bgcolor: '#ffffff',
+            showlegend: false
+        }, {
+            responsive: true,
+            displayModeBar: false,
+            displaylogo: false
+        });
+        
+    } catch(e) {
+        console.error('Error initializing:', e);
+        document.getElementById('progress-chart').innerHTML = '<div class="flex items-center justify-center h-full text-muted-foreground text-sm">Chart unavailable</div>';
+    }
+});
+</script>
+
+</body>
+</html>

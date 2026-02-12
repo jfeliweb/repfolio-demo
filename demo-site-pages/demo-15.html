@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Session</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f4f1f1;
+            --foreground: #705c5d;
+            --card: #ffffff;
+            --card-foreground: #1c1717;
+            --primary: #58a76d;
+            --primary-foreground: #ffffff;
+            --secondary: #54c43b;
+            --secondary-foreground: #ffffff;
+            --muted: #f4f1f1;
+            --muted-foreground: #705c5d;
+            --accent: #a1e619;
+            --accent-foreground: #1c1717;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --border: #d1c7c8;
+            --input: #e8e3e3;
+            --ring: #58a76d;
+            --font-sans: Inter, sans-serif;
+            --font-serif: Georgia, serif;
+            --font-mono: JetBrains Mono, monospace;
+            --radius: 0.5rem;
+            --shadow: -2px 4px 12px 4px rgba(51,51,51,0.05);
+        }
+        ::-webkit-scrollbar { display: none; }
+        
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 40;
+        }
+        
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 280px;
+            height: 100%;
+            background: var(--card);
+            transition: left 0.3s ease;
+            z-index: 50;
+            overflow-y: auto;
+        }
+        
+        .sidebar-drawer.active {
+            left: 0;
+        }
+        
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-day.available:active {
+            transform: scale(0.95);
+        }
+        
+        .time-slot {
+            transition: all 0.2s ease;
+        }
+        
+        .time-slot:active {
+            transform: scale(0.95);
+        }
+        
+        .time-slot.selected {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            border-color: var(--primary);
+        }
+        
+        .calendar-day.selected {
+            background: var(--primary);
+            color: var(--primary-foreground);
+            border-color: var(--primary);
+        }
+        
+        .location-option {
+            transition: all 0.2s ease;
+        }
+        
+        .location-option:active {
+            transform: scale(0.98);
+        }
+        
+        .location-option.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: var(--primary-foreground);
+        }
+        
+        .package-option {
+            transition: all 0.2s ease;
+        }
+        
+        .package-option:active {
+            transform: scale(0.98);
+        }
+        
+        .package-option.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: var(--primary-foreground);
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="sidebar-player-selector" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Select Player</h3>
+            <select class="w-full bg-input border border-border rounded-lg px-4 py-3 text-card-foreground text-sm font-semibold">
+                <option value="sarah-johnson">Sarah Johnson (Age 14)</option>
+                <option value="mike-johnson">Mike Johnson (Age 11)</option>
+            </select>
+        </div>
+        
+        <div id="sidebar-quick-stats" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">This Month</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Sessions</span>
+                        <span class="text-primary font-bold text-lg">8</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Progress Reports</span>
+                        <span class="text-secondary font-bold text-lg">3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-navigation" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Schedule</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-chart-line text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Progress</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Messages</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-credit-card text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Payments</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen pb-24">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <h1 class="text-card-foreground font-bold text-base">Book Session</h1>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section id="trainer-profile-section" class="px-5 pt-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div class="relative h-40 overflow-hidden">
+            <img class="w-full h-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/c1d431f9dc-8a158dec63cf99f63f3c.png" alt="professional male goalkeeper coach in training gear on soccer field" />
+        </div>
+        
+        <div class="p-5">
+            <div class="flex items-start gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="Coach" class="w-14 h-14 rounded-full object-cover border-2 border-primary flex-shrink-0">
+                <div class="flex-1">
+                    <h2 class="text-card-foreground font-bold text-lg mb-1">Coach Marcus Thompson</h2>
+                    <p class="text-muted-foreground text-xs mb-2">Professional Goalkeeper Coach</p>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1">
+                            <i class="fa-solid fa-star text-accent text-sm"></i>
+                            <span class="text-card-foreground font-bold text-sm">4.9</span>
+                        </div>
+                        <span class="text-muted-foreground text-xs">• 127 sessions</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-3">
+                <p class="text-card-foreground text-xs leading-relaxed">
+                    Specialized in goalkeeper training with 15+ years of experience. Former professional goalkeeper with expertise in diving techniques, positioning, and mental preparation.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="date-selection-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Select Date</h3>
+        <p class="text-muted-foreground text-xs">Choose an available date for your session</p>
+    </div>
+    
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <button class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-chevron-left text-card-foreground"></i>
+            </button>
+            <h4 class="text-card-foreground font-bold text-base">February 2024</h4>
+            <button class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-chevron-right text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-7 gap-2 mb-3">
+            <div class="text-center text-muted-foreground text-xs font-semibold py-2">Su</div>
+            <div class="text-center text-muted-foreground text-xs font-semibold py-2">Mo</div>
+            <div class="text-center text-muted-foreground text-xs font-semibold py-2">Tu</div>
+            <div class="text-center text-muted-foreground text-xs font-semibold py-2">We</div>
+            <div class="text-center text-muted-foreground text-xs font-semibold py-2">Th</div>
+            <div class="text-center text-muted-foreground text-xs font-semibold py-2">Fr</div>
+            <div class="text-center text-muted-foreground text-xs font-semibold py-2">Sa</div>
+        </div>
+        
+        <div id="calendar-grid" class="grid grid-cols-7 gap-2">
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">28</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">29</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">30</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">31</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">1</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">2</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">3</div>
+            
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">4</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">5</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">6</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">7</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">8</div>
+            <div class="calendar-day bg-muted rounded-lg text-center text-card-foreground text-xs font-semibold py-2 border-2 border-border">9</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer selected" data-date="10">10</div>
+            
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="11">11</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="12">12</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="13">13</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">14</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="15">15</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="16">16</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="17">17</div>
+            
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="18">18</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="19">19</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="20">20</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">21</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="22">22</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="23">23</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="24">24</div>
+            
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="25">25</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="26">26</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="27">27</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">28</div>
+            <div class="calendar-day available bg-primary/10 rounded-lg text-center text-primary text-xs font-semibold py-2 border-2 border-primary/30 cursor-pointer" data-date="29">29</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">1</div>
+            <div class="calendar-day opacity-40 text-center text-muted-foreground text-xs py-2">2</div>
+        </div>
+        
+        <div class="mt-4 flex items-center gap-4 text-xs">
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 bg-primary/10 rounded border-2 border-primary/30"></div>
+                <span class="text-muted-foreground">Available</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-4 bg-primary rounded"></div>
+                <span class="text-muted-foreground">Selected</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="time-slot-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Select Time</h3>
+        <p class="text-muted-foreground text-xs">Available times for Feb 10, 2024</p>
+    </div>
+    
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="mb-3">
+            <h4 class="text-card-foreground font-semibold text-sm mb-3">Morning</h4>
+            <div class="grid grid-cols-3 gap-2">
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="9:00 AM">9:00 AM</button>
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="10:00 AM">10:00 AM</button>
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="11:00 AM">11:00 AM</button>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <h4 class="text-card-foreground font-semibold text-sm mb-3">Afternoon</h4>
+            <div class="grid grid-cols-3 gap-2">
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="1:00 PM">1:00 PM</button>
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="2:00 PM">2:00 PM</button>
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="3:00 PM">3:00 PM</button>
+                <button class="time-slot selected border-2 rounded-lg py-3 text-xs font-semibold" data-time="4:00 PM">4:00 PM</button>
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="5:00 PM">5:00 PM</button>
+            </div>
+        </div>
+        
+        <div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-3">Evening</h4>
+            <div class="grid grid-cols-3 gap-2">
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="6:00 PM">6:00 PM</button>
+                <button class="time-slot bg-muted border-2 border-border rounded-lg py-3 text-card-foreground text-xs font-semibold" data-time="7:00 PM">7:00 PM</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="location-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Select Location</h3>
+        <p class="text-muted-foreground text-xs">Choose training venue</p>
+    </div>
+    
+    <div class="space-y-3">
+        <button class="location-option w-full bg-card rounded-2xl p-4 border-2 border-primary shadow-sm text-left selected">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-location-dot text-primary-foreground text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-primary-foreground font-bold text-sm mb-1">Riverside Sports Complex</h4>
+                    <p class="text-primary-foreground text-xs mb-2">Field 3, 1250 River Rd</p>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-primary-foreground/20 text-primary-foreground text-xs font-semibold px-2 py-1 rounded">Indoor/Outdoor</span>
+                        <span class="text-primary-foreground text-xs">• 2.3 mi away</span>
+                    </div>
+                </div>
+                <i class="fa-solid fa-circle-check text-primary-foreground text-xl"></i>
+            </div>
+        </button>
+        
+        <button class="location-option w-full bg-card rounded-2xl p-4 border-2 border-border shadow-sm text-left">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-location-dot text-secondary text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">Central Park Training Ground</h4>
+                    <p class="text-muted-foreground text-xs mb-2">North Field, 890 Park Ave</p>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-secondary/20 text-secondary text-xs font-semibold px-2 py-1 rounded">Outdoor</span>
+                        <span class="text-muted-foreground text-xs">• 3.8 mi away</span>
+                    </div>
+                </div>
+            </div>
+        </button>
+        
+        <button class="location-option w-full bg-card rounded-2xl p-4 border-2 border-border shadow-sm text-left">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-location-dot text-accent-foreground text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">Elite Sports Academy</h4>
+                    <p class="text-muted-foreground text-xs mb-2">Building A, 456 Sports Way</p>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-accent/30 text-accent-foreground text-xs font-semibold px-2 py-1 rounded">Indoor</span>
+                        <span class="text-muted-foreground text-xs">• 5.1 mi away</span>
+                    </div>
+                </div>
+            </div>
+        </button>
+    </div>
+</section>
+
+<section id="package-selection-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Payment Method</h3>
+        <p class="text-muted-foreground text-xs">Choose how to pay for this session</p>
+    </div>
+    
+    <div class="space-y-3">
+        <button class="package-option w-full bg-card rounded-2xl p-4 border-2 border-primary shadow-sm text-left selected">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-box text-primary-foreground text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between mb-1">
+                        <h4 class="text-primary-foreground font-bold text-sm">Use Existing Credit</h4>
+                        <i class="fa-solid fa-circle-check text-primary-foreground text-xl"></i>
+                    </div>
+                    <p class="text-primary-foreground text-xs mb-2">From your 10-Session Package</p>
+                    <div class="bg-primary-foreground/20 rounded-lg p-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-primary-foreground text-xs font-semibold">Remaining Sessions</span>
+                            <span class="text-primary-foreground text-sm font-bold">2 / 10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </button>
+        
+        <button class="package-option w-full bg-card rounded-2xl p-4 border-2 border-border shadow-sm text-left">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-credit-card text-secondary text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">Pay Per Session</h4>
+                    <p class="text-muted-foreground text-xs mb-2">Single session payment</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-card-foreground text-lg font-bold">$75</span>
+                        <span class="text-muted-foreground text-xs">per session</span>
+                    </div>
+                </div>
+            </div>
+        </button>
+        
+        <button class="package-option w-full bg-card rounded-2xl p-4 border-2 border-border shadow-sm text-left">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-boxes-stacked text-accent-foreground text-lg"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="text-card-foreground font-bold text-sm">Purchase New Package</h4>
+                        <span class="bg-secondary text-secondary-foreground text-xs font-bold px-2 py-0.5 rounded">Save 20%</span>
+                    </div>
+                    <p class="text-muted-foreground text-xs mb-2">10-Session Package</p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-card-foreground text-lg font-bold">$600</span>
+                        <span class="text-muted-foreground text-xs line-through">$750</span>
+                        <span class="text-secondary text-xs font-semibold">($60/session)</span>
+                    </div>
+                </div>
+            </div>
+        </button>
+    </div>
+</section>
+
+<section id="session-details-section" class="px-5 pb-4 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Session Details</h3>
+    </div>
+    
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="space-y-3 mb-4">
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-user text-primary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-muted-foreground text-xs mb-1">Athlete</div>
+                    <div class="text-card-foreground font-semibold text-sm">Sarah Johnson (Age 14)</div>
+                </div>
+            </div>
+            
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-dumbbell text-secondary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-muted-foreground text-xs mb-1">Session Type</div>
+                    <div class="text-card-foreground font-semibold text-sm">1-on-1 Goalkeeper Training</div>
+                </div>
+            </div>
+            
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-clock text-accent-foreground"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-muted-foreground text-xs mb-1">Duration</div>
+                    <div class="text-card-foreground font-semibold text-sm">60 minutes</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-muted rounded-lg p-3">
+            <label class="text-card-foreground font-semibold text-xs mb-2 block">Add Notes (Optional)</label>
+            <textarea class="w-full bg-input border border-border rounded-lg px-3 py-2 text-card-foreground text-xs resize-none" rows="3" placeholder="Any specific areas you'd like to focus on?"></textarea>
+        </div>
+    </div>
+</section>
+
+<section id="booking-summary-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Booking Summary</h3>
+        
+        <div class="space-y-3 mb-4 pb-4 border-b border-border">
+            <div class="flex items-center justify-between">
+                <span class="text-muted-foreground text-sm">Date</span>
+                <span class="text-card-foreground font-semibold text-sm">Feb 10, 2024</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-muted-foreground text-sm">Time</span>
+                <span class="text-card-foreground font-semibold text-sm">4:00 PM - 5:00 PM</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-muted-foreground text-sm">Location</span>
+                <span class="text-card-foreground font-semibold text-sm text-right">Riverside Sports Complex</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-muted-foreground text-sm">Coach</span>
+                <span class="text-card-foreground font-semibold text-sm">Marcus Thompson</span>
+            </div>
+        </div>
+        
+        <div class="space-y-2 mb-4 pb-4 border-b border-border">
+            <div class="flex items-center justify-between">
+                <span class="text-muted-foreground text-sm">Session Fee</span>
+                <span class="text-card-foreground font-semibold text-sm">$0.00</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-muted-foreground text-sm">Payment Method</span>
+                <span class="text-primary font-semibold text-sm">Existing Credit</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-muted-foreground text-sm">Processing Fee</span>
+                <span class="text-card-foreground font-semibold text-sm">$0.00</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-card-foreground font-bold text-lg">Total</span>
+            <span class="text-primary font-bold text-2xl">$0.00</span>
+        </div>
+        
+        <div class="bg-accent/20 rounded-lg p-3 mb-4">
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-info text-accent-foreground text-sm mt-0.5"></i>
+                <p class="text-accent-foreground text-xs leading-relaxed">
+                    Using 1 session credit from your package. You will have 1 session remaining after this booking.
+                </p>
+            </div>
+        </div>
+        
+        <button id="confirm-booking-btn" class="w-full bg-primary text-primary-foreground font-bold py-4 px-4 rounded-xl text-sm flex items-center justify-center gap-2 shadow-sm">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>Confirm Booking</span>
+        </button>
+    </div>
+</section>
+
+<section id="cancellation-policy-section" class="px-5 pb-4 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 bg-destructive/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-shield-halved text-destructive text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-sm mb-1">Cancellation Policy</h3>
+                <p class="text-muted-foreground text-xs">Please review before booking</p>
+            </div>
+        </div>
+        
+        <ul class="space-y-2">
+            <li class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-check text-secondary text-xs mt-1"></i>
+                <span class="text-card-foreground text-xs">Free cancellation up to 24 hours before session</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-check text-secondary text-xs mt-1"></i>
+                <span class="text-card-foreground text-xs">50% credit refund for cancellations within 24 hours</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-check text-secondary text-xs mt-1"></i>
+                <span class="text-card-foreground text-xs">No refund for no-shows or same-day cancellations</span>
+            </li>
+            <li class="flex items-start gap-2">
+                <i class="fa-solid fa-circle-check text-secondary text-xs mt-1"></i>
+                <span class="text-card-foreground text-xs">Rescheduling available up to 12 hours before session</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section id="faq-section" class="px-5 pb-6 bg-background">
+    <div class="mb-3">
+        <h3 class="text-card-foreground font-bold text-base">Frequently Asked Questions</h3>
+    </div>
+    
+    <div class="space-y-3">
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <button class="w-full flex items-start justify-between gap-3 text-left">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">What should I bring to the session?</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Bring your goalkeeper gloves, water bottle, and appropriate athletic wear. The coach will provide all training equipment.</p>
+                </div>
+            </button>
+        </div>
+        
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <button class="w-full flex items-start justify-between gap-3 text-left">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">What if weather is bad?</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">For outdoor sessions, the coach will contact you 2 hours before to reschedule if weather conditions are unsafe.</p>
+                </div>
+            </button>
+        </div>
+        
+        <div class="bg-card rounded-2xl p-4 border border-border shadow-sm">
+            <button class="w-full flex items-start justify-between gap-3 text-left">
+                <div class="flex-1">
+                    <h4 class="text-card-foreground font-bold text-sm mb-1">Can parents watch the session?</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Yes! Parents are welcome to observe from designated viewing areas at all training facilities.</p>
+                </div>
+            </button>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer id="footer" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-30">
+    <div class="flex items-center justify-between">
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-house text-lg"></i>
+            <span class="text-xs">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-primary">
+            <i class="fa-solid fa-calendar-days text-lg"></i>
+            <span class="text-xs font-semibold">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-chart-line text-lg"></i>
+            <span class="text-xs">Progress</span>
+        </button>
+        <button class="flex flex-col items-center gap-1 text-muted-foreground">
+            <i class="fa-solid fa-user text-lg"></i>
+            <span class="text-xs">Profile</span>
+        </button>
+    </div>
+</footer>
+
+<script>
+window.addEventListener('load', function() {
+    try {
+        const menuToggle = document.getElementById('menu-toggle');
+        const closeDrawer = document.getElementById('close-drawer');
+        const drawerOverlay = document.getElementById('drawer-overlay');
+        const sidebarDrawer = document.getElementById('sidebar-drawer');
+        const backBtn = document.getElementById('back-btn');
+        
+        menuToggle.addEventListener('click', function() {
+            sidebarDrawer.classList.add('active');
+            drawerOverlay.classList.add('active');
+        });
+        
+        closeDrawer.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        drawerOverlay.addEventListener('click', function() {
+            sidebarDrawer.classList.remove('active');
+            drawerOverlay.classList.remove('active');
+        });
+        
+        backBtn.addEventListener('click', function() {
+            window.history.back();
+        });
+        
+        const calendarDays = document.querySelectorAll('.calendar-day.available');
+        calendarDays.forEach(day => {
+            day.addEventListener('click', function() {
+                calendarDays.forEach(d => d.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        const timeSlots = document.querySelectorAll('.time-slot');
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                timeSlots.forEach(s => {
+                    s.classList.remove('selected');
+                    s.classList.add('bg-muted', 'border-border');
+                    s.classList.remove('text-primary-foreground');
+                });
+                this.classList.add('selected');
+                this.classList.remove('bg-muted', 'border-border');
+            });
+        });
+        
+        const locationOptions = document.querySelectorAll('.location-option');
+        locationOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                locationOptions.forEach(opt => {
+                    opt.classList.remove('selected', 'border-primary');
+                    opt.classList.add('border-border');
+                    const icon = opt.querySelector('.fa-circle-check');
+                    if (icon) icon.remove();
+                    const iconDiv = opt.querySelector('.fa-location-dot');
+                    if (iconDiv) {
+                        iconDiv.classList.remove('text-primary-foreground');
+                        iconDiv.classList.add('text-secondary');
+                    }
+                    const title = opt.querySelector('h4');
+                    if (title) {
+                        title.classList.remove('text-primary-foreground');
+                        title.classList.add('text-card-foreground');
+                    }
+                    const desc = opt.querySelectorAll('p, span');
+                    desc.forEach(d => {
+                        d.classList.remove('text-primary-foreground');
+                        d.classList.add('text-muted-foreground');
+                    });
+                    const badge = opt.querySelector('.bg-primary-foreground\\/20');
+                    if (badge) {
+                        badge.classList.remove('bg-primary-foreground/20', 'text-primary-foreground');
+                        badge.classList.add('bg-secondary/20', 'text-secondary');
+                    }
+                });
+                
+                this.classList.add('selected', 'border-primary');
+                this.classList.remove('border-border');
+                
+                const iconDiv = this.querySelector('.fa-location-dot');
+                if (iconDiv) {
+                    iconDiv.classList.add('text-primary-foreground');
+                    iconDiv.classList.remove('text-secondary', 'text-accent-foreground');
+                }
+                
+                const title = this.querySelector('h4');
+                if (title) {
+                    title.classList.add('text-primary-foreground');
+                    title.classList.remove('text-card-foreground');
+                }
+                
+                const desc = this.querySelectorAll('p, span');
+                desc.forEach(d => {
+                    if (!d.classList.contains('bg-primary-foreground/20')) {
+                        d.classList.add('text-primary-foreground');
+                        d.classList.remove('text-muted-foreground');
+                    }
+                });
+                
+                const badge = this.querySelector('[class*="bg-"]');
+                if (badge && badge.classList.contains('font-semibold')) {
+                    badge.classList.add('bg-primary-foreground/20', 'text-primary-foreground');
+                    badge.classList.remove('bg-secondary/20', 'text-secondary', 'bg-accent/30', 'text-accent-foreground');
+                }
+                
+                const flexDiv = this.querySelector('.flex.items-start.gap-3');
+                if (flexDiv && !flexDiv.querySelector('.fa-circle-check')) {
+                    const checkIcon = document.createElement('i');
+                    checkIcon.className = 'fa-solid fa-circle-check text-primary-foreground text-xl';
+                    flexDiv.appendChild(checkIcon);
+                }
+            });
+        });
+        
+        const packageOptions = document.querySelectorAll('.package-option');
+        packageOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                packageOptions.forEach(opt => {
+                    opt.classList.remove('selected', 'border-primary');
+                    opt.classList.add('border-border');
+                    const icon = opt.querySelector('.fa-circle-check');
+                    if (icon) icon.remove();
+                    const iconDiv = opt.querySelector('.fa-box, .fa-credit-card, .fa-boxes-stacked');
+                    if (iconDiv) {
+                        iconDiv.classList.remove('text-primary-foreground');
+                        iconDiv.classList.add('text-secondary');
+                    }
+                    const title = opt.querySelector('h4');
+                    if (title) {
+                        title.classList.remove('text-primary-foreground');
+                        title.classList.add('text-card-foreground');
+                    }
+                    const desc = opt.querySelectorAll('p, span');
+                    desc.forEach(d => {
+                        if (!d.classList.contains('bg-secondary')) {
+                            d.classList.remove('text-primary-foreground');
+                            d.classList.add('text-muted-foreground');
+                        }
+                    });
+                    const bgDiv = opt.querySelector('.bg-primary-foreground\\/20');
+                    if (bgDiv) {
+                        bgDiv.classList.remove('bg-primary-foreground/20');
+                        bgDiv.classList.add('bg-secondary/20');
+                    }
+                });
+                
+                this.classList.add('selected', 'border-primary');
+                this.classList.remove('border-border');
+                
+                const iconDiv = this.querySelector('.fa-box, .fa-credit-card, .fa-boxes-stacked');
+                if (iconDiv) {
+                    iconDiv.classList.add('text-primary-foreground');
+                    iconDiv.classList.remove('text-secondary', 'text-accent-foreground');
+                }
+                
+                const title = this.querySelector('h4');
+                if (title) {
+                    title.classList.add('text-primary-foreground');
+                    title.classList.remove('text-card-foreground');
+                }
+                
+                const desc = this.querySelectorAll('p, span');
+                desc.forEach(d => {
+                    if (!d.classList.contains('bg-secondary')) {
+                        d.classList.add('text-primary-foreground');
+                        d.classList.remove('text-muted-foreground', 'text-card-foreground');
+                    }
+                });
+                
+                const bgDiv = this.querySelector('.bg-secondary\\/20, .bg-accent\\/20');
+                if (bgDiv) {
+                    bgDiv.classList.add('bg-primary-foreground/20');
+                    bgDiv.classList.remove('bg-secondary/20', 'bg-accent/20');
+                }
+                
+                const flexDiv = this.querySelector('.flex.items-center.justify-between');
+                if (flexDiv && !flexDiv.querySelector('.fa-circle-check')) {
+                    const checkIcon = document.createElement('i');
+                    checkIcon.className = 'fa-solid fa-circle-check text-primary-foreground text-xl';
+                    flexDiv.appendChild(checkIcon);
+                }
+            });
+        });
+        
+        const confirmBtn = document.getElementById('confirm-booking-btn');
+        confirmBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Processing...</span>';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                alert('Booking confirmed! You will receive a confirmation email shortly.');
+            }, 1500);
+        });
+        
+    } catch(e) {
+        console.error('Error initializing:', e);
+    }
+});
+</script>
+
+</body>
+</html>

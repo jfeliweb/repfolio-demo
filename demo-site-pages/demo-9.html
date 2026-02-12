@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Session Update</title>
+    
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f4f1f1;
+            --foreground: #705c5d;
+            --card: #ffffff;
+            --card-foreground: #1c1717;
+            --primary: #58a76d;
+            --primary-foreground: #ffffff;
+            --secondary: #54c43b;
+            --secondary-foreground: #ffffff;
+            --muted: #f4f1f1;
+            --muted-foreground: #705c5d;
+            --accent: #a1e619;
+            --accent-foreground: #1c1717;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --border: #d1c7c8;
+            --input: #e8e3e3;
+            --ring: #58a76d;
+            --font-sans: Inter, sans-serif;
+            --font-serif: Georgia, serif;
+            --font-mono: JetBrains Mono, monospace;
+            --radius: 0.5rem;
+            --shadow: -2px 4px 12px 4px rgba(51,51,51,0.05);
+        }
+        ::-webkit-scrollbar { display: none; }
+        
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .drawer-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .sidebar-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background-color: var(--card);
+            z-index: 50;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .sidebar-drawer.active {
+            transform: translateX(0);
+        }
+        
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            overflow: hidden;
+        }
+        
+        .star-rating {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+        
+        .star-rating label {
+            cursor: pointer;
+            font-size: 28px;
+            color: var(--muted);
+            transition: color 0.2s ease;
+        }
+        
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #fbbf24;
+        }
+        
+        .star-rating {
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+        }
+        
+        .star-rating label:hover ~ label {
+            color: #fbbf24;
+        }
+    </style>
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="sidebar-quick-stats" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Today's Stats</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Sessions Today</span>
+                        <span class="text-primary font-bold text-lg">3</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Upcoming</span>
+                        <span class="text-secondary font-bold text-lg">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-navigation" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Calendar</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-users text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Clients</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Messages</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between mb-3">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+            </div>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div>
+            <h1 class="text-card-foreground font-bold text-xl">Post-Session Update</h1>
+            <p class="text-muted-foreground text-xs">Document session progress and achievements</p>
+        </div>
+    </div>
+</header>
+
+<section id="client-header-section" class="px-5 py-5 bg-background">
+    <div class="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
+        <div class="p-5">
+            <div class="flex items-center gap-3 mb-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah Martinez" class="w-14 h-14 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                <div class="flex-1 min-w-0">
+                    <h2 class="text-card-foreground font-bold text-lg mb-1">Post-Session Update for Sarah Martinez</h2>
+                    <div class="text-muted-foreground text-sm">1-on-1 Goalkeeper Training</div>
+                </div>
+            </div>
+            
+            <div class="bg-muted rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-1">
+                    <i class="fa-solid fa-calendar text-primary text-sm"></i>
+                    <span class="text-card-foreground font-semibold text-sm">Session Date & Time</span>
+                </div>
+                <div class="text-card-foreground text-base font-medium">Friday, February 9, 2024</div>
+                <div class="text-muted-foreground text-sm">2:00 PM - 3:00 PM (60 minutes)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="session-summary-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-file-lines text-primary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Session Summary</h3>
+        </div>
+        
+        <div class="mb-2">
+            <label class="text-card-foreground text-sm font-medium mb-2 block">Overall session notes and observations</label>
+            <textarea id="session-summary" rows="6" class="w-full bg-input border border-border rounded-lg p-3 text-card-foreground text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Describe the session activities, client's engagement level, what was covered, and general observations..."></textarea>
+        </div>
+        
+        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+            <i class="fa-solid fa-info-circle"></i>
+            <span>Be specific and detailed to help track progress over time</span>
+        </div>
+    </div>
+</section>
+
+<section id="skill-ratings-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-star text-primary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Skill Assessment</h3>
+        </div>
+        
+        <p class="text-muted-foreground text-sm mb-5">Rate each skill based on today's performance</p>
+        
+        <div class="space-y-5">
+            <div id="skill-shot-stopping" class="skill-rating-item">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Shot Stopping</div>
+                        <div class="text-muted-foreground text-xs">Reaction time and technique</div>
+                    </div>
+                </div>
+                <div class="star-rating">
+                    <input type="radio" id="shot-stopping-3" name="shot-stopping" value="3">
+                    <label for="shot-stopping-3"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="shot-stopping-2" name="shot-stopping" value="2">
+                    <label for="shot-stopping-2"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="shot-stopping-1" name="shot-stopping" value="1">
+                    <label for="shot-stopping-1"><i class="fa-solid fa-star"></i></label>
+                </div>
+                <div class="h-px bg-border mt-4"></div>
+            </div>
+            
+            <div id="skill-positioning" class="skill-rating-item">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Positioning</div>
+                        <div class="text-muted-foreground text-xs">Goal coverage and angles</div>
+                    </div>
+                </div>
+                <div class="star-rating">
+                    <input type="radio" id="positioning-3" name="positioning" value="3">
+                    <label for="positioning-3"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="positioning-2" name="positioning" value="2">
+                    <label for="positioning-2"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="positioning-1" name="positioning" value="1">
+                    <label for="positioning-1"><i class="fa-solid fa-star"></i></label>
+                </div>
+                <div class="h-px bg-border mt-4"></div>
+            </div>
+            
+            <div id="skill-distribution" class="skill-rating-item">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Distribution</div>
+                        <div class="text-muted-foreground text-xs">Passing accuracy and decision-making</div>
+                    </div>
+                </div>
+                <div class="star-rating">
+                    <input type="radio" id="distribution-3" name="distribution" value="3">
+                    <label for="distribution-3"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="distribution-2" name="distribution" value="2">
+                    <label for="distribution-2"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="distribution-1" name="distribution" value="1">
+                    <label for="distribution-1"><i class="fa-solid fa-star"></i></label>
+                </div>
+                <div class="h-px bg-border mt-4"></div>
+            </div>
+            
+            <div id="skill-footwork" class="skill-rating-item">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Footwork</div>
+                        <div class="text-muted-foreground text-xs">Movement and agility</div>
+                    </div>
+                </div>
+                <div class="star-rating">
+                    <input type="radio" id="footwork-3" name="footwork" value="3">
+                    <label for="footwork-3"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="footwork-2" name="footwork" value="2">
+                    <label for="footwork-2"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="footwork-1" name="footwork" value="1">
+                    <label for="footwork-1"><i class="fa-solid fa-star"></i></label>
+                </div>
+                <div class="h-px bg-border mt-4"></div>
+            </div>
+            
+            <div id="skill-decision-making" class="skill-rating-item">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Decision Making</div>
+                        <div class="text-muted-foreground text-xs">Game awareness and choices</div>
+                    </div>
+                </div>
+                <div class="star-rating">
+                    <input type="radio" id="decision-making-3" name="decision-making" value="3">
+                    <label for="decision-making-3"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="decision-making-2" name="decision-making" value="2">
+                    <label for="decision-making-2"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="decision-making-1" name="decision-making" value="1">
+                    <label for="decision-making-1"><i class="fa-solid fa-star"></i></label>
+                </div>
+                <div class="h-px bg-border mt-4"></div>
+            </div>
+            
+            <div id="skill-communication" class="skill-rating-item">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm mb-1">Communication</div>
+                        <div class="text-muted-foreground text-xs">Verbal cues and leadership</div>
+                    </div>
+                </div>
+                <div class="star-rating">
+                    <input type="radio" id="communication-3" name="communication" value="3">
+                    <label for="communication-3"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="communication-2" name="communication" value="2">
+                    <label for="communication-2"><i class="fa-solid fa-star"></i></label>
+                    <input type="radio" id="communication-1" name="communication" value="1">
+                    <label for="communication-1"><i class="fa-solid fa-star"></i></label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5 bg-muted rounded-lg p-3 flex items-start gap-2">
+            <i class="fa-solid fa-lightbulb text-accent-foreground mt-0.5"></i>
+            <div class="text-muted-foreground text-xs">
+                <span class="font-semibold text-card-foreground">Rating Guide:</span> 1 star = Needs work, 2 stars = Good progress, 3 stars = Excellent performance
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="key-achievements-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-trophy text-secondary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Key Achievements</h3>
+        </div>
+        
+        <div class="mb-2">
+            <label class="text-card-foreground text-sm font-medium mb-2 block">What went well today?</label>
+            <textarea id="key-achievements" rows="5" class="w-full bg-input border border-border rounded-lg p-3 text-card-foreground text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring" placeholder="List specific accomplishments, breakthroughs, or notable improvements during this session..."></textarea>
+        </div>
+        
+        <div class="bg-secondary/5 rounded-lg p-3 border border-secondary/20">
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-check-circle text-secondary mt-0.5"></i>
+                <div class="text-xs text-muted-foreground">
+                    <span class="font-semibold text-card-foreground">Tip:</span> Highlight specific moments, successful techniques, or mental/physical improvements
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="areas-to-improve-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-chart-line text-accent-foreground"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Areas to Improve</h3>
+        </div>
+        
+        <div class="mb-2">
+            <label class="text-card-foreground text-sm font-medium mb-2 block">What needs more work?</label>
+            <textarea id="areas-improve" rows="5" class="w-full bg-input border border-border rounded-lg p-3 text-card-foreground text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Identify specific skills, techniques, or aspects that need continued development..."></textarea>
+        </div>
+        
+        <div class="bg-accent/10 rounded-lg p-3 border border-accent/30">
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-exclamation-circle text-accent-foreground mt-0.5"></i>
+                <div class="text-xs text-muted-foreground">
+                    <span class="font-semibold text-card-foreground">Note:</span> Be constructive and specific about what to focus on
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="next-session-focus-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bullseye text-primary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Next Session Focus</h3>
+        </div>
+        
+        <div class="mb-2">
+            <label class="text-card-foreground text-sm font-medium mb-2 block">What should we work on next time?</label>
+            <textarea id="next-focus" rows="5" class="w-full bg-input border border-border rounded-lg p-3 text-card-foreground text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Outline specific drills, techniques, or goals for the upcoming session..."></textarea>
+        </div>
+        
+        <div class="bg-primary/5 rounded-lg p-3 border border-primary/20">
+            <div class="flex items-start gap-2">
+                <i class="fa-solid fa-target text-primary mt-0.5"></i>
+                <div class="text-xs text-muted-foreground">
+                    <span class="font-semibold text-card-foreground">Planning Ahead:</span> Set clear, actionable goals for continued progress
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="additional-notes-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-note-sticky text-card-foreground"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Additional Notes</h3>
+        </div>
+        
+        <div class="mb-3">
+            <label class="text-card-foreground text-sm font-medium mb-2 block">Any other observations or comments?</label>
+            <textarea id="additional-notes" rows="4" class="w-full bg-input border border-border rounded-lg p-3 text-card-foreground text-sm resize-none focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Equipment needs, schedule changes, parent feedback requests, etc..."></textarea>
+        </div>
+    </div>
+</section>
+
+<section id="session-media-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-camera text-primary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Session Media</h3>
+        </div>
+        
+        <p class="text-muted-foreground text-sm mb-4">Add photos or videos from today's session</p>
+        
+        <div class="border-2 border-dashed border-border rounded-lg p-6 text-center">
+            <div class="w-14 h-14 bg-muted rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-cloud-arrow-up text-primary text-2xl"></i>
+            </div>
+            <div class="text-card-foreground font-semibold text-sm mb-1">Upload Photos or Videos</div>
+            <div class="text-muted-foreground text-xs mb-4">Tap to select files from your device</div>
+            <button class="bg-primary/10 text-primary border border-primary/30 font-semibold py-2 px-4 rounded-lg text-sm">
+                Choose Files
+            </button>
+        </div>
+        
+        <div class="mt-3 flex items-center gap-2 text-muted-foreground text-xs">
+            <i class="fa-solid fa-info-circle"></i>
+            <span>Max 10 files, up to 50MB each</span>
+        </div>
+    </div>
+</section>
+
+<section id="parent-notification-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bell text-secondary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Parent Notification</h3>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                <input type="checkbox" id="notify-parent" class="mt-1 w-5 h-5 text-primary border-border rounded focus:ring-2 focus:ring-ring">
+                <div class="flex-1">
+                    <label for="notify-parent" class="text-card-foreground font-semibold text-sm block mb-1 cursor-pointer">Send update to parent immediately</label>
+                    <div class="text-muted-foreground text-xs">Maria Martinez will receive this update via email and in-app notification</div>
+                </div>
+            </div>
+            
+            <div class="flex items-start gap-3 p-3 bg-muted rounded-lg">
+                <input type="checkbox" id="request-feedback" class="mt-1 w-5 h-5 text-primary border-border rounded focus:ring-2 focus:ring-ring">
+                <div class="flex-1">
+                    <label for="request-feedback" class="text-card-foreground font-semibold text-sm block mb-1 cursor-pointer">Request parent feedback</label>
+                    <div class="text-muted-foreground text-xs">Ask parent about client's experience and any questions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="quick-stats-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-chart-simple text-primary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Session Statistics</h3>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-3">
+            <div class="bg-muted rounded-lg p-3 text-center">
+                <div class="text-card-foreground font-bold text-xl mb-1">60</div>
+                <div class="text-muted-foreground text-xs">Minutes</div>
+            </div>
+            <div class="bg-muted rounded-lg p-3 text-center">
+                <div class="text-card-foreground font-bold text-xl mb-1">13</div>
+                <div class="text-muted-foreground text-xs">Total Sessions</div>
+            </div>
+            <div class="bg-muted rounded-lg p-3 text-center">
+                <div class="text-card-foreground font-bold text-xl mb-1">4.8</div>
+                <div class="text-muted-foreground text-xs">Avg Rating</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="action-buttons-section" class="px-5 pb-6 bg-background">
+    <div class="space-y-3">
+        <button id="save-share-btn" class="w-full bg-primary text-primary-foreground font-bold py-4 px-6 rounded-xl text-base shadow-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane text-lg"></i>
+            <span>Save & Share with Parent</span>
+        </button>
+        
+        <button id="save-draft-btn" class="w-full bg-card border-2 border-border text-card-foreground font-semibold py-4 px-6 rounded-xl text-base flex items-center justify-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Save as Draft</span>
+        </button>
+        
+        <button id="discard-btn" class="w-full bg-card border-2 border-destructive/30 text-destructive font-semibold py-3 px-6 rounded-xl text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>Discard Update</span>
+        </button>
+    </div>
+</section>
+
+<section id="helpful-tips-section" class="px-5 pb-6 bg-background">
+    <div class="bg-accent/10 rounded-2xl p-5 border border-accent/30">
+        <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-lightbulb text-accent-foreground text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-base mb-1">Helpful Tips</h3>
+                <p class="text-muted-foreground text-xs">Make your updates more effective</p>
+            </div>
+        </div>
+        
+        <ul class="space-y-2">
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Be specific with examples of what the client did well</span>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Focus on progress rather than perfection</span>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Set clear, achievable goals for next session</span>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Include photos or videos when possible</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<footer id="footer" class="px-5 pb-8 bg-background">
+    <p class="text-center text-muted-foreground text-xs">© 2024 CoachLink. All rights reserved.</p>
+</footer>
+
+</main>
+
+<script>
+window.addEventListener('load', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const closeDrawer = document.getElementById('close-drawer');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const sidebarDrawer = document.getElementById('sidebar-drawer');
+    const backBtn = document.getElementById('back-btn');
+    const saveShareBtn = document.getElementById('save-share-btn');
+    const saveDraftBtn = document.getElementById('save-draft-btn');
+    const discardBtn = document.getElementById('discard-btn');
+    
+    menuToggle.addEventListener('click', function() {
+        sidebarDrawer.classList.add('active');
+        drawerOverlay.classList.add('active');
+    });
+    
+    closeDrawer.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    drawerOverlay.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    backBtn.addEventListener('click', function() {
+        window.history.back();
+    });
+    
+    saveShareBtn.addEventListener('click', function() {
+        const summary = document.getElementById('session-summary').value;
+        const achievements = document.getElementById('key-achievements').value;
+        const improvements = document.getElementById('areas-improve').value;
+        const nextFocus = document.getElementById('next-focus').value;
+        
+        if (!summary || !achievements || !improvements || !nextFocus) {
+            alert('Please fill in all required fields before saving.');
+            return;
+        }
+        
+        alert('Session update saved and shared with parent successfully!');
+    });
+    
+    saveDraftBtn.addEventListener('click', function() {
+        alert('Session update saved as draft.');
+    });
+    
+    discardBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to discard this update? All changes will be lost.')) {
+            window.history.back();
+        }
+    });
+    
+    const starRatings = document.querySelectorAll('.star-rating');
+    starRatings.forEach(rating => {
+        const labels = rating.querySelectorAll('label');
+        labels.forEach(label => {
+            label.addEventListener('click', function() {
+                const input = document.getElementById(this.getAttribute('for'));
+                input.checked = true;
+            });
+        });
+    });
+});
+</script>
+
+</body>
+</html>

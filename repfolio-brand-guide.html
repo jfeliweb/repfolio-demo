@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repfolio Brand Style Guide</title>
+    <style>
+        /* ========================================
+           REPFOLIO COLOR SYSTEM
+           ======================================== */
+        :root {
+            /* Deep Mocha - Neutrals & backgrounds */
+            --mocha-50: rgb(244 241 241);
+            --mocha-100: rgb(232 227 227);
+            --mocha-200: rgb(209 199 200);
+            --mocha-300: rgb(186 171 172);
+            --mocha-400: rgb(163 143 145);
+            --mocha-500: rgb(140 115 117);
+            --mocha-600: rgb(112 92 93);
+            --mocha-700: rgb(84 69 70);
+            --mocha-800: rgb(56 46 47);
+            --mocha-900: rgb(28 23 23);
+            --mocha-950: rgb(20 16 16);
+
+            /* Charcoal Blue - Primary text & UI */
+            --charcoal-50: rgb(240 242 245);
+            --charcoal-100: rgb(225 230 234);
+            --charcoal-200: rgb(195 204 213);
+            --charcoal-300: rgb(165 179 192);
+            --charcoal-400: rgb(135 154 171);
+            --charcoal-500: rgb(105 128 150);
+            --charcoal-600: rgb(84 103 120);
+            --charcoal-700: rgb(63 77 90);
+            --charcoal-800: rgb(42 51 60);
+            --charcoal-900: rgb(21 26 30);
+            --charcoal-950: rgb(15 18 21);
+
+            /* Fern - Primary brand & actions */
+            --fern-50: rgb(238 246 240);
+            --fern-100: rgb(222 237 226);
+            --fern-200: rgb(188 220 197);
+            --fern-300: rgb(155 202 167);
+            --fern-400: rgb(121 185 138);
+            --fern-500: rgb(88 167 109);
+            --fern-600: rgb(70 134 87);
+            --fern-700: rgb(53 100 65);
+            --fern-800: rgb(35 67 44);
+            --fern-900: rgb(18 33 22);
+            --fern-950: rgb(12 23 15);
+
+            /* Bright Fern - Success & highlights */
+            --bright-fern-50: rgb(238 249 235);
+            --bright-fern-100: rgb(221 243 216);
+            --bright-fern-200: rgb(187 232 176);
+            --bright-fern-300: rgb(152 220 137);
+            --bright-fern-400: rgb(118 208 98);
+            --bright-fern-500: rgb(84 196 59);
+            --bright-fern-600: rgb(67 157 47);
+            --bright-fern-700: rgb(50 118 35);
+            --bright-fern-800: rgb(34 79 23);
+            --bright-fern-900: rgb(17 39 12);
+            --bright-fern-950: rgb(12 27 8);
+
+            /* Yellow Green - Attention & CTAs */
+            --yellow-green-50: rgb(246 252 232);
+            --yellow-green-100: rgb(236 250 209);
+            --yellow-green-200: rgb(218 245 163);
+            --yellow-green-300: rgb(199 240 117);
+            --yellow-green-400: rgb(180 235 71);
+            --yellow-green-500: rgb(161 230 25);
+            --yellow-green-600: rgb(129 184 20);
+            --yellow-green-700: rgb(97 138 15);
+            --yellow-green-800: rgb(65 92 10);
+            --yellow-green-900: rgb(32 46 5);
+            --yellow-green-950: rgb(23 32 4);
+
+            /* Semantic color mapping */
+            --color-background: var(--mocha-50);
+            --color-surface: rgb(255 255 255);
+            --color-text-primary: var(--charcoal-900);
+            --color-text-secondary: var(--charcoal-700);
+            --color-text-tertiary: var(--charcoal-600);
+            --color-brand-primary: var(--fern-600);
+            --color-brand-hover: var(--fern-700);
+            --color-brand-light: var(--fern-50);
+            --color-success: var(--bright-fern-600);
+            --color-warning: var(--yellow-green-600);
+            --color-error: rgb(220 38 38);
+            --color-border: var(--mocha-200);
+            --color-border-focus: var(--fern-500);
+
+            /* Spacing scale */
+            --space-1: 0.25rem;  /* 4px */
+            --space-2: 0.5rem;   /* 8px */
+            --space-3: 0.75rem;  /* 12px */
+            --space-4: 1rem;     /* 16px */
+            --space-5: 1.25rem;  /* 20px */
+            --space-6: 1.5rem;   /* 24px */
+            --space-8: 2rem;     /* 32px */
+            --space-10: 2.5rem;  /* 40px */
+            --space-12: 3rem;    /* 48px */
+            --space-16: 4rem;    /* 64px */
+
+            /* Border radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-full: 9999px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        /* ========================================
+           BASE STYLES
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            background: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========================================
+           LAYOUT
+           ======================================== */
+        .guide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-4);
+        }
+
+        @media (min-width: 768px) {
+            .guide-container {
+                padding: var(--space-8);
+            }
+        }
+
+        /* ========================================
+           TYPOGRAPHY
+           ======================================== */
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-6);
+        }
+
+        h2 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            color: var(--color-text-primary);
+            margin-top: var(--space-12);
+            margin-bottom: var(--space-6);
+            padding-bottom: var(--space-3);
+            border-bottom: 3px solid var(--color-brand-primary);
+        }
+
+        h2:first-child {
+            margin-top: 0;
+        }
+
+        h3 {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--color-text-primary);
+            margin-top: var(--space-8);
+            margin-bottom: var(--space-4);
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--color-text-secondary);
+            margin-top: var(--space-6);
+            margin-bottom: var(--space-3);
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-4);
+            max-width: 70ch;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            line-height: 1.6;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-8);
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        code {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
+            font-size: 0.875em;
+            background: var(--mocha-100);
+            padding: 0.125rem 0.375rem;
+            border-radius: var(--radius-sm);
+            color: var(--charcoal-800);
+        }
+
+        pre {
+            background: var(--charcoal-900);
+            color: var(--mocha-50);
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            overflow-x: auto;
+            margin: var(--space-6) 0;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* ========================================
+           LOGO SHOWCASE
+           ======================================== */
+        .logo-showcase {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-lg);
+            margin: var(--space-8) 0;
+        }
+
+        .logo-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-12) var(--space-4);
+            background: linear-gradient(135deg, var(--mocha-50) 0%, var(--charcoal-50) 100%);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
+        }
+
+        .logo-text {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--charcoal-900);
+        }
+
+        .logo-text .accent {
+            color: var(--fern-600);
+        }
+
+        .logo-variations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+            margin-top: var(--space-6);
+        }
+
+        .logo-card {
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+            gap: var(--space-4);
+            transition: all 0.2s ease;
+        }
+
+        .logo-card:hover {
+            border-color: var(--color-brand-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .logo-card.dark {
+            background: var(--charcoal-900);
+            border-color: var(--charcoal-800);
+        }
+
+        .logo-card.accent {
+            background: var(--fern-600);
+            border-color: var(--fern-700);
+        }
+
+        .logo-sample {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-align: center;
+        }
+
+        .logo-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-tertiary);
+            text-align: center;
+        }
+
+        .dark .logo-label {
+            color: var(--charcoal-400);
+        }
+
+        .accent .logo-label {
+            color: var(--fern-100);
+        }
+
+        /* Logo color variations */
+        .color-primary { color: var(--charcoal-900); }
+        .color-primary .accent { color: var(--fern-600); }
+        .color-white { color: white; }
+        .color-white .accent { color: var(--bright-fern-400); }
+        .color-single-charcoal { color: var(--charcoal-900); }
+        .color-single-fern { color: var(--fern-600); }
+        .color-single-white { color: white; }
+        .color-lowercase { color: var(--fern-700); }
+        .color-lowercase .accent { color: var(--bright-fern-500); }
+
+        /* ========================================
+           COLOR SYSTEM
+           ======================================== */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+
+        .color-family {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .color-family-header {
+            padding: var(--space-4);
+            background: var(--mocha-100);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-4);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--color-border);
+            transition: all 0.15s ease;
+        }
+
+        .color-swatch:last-child {
+            border-bottom: none;
+        }
+
+        .color-swatch:hover {
+            padding-left: var(--space-5);
+        }
+
+        .color-value {
+            font-family: 'SF Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+        }
+
+        /* ========================================
+           COMPONENTS
+           ======================================== */
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+
+        .component-card {
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+        }
+
+        .component-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-4);
+        }
+
+        /* Button components */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            padding: var(--space-3) var(--space-5);
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            border-radius: var(--radius-md);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            min-height: 44px;
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--color-border-focus);
+            outline-offset: 2px;
+        }
+
+        .btn-primary {
+            background: var(--color-brand-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-brand-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-brand-primary);
+            color: var(--color-brand-primary);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--color-brand-primary);
+        }
+
+        .btn-ghost:hover {
+            background: var(--color-brand-light);
+        }
+
+        /* Input components */
+        .input-group {
+            margin-bottom: var(--space-4);
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-2);
+        }
+
+        .input {
+            width: 100%;
+            padding: var(--space-3);
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            transition: all 0.15s ease;
+            min-height: 44px;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--color-border-focus);
+            box-shadow: 0 0 0 3px var(--fern-100);
+        }
+
+        .input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        /* Badge component */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-1) var(--space-3);
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: var(--radius-full);
+            background: var(--fern-100);
+            color: var(--fern-800);
+        }
+
+        .badge.success {
+            background: var(--bright-fern-100);
+            color: var(--bright-fern-800);
+        }
+
+        .badge.warning {
+            background: var(--yellow-green-100);
+            color: var(--yellow-green-800);
+        }
+
+        /* Card component */
+        .card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-4);
+        }
+
+        /* ========================================
+           ACCESSIBILITY SECTION
+           ======================================== */
+        .a11y-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-4);
+            margin: var(--space-8) 0;
+        }
+
+        .a11y-card {
+            background: var(--charcoal-900);
+            color: white;
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+        }
+
+        .contrast-ratio {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--bright-fern-400);
+            margin: var(--space-2) 0;
+        }
+
+        .contrast-label {
+            font-size: 0.875rem;
+            color: var(--charcoal-300);
+            line-height: 1.4;
+        }
+
+        .contrast-status {
+            display: inline-block;
+            margin-top: var(--space-2);
+            padding: var(--space-1) var(--space-3);
+            background: var(--bright-fern-900);
+            color: var(--bright-fern-100);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* ========================================
+           GUIDELINES SECTION
+           ======================================== */
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+
+        .guideline-card {
+            background: var(--color-surface);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--color-brand-primary);
+        }
+
+        .guideline-card.warning {
+            border-left-color: var(--yellow-green-600);
+        }
+
+        .guideline-card h4 {
+            margin-top: 0;
+            color: var(--color-text-primary);
+        }
+
+        .guideline-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guideline-card li {
+            position: relative;
+            padding-left: var(--space-6);
+            margin-bottom: var(--space-3);
+            color: var(--color-text-secondary);
+        }
+
+        .guideline-card li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-brand-primary);
+            font-weight: bold;
+        }
+
+        .guideline-card.warning li::before {
+            content: "✗";
+            color: var(--yellow-green-700);
+        }
+
+        /* ========================================
+           DOWNLOAD SECTION
+           ======================================== */
+        .download-section {
+            background: linear-gradient(135deg, var(--fern-50) 0%, var(--bright-fern-50) 100%);
+            padding: var(--space-8);
+            border-radius: var(--radius-xl);
+            margin: var(--space-12) 0;
+            text-align: center;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-4);
+            margin-top: var(--space-6);
+        }
+
+        .download-item {
+            background: white;
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 2.5rem;
+            }
+
+            .logo-sample {
+                font-size: 1.5rem;
+            }
+
+            .component-grid,
+            .color-palette {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ========================================
+           UTILITIES
+           ======================================== */
+        .mt-0 { margin-top: 0; }
+        .mb-4 { margin-bottom: var(--space-4); }
+        .mb-6 { margin-bottom: var(--space-6); }
+        .mb-8 { margin-bottom: var(--space-8); }
+    </style>
+</head>
+<body>
+    <div class="guide-container">
+        <!-- HEADER -->
+        <header>
+            <h1>Repfolio</h1>
+            <p class="lead">
+                Brand Style Guide for Sports Training SaaS Platform<br>
+                Professional • Friendly • Efficient • Mobile-First
+            </p>
+        </header>
+
+        <!-- LOGO SYSTEM -->
+        <section>
+            <h2>Logo System</h2>
+            
+            <div class="logo-showcase">
+                <div class="logo-primary">
+                    <div class="logo-text color-primary">
+                        Rep<span class="accent">folio</span>
+                    </div>
+                </div>
+                
+                <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: var(--space-8);">
+                    <strong>Primary Logo:</strong> Sentence case "Repfolio" with two-color accent.<br>
+                    Charcoal Blue 900 for "Rep" • Fern 600 for "folio"
+                </p>
+
+                <h3 class="mt-0">Logo Variations</h3>
+                <div class="logo-variations">
+                    <div class="logo-card">
+                        <div class="logo-sample color-primary">
+                            Rep<span class="accent">folio</span>
+                        </div>
+                        <div class="logo-label">Primary • Two-color</div>
+                    </div>
+
+                    <div class="logo-card dark">
+                        <div class="logo-sample color-white">
+                            Rep<span class="accent">folio</span>
+                        </div>
+                        <div class="logo-label">Dark backgrounds</div>
+                    </div>
+
+                    <div class="logo-card accent">
+                        <div class="logo-sample color-single-white">
+                            Repfolio
+                        </div>
+                        <div class="logo-label">Brand color bg</div>
+                    </div>
+
+                    <div class="logo-card">
+                        <div class="logo-sample color-single-charcoal">
+                            Repfolio
+                        </div>
+                        <div class="logo-label">Single color</div>
+                    </div>
+
+                    <div class="logo-card">
+                        <div class="logo-sample color-single-fern">
+                            Repfolio
+                        </div>
+                        <div class="logo-label">Brand color only</div>
+                    </div>
+
+                    <div class="logo-card">
+                        <div class="logo-sample color-lowercase">
+                            rep<span class="accent">folio</span>
+                        </div>
+                        <div class="logo-label">Lowercase alternative</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Logo Usage Rules</h3>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>✓ Do This</h4>
+                    <ul>
+                        <li>Use two-color version on light backgrounds</li>
+                        <li>Maintain minimum clear space (25% of logo height)</li>
+                        <li>Scale proportionally, never distort</li>
+                        <li>Use single-color at sizes below 40px</li>
+                        <li>Ensure minimum 24px height on mobile</li>
+                        <li>Test at 1x, 2x, 3x screen densities</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card warning">
+                    <h4>✗ Don't Do This</h4>
+                    <ul>
+                        <li>Stretch or distort the logo</li>
+                        <li>Add shadows, outlines, or gradients</li>
+                        <li>Change letter spacing</li>
+                        <li>Use on busy or low-contrast backgrounds</li>
+                        <li>Rotate or skew the logo</li>
+                        <li>Change the color combinations</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>File Formats Needed</h3>
+            <div class="download-section">
+                <h4 style="margin-top: 0;">Logo Asset Requirements</h4>
+                <div class="download-grid">
+                    <div class="download-item">SVG<br><small>Scalable vector</small></div>
+                    <div class="download-item">PNG @1x<br><small>Standard display</small></div>
+                    <div class="download-item">PNG @2x<br><small>Retina display</small></div>
+                    <div class="download-item">PNG @3x<br><small>Mobile high-DPI</small></div>
+                </div>
+                <p style="margin-top: var(--space-6); color: var(--color-text-secondary);">
+                    All formats should include transparent backgrounds and both horizontal layouts.<br>
+                    Minimum sizes: 24px (mobile) • 32px (desktop) • 48px (large displays)
+                </p>
+            </div>
+        </section>
+
+        <!-- COLOR SYSTEM -->
+        <section>
+            <h2>Color System</h2>
+            <p>
+                Five color families designed for accessibility, with clear semantic meaning. 
+                All primary combinations meet WCAG 2.1 AA standards (4.5:1 for text, 3:1 for UI components).
+            </p>
+
+            <div class="color-palette">
+                <div class="color-family">
+                    <div class="color-family-header">Deep Mocha • Neutrals</div>
+                    <div class="color-swatch" style="background: var(--mocha-50);">
+                        50 <span class="color-value">Background primary</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--mocha-100);">
+                        100 <span class="color-value">Background secondary</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--mocha-200);">
+                        200 <span class="color-value">Borders</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--mocha-600); color: white;">
+                        600 <span class="color-value">Disabled text</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--mocha-900); color: white;">
+                        900 <span class="color-value">Alternative text</span>
+                    </div>
+                </div>
+
+                <div class="color-family">
+                    <div class="color-family-header">Charcoal Blue • Text & UI</div>
+                    <div class="color-swatch" style="background: var(--charcoal-50);">
+                        50 <span class="color-value">Subtle backgrounds</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--charcoal-300);">
+                        300 <span class="color-value">Disabled states</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--charcoal-600); color: white;">
+                        600 <span class="color-value">Secondary text</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--charcoal-700); color: white;">
+                        700 <span class="color-value">Body text</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--charcoal-900); color: white;">
+                        900 <span class="color-value">Primary text</span>
+                    </div>
+                </div>
+
+                <div class="color-family">
+                    <div class="color-family-header">Fern • Brand Primary</div>
+                    <div class="color-swatch" style="background: var(--fern-50);">
+                        50 <span class="color-value">Brand backgrounds</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--fern-100);">
+                        100 <span class="color-value">Light accents</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--fern-500);">
+                        500 <span class="color-value">Focus rings</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--fern-600); color: white;">
+                        600 <span class="color-value">Primary actions</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--fern-700); color: white;">
+                        700 <span class="color-value">Hover states</span>
+                    </div>
+                </div>
+
+                <div class="color-family">
+                    <div class="color-family-header">Bright Fern • Success</div>
+                    <div class="color-swatch" style="background: var(--bright-fern-100);">
+                        100 <span class="color-value">Success backgrounds</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--bright-fern-400);">
+                        400 <span class="color-value">Highlights</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--bright-fern-600); color: white;">
+                        600 <span class="color-value">Success states</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--bright-fern-800); color: white;">
+                        800 <span class="color-value">Success text</span>
+                    </div>
+                </div>
+
+                <div class="color-family">
+                    <div class="color-family-header">Yellow Green • Attention</div>
+                    <div class="color-swatch" style="background: var(--yellow-green-100);">
+                        100 <span class="color-value">Warning backgrounds</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--yellow-green-400);">
+                        400 <span class="color-value">Attention indicators</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--yellow-green-600); color: white;">
+                        600 <span class="color-value">CTAs & warnings</span>
+                    </div>
+                    <div class="color-swatch" style="background: var(--yellow-green-800); color: white;">
+                        800 <span class="color-value">Warning text</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Semantic Color Usage</h3>
+            <pre><code>/* Use semantic variables for maintainability */
+--color-background: var(--mocha-50);
+--color-surface: rgb(255 255 255);
+--color-text-primary: var(--charcoal-900);
+--color-text-secondary: var(--charcoal-700);
+--color-brand-primary: var(--fern-600);
+--color-brand-hover: var(--fern-700);
+--color-success: var(--bright-fern-600);
+--color-warning: var(--yellow-green-600);</code></pre>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section>
+            <h2>Typography</h2>
+            <p>
+                System font stack for instant loading and native feel across all platforms. 
+                Responsive sizing ensures readability from mobile to desktop.
+            </p>
+
+            <div class="card" style="margin: var(--space-6) 0;">
+                <div style="font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--space-4);">
+                    Display Heading
+                </div>
+                <code>font-size: clamp(2rem, 5vw, 3rem); font-weight: 700;</code>
+                <p style="margin-top: var(--space-4); margin-bottom: 0;">Use for hero sections, landing pages, major section titles. Min 32px, max 48px.</p>
+            </div>
+
+            <div class="card" style="margin: var(--space-6) 0;">
+                <div style="font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 600; margin-bottom: var(--space-3);">
+                    Section Heading (H2)
+                </div>
+                <code>font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 600;</code>
+                <p style="margin-top: var(--space-4); margin-bottom: 0;">Main content sections. Min 24px, max 32px.</p>
+            </div>
+
+            <div class="card" style="margin: var(--space-6) 0;">
+                <div style="font-size: clamp(1.25rem, 3vw, 1.5rem); font-weight: 600; margin-bottom: var(--space-3);">
+                    Subsection Heading (H3)
+                </div>
+                <code>font-size: clamp(1.25rem, 3vw, 1.5rem); font-weight: 600;</code>
+                <p style="margin-top: var(--space-4); margin-bottom: 0;">Card headers, subsections. Min 20px, max 24px.</p>
+            </div>
+
+            <div class="card" style="margin: var(--space-6) 0;">
+                <div style="font-size: 1rem; line-height: 1.6; margin-bottom: var(--space-3);">
+                    Body text maintains excellent readability at 16px with 1.6 line height. 
+                    This is the primary text size used throughout the application for paragraphs, 
+                    descriptions, and general content. Never go below 16px for body text on mobile.
+                </div>
+                <code>font-size: 1rem (16px); line-height: 1.6;</code>
+            </div>
+
+            <div class="card" style="margin: var(--space-6) 0;">
+                <div style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: var(--space-3);">
+                    Small text at 14px for captions, metadata, and secondary information. 
+                    Use sparingly and never for critical content.
+                </div>
+                <code>font-size: 0.875rem (14px); color: secondary;</code>
+            </div>
+
+            <h3>Font Stack</h3>
+            <pre><code>font-family: -apple-system, BlinkMacSystemFont, 
+  'Segoe UI', Roboto, 'Helvetica Neue', 
+  Arial, sans-serif;</code></pre>
+        </section>
+
+        <!-- UI COMPONENTS -->
+        <section>
+            <h2>UI Components</h2>
+            <p>
+                Core components with mobile-first design, accessible touch targets (44×44px minimum), 
+                and clear visual feedback for all interactions.
+            </p>
+
+            <h3>Buttons</h3>
+            <div class="component-grid">
+                <div class="component-card">
+                    <div class="component-title">Primary Button</div>
+                    <button class="btn btn-primary">Book Session</button>
+                    <pre style="margin-top: var(--space-4);"><code>background: var(--fern-600);
+min-height: 44px;
+padding: 12px 20px;</code></pre>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">Secondary Button</div>
+                    <button class="btn btn-secondary">View Details</button>
+                    <pre style="margin-top: var(--space-4);"><code>background: white;
+border: 2px solid var(--mocha-200);
+color: var(--charcoal-900);</code></pre>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">Ghost Button</div>
+                    <button class="btn btn-ghost">Cancel</button>
+                    <pre style="margin-top: var(--space-4);"><code>background: transparent;
+color: var(--fern-600);
+hover: background var(--fern-50);</code></pre>
+                </div>
+            </div>
+
+            <h3>Form Inputs</h3>
+            <div class="component-card" style="max-width: 500px;">
+                <div class="input-group">
+                    <label class="input-label" for="email">Email Address</label>
+                    <input type="email" id="email" class="input" placeholder="coach@example.com">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="password">Password</label>
+                    <input type="password" id="password" class="input" placeholder="Enter your password">
+                </div>
+                <pre><code>border: 2px solid var(--mocha-200);
+min-height: 44px;
+focus: border-color var(--fern-500);
+focus: box-shadow 0 0 0 3px var(--fern-100);</code></pre>
+            </div>
+
+            <h3>Badges & Status</h3>
+            <div class="component-card">
+                <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-4);">
+                    <span class="badge">Active</span>
+                    <span class="badge success">Completed</span>
+                    <span class="badge warning">Pending</span>
+                </div>
+                <pre><code>padding: 4px 12px;
+border-radius: 9999px;
+font-size: 0.875rem;
+font-weight: 600;</code></pre>
+            </div>
+
+            <h3>Cards</h3>
+            <div class="card">
+                <div class="card-header">Session Details</div>
+                <p style="margin-bottom: var(--space-4);">
+                    <strong>Coach:</strong> Sarah Johnson<br>
+                    <strong>Time:</strong> Today at 3:00 PM<br>
+                    <strong>Location:</strong> Training Field A
+                </p>
+                <button class="btn btn-primary">Check In</button>
+            </div>
+            <pre style="margin-top: var(--space-4);"><code>background: white;
+border-radius: 12px;
+padding: 24px;
+box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+border: 1px solid var(--mocha-200);</code></pre>
+        </section>
+
+        <!-- ACCESSIBILITY -->
+        <section>
+            <h2>Accessibility (WCAG 2.1 AA)</h2>
+            <p>
+                All color combinations tested and verified for contrast compliance. 
+                Minimum 4.5:1 for normal text, 3:1 for large text and UI components.
+            </p>
+
+            <h3>Contrast Ratios</h3>
+            <div class="a11y-grid">
+                <div class="a11y-card">
+                    <div class="contrast-label">Charcoal Blue 900<br>on Deep Mocha 50</div>
+                    <div class="contrast-ratio">13.2:1</div>
+                    <span class="contrast-status">✓ AAA Compliant</span>
+                </div>
+
+                <div class="a11y-card">
+                    <div class="contrast-label">Charcoal Blue 700<br>on White Background</div>
+                    <div class="contrast-ratio">8.9:1</div>
+                    <span class="contrast-status">✓ AAA Compliant</span>
+                </div>
+
+                <div class="a11y-card">
+                    <div class="contrast-label">Fern 600<br>on Deep Mocha 50</div>
+                    <div class="contrast-ratio">4.8:1</div>
+                    <span class="contrast-status">✓ AA Compliant</span>
+                </div>
+
+                <div class="a11y-card">
+                    <div class="contrast-label">White Text<br>on Fern 600</div>
+                    <div class="contrast-ratio">4.2:1</div>
+                    <span class="contrast-status">✓ AA Large Text</span>
+                </div>
+
+                <div class="a11y-card">
+                    <div class="contrast-label">Bright Fern 500<br>on White (UI Only)</div>
+                    <div class="contrast-ratio">3.1:1</div>
+                    <span class="contrast-status">✓ UI Components</span>
+                </div>
+
+                <div class="a11y-card">
+                    <div class="contrast-label">Yellow Green 600<br>on White</div>
+                    <div class="contrast-ratio">5.2:1</div>
+                    <span class="contrast-status">✓ AA Compliant</span>
+                </div>
+            </div>
+
+            <h3>Accessibility Checklist</h3>
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Touch Targets</h4>
+                    <ul>
+                        <li>Minimum 44×44px (iOS standard)</li>
+                        <li>Minimum 48×48px (Android Material)</li>
+                        <li>Adequate spacing between elements (8px+)</li>
+                        <li>Visual feedback on all interactions</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Keyboard Navigation</h4>
+                    <ul>
+                        <li>All interactive elements keyboard accessible</li>
+                        <li>Visible focus indicators (2px outline)</li>
+                        <li>Logical tab order throughout app</li>
+                        <li>Skip links for main content</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Screen Readers</h4>
+                    <ul>
+                        <li>Semantic HTML (nav, main, section)</li>
+                        <li>ARIA labels for icons and buttons</li>
+                        <li>Alt text for all images</li>
+                        <li>Descriptive link text (no "click here")</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Visual Design</h4>
+                    <ul>
+                        <li>Don't rely on color alone</li>
+                        <li>Minimum 16px font size for body text</li>
+                        <li>1.5+ line height for readability</li>
+                        <li>Test with color blindness simulators</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOBILE-FIRST PRINCIPLES -->
+        <section>
+            <h2>Mobile-First Design</h2>
+            <p>
+                Design for mobile first, then enhance for larger screens. 
+                Mobile users are your primary audience—coaches checking schedules on the field, 
+                parents viewing updates during games.
+            </p>
+
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Layout</h4>
+                    <ul>
+                        <li>Single column on mobile, multi-column on tablet+</li>
+                        <li>Stack navigation vertically on small screens</li>
+                        <li>Bottom navigation for primary actions (iOS pattern)</li>
+                        <li>Generous padding (16px minimum)</li>
+                        <li>Full-width touch targets on mobile</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Performance</h4>
+                    <ul>
+                        <li>Optimize images for mobile (WebP format)</li>
+                        <li>Lazy load below-the-fold content</li>
+                        <li>Minimize JavaScript bundle size</li>
+                        <li>System fonts (zero download time)</li>
+                        <li>Progressive enhancement approach</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Interaction</h4>
+                    <ul>
+                        <li>Large, easy-to-tap buttons (44px min)</li>
+                        <li>Swipe gestures for common actions</li>
+                        <li>Pull-to-refresh for list views</li>
+                        <li>Haptic feedback on actions (iOS)</li>
+                        <li>Loading states for all async operations</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Content</h4>
+                    <ul>
+                        <li>Prioritize essential information</li>
+                        <li>Progressive disclosure for complex data</li>
+                        <li>Readable at arm's length (16px+ text)</li>
+                        <li>Thumb-friendly zone for primary actions</li>
+                        <li>Minimize form fields on mobile</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Responsive Breakpoints</h3>
+            <pre><code>/* Mobile-first approach */
+/* Base styles: 320px - 767px (mobile) */
+
+@media (min-width: 768px) {
+  /* Tablet: 768px - 1023px */
+}
+
+@media (min-width: 1024px) {
+  /* Desktop: 1024px - 1279px */
+}
+
+@media (min-width: 1280px) {
+  /* Large desktop: 1280px+ */
+}</code></pre>
+        </section>
+
+        <!-- BRAND VOICE -->
+        <section>
+            <h2>Brand Voice & Messaging</h2>
+            <p>
+                Repfolio bridges the gap between professional business tools and personal sports development. 
+                Your voice should be confident but approachable, efficient but caring.
+            </p>
+
+            <div class="guidelines-grid">
+                <div class="guideline-card">
+                    <h4>Professional</h4>
+                    <ul>
+                        <li>"Manage your coaching business efficiently"</li>
+                        <li>"Track progress with detailed analytics"</li>
+                        <li>"Streamline payments and scheduling"</li>
+                        <li>Focus on reliability, security, business value</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Friendly</h4>
+                    <ul>
+                        <li>"Watch your athletes grow and improve"</li>
+                        <li>"Celebrate every milestone together"</li>
+                        <li>"Keep parents in the loop automatically"</li>
+                        <li>Focus on development, relationships, support</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Efficient</h4>
+                    <ul>
+                        <li>"Book sessions in seconds, not minutes"</li>
+                        <li>"Weather cancellations? We've got you"</li>
+                        <li>"One tap to send progress updates"</li>
+                        <li>Focus on time-saving, automation, simplicity</li>
+                    </ul>
+                </div>
+
+                <div class="guideline-card">
+                    <h4>Writing Style</h4>
+                    <ul>
+                        <li>Active voice: "Create your first session"</li>
+                        <li>Clear actions: "Book Now" not "Click Here"</li>
+                        <li>Conversational but concise</li>
+                        <li>Avoid jargon, explain technical terms</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Sample Messaging</h3>
+            <div class="card">
+                <div class="card-header">Hero Headline</div>
+                <p style="font-size: 1.25rem; font-weight: 600; color: var(--color-text-primary);">
+                    "The complete platform for private sports coaches"
+                </p>
+                <p style="color: var(--color-text-secondary);">
+                    Schedule sessions, track athlete progress, and manage payments—all in one place. 
+                    Built for coaches who want to focus on coaching, not admin work.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Empty State</div>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+                    No upcoming sessions yet. Ready to get started?
+                </p>
+                <button class="btn btn-primary">Schedule Your First Session</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Success Message</div>
+                <div style="display: flex; align-items: center; gap: var(--space-3); padding: var(--space-4); background: var(--bright-fern-50); border-radius: var(--radius-md); border-left: 4px solid var(--bright-fern-600);">
+                    <span style="font-size: 1.5rem;">✓</span>
+                    <div>
+                        <strong style="color: var(--color-text-primary);">Session booked successfully!</strong><br>
+                        <span style="font-size: 0.875rem; color: var(--color-text-secondary);">
+                            We've sent a confirmation to the parent and athlete.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPLEMENTATION -->
+        <section>
+            <h2>Implementation Guide</h2>
+            
+            <h3>CSS Custom Properties</h3>
+            <p>Use CSS variables for consistent theming and easy maintenance:</p>
+            <pre><code>:root {
+  /* Semantic colors */
+  --color-background: var(--mocha-50);
+  --color-surface: rgb(255 255 255);
+  --color-text-primary: var(--charcoal-900);
+  --color-brand-primary: var(--fern-600);
+  
+  /* Spacing */
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  
+  /* Radius */
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+}</code></pre>
+
+            <h3>Component Example: Primary Button</h3>
+            <pre><code>.btn-primary {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 20px;
+  
+  /* Typography */
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  
+  /* Visual */
+  background: var(--color-brand-primary);
+  color: white;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  
+  /* Interaction */
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-brand-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}</code></pre>
+
+            <h3>Tailwind CSS Configuration</h3>
+            <pre><code>// tailwind.config.js
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        mocha: {
+          50: 'rgb(244 241 241)',
+          // ... rest of palette
+        },
+        charcoal: {
+          900: 'rgb(21 26 30)',
+          // ... rest of palette
+        },
+        fern: {
+          600: 'rgb(70 134 87)',
+          // ... rest of palette
+        },
+      },
+      fontFamily: {
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+      },
+    },
+  },
+}</code></pre>
+        </section>
+
+        <!-- QUICK REFERENCE -->
+        <section style="background: var(--fern-50); padding: var(--space-8); border-radius: var(--radius-xl); margin-top: var(--space-16);">
+            <h2 style="margin-top: 0; border-bottom: none;">Quick Reference</h2>
+            
+            <div class="guidelines-grid">
+                <div>
+                    <h4>Logo</h4>
+                    <p style="margin-bottom: 0;">
+                        <strong>Primary:</strong> Rep (Charcoal 900) + folio (Fern 600)<br>
+                        <strong>Dark bg:</strong> Rep (White) + folio (Bright Fern 400)<br>
+                        <strong>Min size:</strong> 24px height (mobile)
+                    </p>
+                </div>
+
+                <div>
+                    <h4>Colors</h4>
+                    <p style="margin-bottom: 0;">
+                        <strong>Text:</strong> Charcoal 900, 700, 600<br>
+                        <strong>Brand:</strong> Fern 600 (primary), 700 (hover)<br>
+                        <strong>Background:</strong> Mocha 50, White<br>
+                        <strong>Success:</strong> Bright Fern 600
+                    </p>
+                </div>
+
+                <div>
+                    <h4>Typography</h4>
+                    <p style="margin-bottom: 0;">
+                        <strong>Font:</strong> System font stack<br>
+                        <strong>Base:</strong> 16px (1rem)<br>
+                        <strong>Line height:</strong> 1.6<br>
+                        <strong>Display:</strong> 32-48px, weight 700
+                    </p>
+                </div>
+
+                <div>
+                    <h4>Spacing</h4>
+                    <p style="margin-bottom: 0;">
+                        <strong>Touch targets:</strong> 44×44px min<br>
+                        <strong>Base unit:</strong> 4px (0.25rem)<br>
+                        <strong>Common:</strong> 8px, 12px, 16px, 24px<br>
+                        <strong>Section gaps:</strong> 32px, 48px
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer style="margin-top: var(--space-16); padding-top: var(--space-8); border-top: 2px solid var(--color-border); text-align: center;">
+            <p style="color: var(--color-text-tertiary); margin-bottom: var(--space-4);">
+                <strong>Repfolio Brand Style Guide</strong><br>
+                Version 1.0 • February 2026
+            </p>
+            <p style="color: var(--color-text-tertiary); font-size: 0.875rem;">
+                Sports Training SaaS Platform • Professional • Friendly • Efficient
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest'
+        };
+      </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client List</title>
+    
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<aside id="sidebar-drawer" class="sidebar-drawer">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground font-bold text-lg">CoachLink</span>
+            </div>
+            <button id="close-drawer" class="w-9 h-9 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-times text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div id="sidebar-quick-stats" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Today's Stats</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Sessions Today</span>
+                        <span class="text-primary font-bold text-lg">3</span>
+                    </div>
+                </div>
+                <div class="bg-secondary/10 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-card-foreground text-xs font-semibold">Upcoming</span>
+                        <span class="text-secondary font-bold text-lg">2</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sidebar-navigation" class="mb-6">
+            <h3 class="text-card-foreground font-bold text-sm mb-3">Quick Links</h3>
+            <div class="space-y-2">
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Calendar</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-primary/10 rounded-lg text-left border-2 border-primary/30">
+                    <i class="fa-solid fa-users text-primary"></i>
+                    <span class="text-primary text-sm font-semibold">Clients</span>
+                </button>
+                <button class="w-full flex items-center gap-3 p-3 bg-muted rounded-lg text-left">
+                    <i class="fa-solid fa-message text-primary"></i>
+                    <span class="text-card-foreground text-sm font-medium">Messages</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main id="main-content" class="min-h-screen">
+
+<header id="header" class="sticky top-0 z-30 bg-card border-b border-border">
+    <div class="px-5 py-4">
+        <div class="flex items-center justify-between mb-3">
+            <button id="back-btn" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+            </button>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+                </div>
+            </div>
+            <button id="menu-toggle" class="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-bars text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <div>
+            <h1 class="text-card-foreground font-bold text-xl">My Clients</h1>
+            <p class="text-muted-foreground text-xs">Manage and track your athlete progress</p>
+        </div>
+    </div>
+</header>
+
+<section id="search-section" class="px-5 pt-5 pb-3 bg-background">
+    <div class="relative">
+        <input type="text" id="search-input" placeholder="Search clients by name..." class="w-full bg-card border border-border rounded-xl py-3 pl-12 pr-4 text-card-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring shadow-sm">
+        <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"></i>
+    </div>
+</section>
+
+<section id="filter-section" class="px-5 pb-4 bg-background">
+    <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-1">
+            <button class="filter-btn active px-4 py-2 rounded-lg border border-border text-xs font-semibold transition-all" data-filter="all">
+                All <span class="ml-1 text-xs">(24)</span>
+            </button>
+            <button class="filter-btn px-4 py-2 rounded-lg border border-border text-xs font-semibold bg-card text-card-foreground transition-all" data-filter="active">
+                Active <span class="ml-1 text-xs">(18)</span>
+            </button>
+            <button class="filter-btn px-4 py-2 rounded-lg border border-border text-xs font-semibold bg-card text-card-foreground transition-all" data-filter="inactive">
+                Inactive <span class="ml-1 text-xs">(6)</span>
+            </button>
+        </div>
+        
+        <div class="sort-dropdown">
+            <button id="sort-btn" class="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center shadow-sm">
+                <i class="fa-solid fa-arrow-down-wide-short text-primary"></i>
+            </button>
+            <div id="sort-menu" class="sort-menu">
+                <div class="p-2">
+                    <button class="sort-option w-full text-left px-3 py-2 rounded-lg hover:bg-muted text-card-foreground text-sm font-medium flex items-center gap-2" data-sort="name">
+                        <i class="fa-solid fa-font text-primary w-4"></i>
+                        <span>Name (A-Z)</span>
+                    </button>
+                    <button class="sort-option w-full text-left px-3 py-2 rounded-lg hover:bg-muted text-card-foreground text-sm font-medium flex items-center gap-2" data-sort="next-session">
+                        <i class="fa-solid fa-calendar text-primary w-4"></i>
+                        <span>Next Session</span>
+                    </button>
+                    <button class="sort-option w-full text-left px-3 py-2 rounded-lg hover:bg-muted text-card-foreground text-sm font-medium flex items-center gap-2" data-sort="total-sessions">
+                        <i class="fa-solid fa-chart-line text-primary w-4"></i>
+                        <span>Total Sessions</span>
+                    </button>
+                    <button class="sort-option w-full text-left px-3 py-2 rounded-lg hover:bg-muted text-card-foreground text-sm font-medium flex items-center gap-2" data-sort="progress">
+                        <i class="fa-solid fa-trophy text-primary w-4"></i>
+                        <span>Progress</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="stats-overview-section" class="px-5 pb-5 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="grid grid-cols-3 gap-4">
+            <div class="text-center">
+                <div class="text-primary font-bold text-2xl mb-1">24</div>
+                <div class="text-muted-foreground text-xs">Total Clients</div>
+            </div>
+            <div class="text-center border-l border-r border-border">
+                <div class="text-secondary font-bold text-2xl mb-1">18</div>
+                <div class="text-muted-foreground text-xs">Active</div>
+            </div>
+            <div class="text-center">
+                <div class="text-accent-foreground font-bold text-2xl mb-1">156</div>
+                <div class="text-muted-foreground text-xs">Sessions</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="client-cards-section" class="px-5 pb-6 bg-background">
+    <div class="space-y-4">
+        
+        <div id="client-card-1" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah Martinez" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">Sarah Martinez</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 14</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Today, 2:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">85%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">13</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">4.8</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="client-card-2" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Michael Chen" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">Michael Chen</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 16</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Tomorrow, 10:00 AM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">72%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 72%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">8</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">4.5</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="client-card-3" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg" alt="Emma Johnson" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">Emma Johnson</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 15</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Feb 11, 3:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">91%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 91%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">21</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">4.9</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="client-card-4" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="David Thompson" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">David Thompson</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 13</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Feb 12, 4:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">68%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 68%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">11</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">4.6</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star-half-stroke text-accent text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="client-card-5" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-7.jpg" alt="Olivia Rodriguez" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">Olivia Rodriguez</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 17</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Feb 13, 5:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">88%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 88%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">17</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">4.7</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star-half-stroke text-accent text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="client-card-6" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-9.jpg" alt="James Wilson" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">James Wilson</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 14</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Feb 14, 1:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">76%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 76%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">15</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">4.4</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-regular fa-star text-muted-foreground text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="client-card-7" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Sophia Anderson" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">Sophia Anderson</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 16</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Feb 15, 11:00 AM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">94%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 94%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">25</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">5.0</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="client-card-8" class="client-card bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+            <div class="p-5">
+                <div class="flex items-start gap-4 mb-4">
+                    <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-4.jpg" alt="Liam Brown" class="w-16 h-16 rounded-full object-cover flex-shrink-0 border-2 border-primary/20">
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-card-foreground font-bold text-base mb-1">Liam Brown</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="inline-flex items-center gap-1 bg-secondary/10 text-secondary text-xs font-semibold px-2 py-1 rounded-md">
+                                <i class="fa-solid fa-circle text-[6px]"></i>
+                                Active
+                            </span>
+                            <span class="text-muted-foreground text-xs">Age 15</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-muted-foreground text-xs">
+                            <i class="fa-solid fa-calendar text-primary"></i>
+                            <span class="font-medium">Next: Feb 16, 2:30 PM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Progress</span>
+                        <span class="text-primary text-xs font-bold">81%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full" style="width: 81%"></div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">19</div>
+                            <div class="text-muted-foreground text-xs">Sessions</div>
+                        </div>
+                        <div class="w-px h-8 bg-border"></div>
+                        <div class="text-center">
+                            <div class="text-card-foreground font-bold text-lg">4.8</div>
+                            <div class="text-muted-foreground text-xs">Avg Rating</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                        <i class="fa-solid fa-star text-accent text-sm"></i>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button class="flex-1 bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>View Profile</span>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-message text-primary"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-plus text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<section id="load-more-section" class="px-5 pb-6 bg-background">
+    <button id="load-more-btn" class="w-full bg-card border-2 border-border text-card-foreground font-semibold py-4 px-6 rounded-xl text-base flex items-center justify-center gap-2">
+        <i class="fa-solid fa-chevron-down"></i>
+        <span>Load More Clients</span>
+    </button>
+</section>
+
+<section id="quick-actions-section" class="px-5 pb-6 bg-background">
+    <div class="bg-primary rounded-2xl p-5 shadow-lg">
+        <div class="flex items-start gap-3 mb-4">
+            <div class="w-12 h-12 bg-primary-foreground/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-user-plus text-primary-foreground text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-primary-foreground font-bold text-base mb-1">Add New Client</h3>
+                <p class="text-primary-foreground/80 text-xs">Onboard a new athlete to start training</p>
+            </div>
+        </div>
+        <button class="w-full bg-primary-foreground text-primary font-bold py-3 px-6 rounded-xl text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-plus"></i>
+            <span>Add Client</span>
+        </button>
+    </div>
+</section>
+
+<section id="performance-insights-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 bg-secondary/10 rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-chart-line text-secondary"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-base">Performance Insights</h3>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-muted rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-arrow-trend-up text-secondary"></i>
+                    </div>
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm">Top Performer</div>
+                        <div class="text-muted-foreground text-xs">Sophia Anderson (5.0 avg)</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-muted-foreground"></i>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-muted rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-fire text-accent-foreground"></i>
+                    </div>
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm">Most Improved</div>
+                        <div class="text-muted-foreground text-xs">Emma Johnson (+15% this month)</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-muted-foreground"></i>
+            </div>
+            
+            <div class="flex items-center justify-between p-3 bg-muted rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-clock text-primary"></i>
+                    </div>
+                    <div>
+                        <div class="text-card-foreground font-semibold text-sm">Needs Attention</div>
+                        <div class="text-muted-foreground text-xs">3 clients overdue for session</div>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-muted-foreground"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="upcoming-sessions-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-2xl p-5 border border-border shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-calendar-days text-primary"></i>
+                </div>
+                <h3 class="text-card-foreground font-bold text-base">Upcoming Sessions</h3>
+            </div>
+            <button class="text-primary text-sm font-semibold">View All</button>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Sarah Martinez" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Sarah Martinez</div>
+                    <div class="text-muted-foreground text-xs">Today, 2:00 PM - 3:00 PM</div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-check text-primary-foreground text-sm"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Michael Chen" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Michael Chen</div>
+                    <div class="text-muted-foreground text-xs">Tomorrow, 10:00 AM - 11:00 AM</div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="w-9 h-9 bg-card border border-border rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-clock text-muted-foreground text-sm"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg" alt="Emma Johnson" class="w-12 h-12 rounded-full object-cover flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Emma Johnson</div>
+                    <div class="text-muted-foreground text-xs">Feb 11, 3:30 PM - 4:30 PM</div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button class="w-9 h-9 bg-card border border-border rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-clock text-muted-foreground text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="helpful-tips-section" class="px-5 pb-6 bg-background">
+    <div class="bg-accent/10 rounded-2xl p-5 border border-accent/30">
+        <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-lightbulb text-accent-foreground text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-base mb-1">Client Management Tips</h3>
+                <p class="text-muted-foreground text-xs">Maximize your training effectiveness</p>
+            </div>
+        </div>
+        
+        <ul class="space-y-2">
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Keep detailed session notes for better progress tracking</span>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Send regular updates to parents to maintain engagement</span>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Schedule sessions consistently for best results</span>
+            </li>
+            <li class="flex items-start gap-2 text-sm text-card-foreground">
+                <i class="fa-solid fa-check text-secondary mt-1 flex-shrink-0"></i>
+                <span>Celebrate achievements to boost client motivation</span>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<footer id="footer" class="px-5 pb-8 bg-background">
+    <p class="text-center text-muted-foreground text-xs">© 2024 CoachLink. All rights reserved.</p>
+</footer>
+
+</main>
+
+<script>
+window.addEventListener('load', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const closeDrawer = document.getElementById('close-drawer');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const sidebarDrawer = document.getElementById('sidebar-drawer');
+    const backBtn = document.getElementById('back-btn');
+    const searchInput = document.getElementById('search-input');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const sortBtn = document.getElementById('sort-btn');
+    const sortMenu = document.getElementById('sort-menu');
+    const sortOptions = document.querySelectorAll('.sort-option');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    
+    menuToggle.addEventListener('click', function() {
+        sidebarDrawer.classList.add('active');
+        drawerOverlay.classList.add('active');
+    });
+    
+    closeDrawer.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    drawerOverlay.addEventListener('click', function() {
+        sidebarDrawer.classList.remove('active');
+        drawerOverlay.classList.remove('active');
+    });
+    
+    backBtn.addEventListener('click', function() {
+        window.history.back();
+    });
+    
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        console.log('Searching for:', searchTerm);
+    });
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const filter = this.getAttribute('data-filter');
+            console.log('Filter applied:', filter);
+        });
+    });
+    
+    sortBtn.addEventListener('click', function() {
+        sortMenu.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!sortBtn.contains(e.target) && !sortMenu.contains(e.target)) {
+            sortMenu.classList.remove('active');
+        }
+    });
+    
+    sortOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const sortType = this.getAttribute('data-sort');
+            console.log('Sort by:', sortType);
+            sortMenu.classList.remove('active');
+        });
+    });
+    
+    loadMoreBtn.addEventListener('click', function() {
+        console.log('Loading more clients...');
+        this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Loading...</span>';
+        setTimeout(() => {
+            this.innerHTML = '<i class="fa-solid fa-chevron-down"></i><span>Load More Clients</span>';
+        }, 1000);
+    });
+    
+    const clientCards = document.querySelectorAll('.client-card');
+    clientCards.forEach(card => {
+        const viewProfileBtn = card.querySelector('button:first-of-type');
+        const messageBtn = card.querySelectorAll('button')[1];
+        const scheduleBtn = card.querySelectorAll('button')[2];
+        
+        if (viewProfileBtn) {
+            viewProfileBtn.addEventListener('click', function() {
+                console.log('View profile clicked');
+            });
+        }
+        
+        if (messageBtn) {
+            messageBtn.addEventListener('click', function() {
+                console.log('Message clicked');
+            });
+        }
+        
+        if (scheduleBtn) {
+            scheduleBtn.addEventListener('click', function() {
+                console.log('Schedule clicked');
+            });
+        }
+    });
+});
+</script>
+
+</body>
+</html>

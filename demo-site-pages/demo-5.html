@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    
+    <script>window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f4f1f1;
+            --foreground: #705c5d;
+            --card: #ffffff;
+            --card-foreground: #1c1717;
+            --primary: #58a76d;
+            --primary-foreground: #ffffff;
+            --secondary: #54c43b;
+            --secondary-foreground: #ffffff;
+            --muted: #f4f1f1;
+            --muted-foreground: #705c5d;
+            --accent: #a1e619;
+            --accent-foreground: #1c1717;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --border: #d1c7c8;
+            --input: #e8e3e3;
+            --ring: #58a76d;
+            --font-sans: Inter, sans-serif;
+            --font-serif: Georgia, serif;
+            --font-mono: JetBrains Mono, monospace;
+            --radius: 0.5rem;
+            --shadow: -2px 4px 12px 4px rgba(51,51,51,0.05);
+        }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<main id="main-content" class="min-h-screen pb-20">
+
+<header id="header" class="px-5 pt-6 pb-4 bg-background sticky top-0 z-40">
+    <div class="flex items-center justify-between mb-4">
+        <button id="menu-btn" class="w-10 h-10 bg-card rounded-lg flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-bars text-card-foreground"></i>
+        </button>
+        <div class="flex items-center gap-3">
+            <button class="w-10 h-10 bg-card rounded-lg flex items-center justify-center shadow-sm relative">
+                <i class="fa-solid fa-bell text-card-foreground"></i>
+                <span class="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full text-[10px] text-destructive-foreground font-bold flex items-center justify-center">3</span>
+            </button>
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="Ronald" class="w-10 h-10 rounded-full object-cover border-2 border-primary shadow-sm">
+        </div>
+    </div>
+</header>
+
+<section id="greeting-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-start justify-between mb-2">
+        <div>
+            <h1 class="text-card-foreground font-bold text-2xl mb-1">Welcome back, Marcus</h1>
+            <p class="text-muted-foreground text-sm">Ready for another great day of coaching</p>
+        </div>
+    </div>
+    <div class="bg-primary/10 rounded-xl p-3 mt-3 flex items-center gap-3">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-calendar-day text-primary-foreground text-lg"></i>
+        </div>
+        <div>
+            <div class="text-card-foreground font-bold text-base">Monday, February 10, 2025</div>
+            <div class="text-muted-foreground text-xs">2:34 PM</div>
+        </div>
+    </div>
+</section>
+
+<section id="stats-overview-section" class="px-5 pb-6 bg-background">
+    <div class="grid grid-cols-2 gap-3">
+        <div id="sessions-today-card" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-calendar-check text-primary text-lg"></i>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-card-foreground mb-1">6</div>
+            <div class="text-muted-foreground text-xs font-medium">Sessions Today</div>
+        </div>
+
+        <div id="active-clients-card" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-users text-secondary text-lg"></i>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-card-foreground mb-1">18</div>
+            <div class="text-muted-foreground text-xs font-medium">Active Clients</div>
+        </div>
+
+        <div id="hours-week-card" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-clock text-accent text-lg"></i>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-card-foreground mb-1">14</div>
+            <div class="text-muted-foreground text-xs font-medium">Hours This Week</div>
+        </div>
+
+        <div id="earnings-month-card" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-center justify-between mb-2">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-dollar-sign text-primary text-lg"></i>
+                </div>
+            </div>
+            <div class="text-3xl font-bold text-card-foreground mb-1">$1,260</div>
+            <div class="text-muted-foreground text-xs font-medium">This Month</div>
+        </div>
+    </div>
+</section>
+
+<section id="quick-actions-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 shadow-sm">
+        <h2 class="text-card-foreground font-bold text-base mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-bolt text-accent"></i>
+            <span>Quick Actions</span>
+        </h2>
+        <div class="grid grid-cols-3 gap-3">
+            <button class="flex flex-col items-center gap-2 p-3 bg-primary/5 rounded-lg">
+                <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-plus text-primary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold text-center">Add Session</span>
+            </button>
+            <button class="flex flex-col items-center gap-2 p-3 bg-secondary/5 rounded-lg">
+                <div class="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-user-plus text-secondary-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold text-center">New Client</span>
+            </button>
+            <button class="flex flex-col items-center gap-2 p-3 bg-accent/5 rounded-lg">
+                <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
+                    <i class="fa-solid fa-chart-line text-accent-foreground text-lg"></i>
+                </div>
+                <span class="text-card-foreground text-xs font-semibold text-center">View Stats</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="todays-schedule-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-card-foreground font-bold text-lg flex items-center gap-2">
+            <i class="fa-solid fa-calendar-days text-primary"></i>
+            <span>Today's Schedule</span>
+        </h2>
+        <button class="text-primary text-sm font-semibold">View All</button>
+    </div>
+
+    <div id="session-card-1" class="bg-card rounded-xl p-4 shadow-sm border border-border mb-3">
+        <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-futbol text-primary text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-card-foreground font-bold text-base">3:00 PM - 4:00 PM</div>
+                    <div class="text-muted-foreground text-xs">60 minutes</div>
+                </div>
+            </div>
+            <div class="px-3 py-1 bg-accent/10 rounded-lg">
+                <span class="text-accent text-xs font-bold">Upcoming</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 mb-3">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Emma" class="w-10 h-10 rounded-full object-cover">
+            <div>
+                <div class="text-card-foreground font-semibold text-sm">Emma Rodriguez</div>
+                <div class="text-muted-foreground text-xs">U14 Goalkeeper</div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-location-dot text-muted-foreground text-sm"></i>
+            <span class="text-muted-foreground text-xs">Central Park Sports Complex</span>
+        </div>
+        <div class="flex gap-2">
+            <button class="flex-1 bg-primary text-primary-foreground font-semibold py-2.5 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-phone"></i>
+                <span>Call</span>
+            </button>
+            <button class="flex-1 bg-secondary text-secondary-foreground font-semibold py-2.5 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-message"></i>
+                <span>Message</span>
+            </button>
+            <button class="w-11 bg-accent text-accent-foreground font-semibold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center">
+                <i class="fa-solid fa-directions"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="session-card-2" class="bg-card rounded-xl p-4 shadow-sm border border-border mb-3">
+        <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-hockey-puck text-secondary text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-card-foreground font-bold text-base">4:30 PM - 5:30 PM</div>
+                    <div class="text-muted-foreground text-xs">60 minutes</div>
+                </div>
+            </div>
+            <div class="px-3 py-1 bg-muted rounded-lg">
+                <span class="text-muted-foreground text-xs font-bold">Later</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 mb-3">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Marcus" class="w-10 h-10 rounded-full object-cover">
+            <div>
+                <div class="text-card-foreground font-semibold text-sm">Marcus Thompson</div>
+                <div class="text-muted-foreground text-xs">U16 Goalkeeper</div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-location-dot text-muted-foreground text-sm"></i>
+            <span class="text-muted-foreground text-xs">Riverside Hockey Arena</span>
+        </div>
+        <div class="flex gap-2">
+            <button class="flex-1 bg-primary text-primary-foreground font-semibold py-2.5 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-phone"></i>
+                <span>Call</span>
+            </button>
+            <button class="flex-1 bg-secondary text-secondary-foreground font-semibold py-2.5 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-message"></i>
+                <span>Message</span>
+            </button>
+            <button class="w-11 bg-accent text-accent-foreground font-semibold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center">
+                <i class="fa-solid fa-directions"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="session-card-3" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+        <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-lacrosse-stick text-accent text-xl"></i>
+                </div>
+                <div>
+                    <div class="text-card-foreground font-bold text-base">6:00 PM - 7:00 PM</div>
+                    <div class="text-muted-foreground text-xs">60 minutes</div>
+                </div>
+            </div>
+            <div class="px-3 py-1 bg-muted rounded-lg">
+                <span class="text-muted-foreground text-xs font-bold">Evening</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 mb-3">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg" alt="Sophia" class="w-10 h-10 rounded-full object-cover">
+            <div>
+                <div class="text-card-foreground font-semibold text-sm">Sophia Chen</div>
+                <div class="text-muted-foreground text-xs">U12 Goalkeeper</div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-location-dot text-muted-foreground text-sm"></i>
+            <span class="text-muted-foreground text-xs">Lakeside Lacrosse Field</span>
+        </div>
+        <div class="flex gap-2">
+            <button class="flex-1 bg-primary text-primary-foreground font-semibold py-2.5 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-phone"></i>
+                <span>Call</span>
+            </button>
+            <button class="flex-1 bg-secondary text-secondary-foreground font-semibold py-2.5 px-4 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-message"></i>
+                <span>Message</span>
+            </button>
+            <button class="w-11 bg-accent text-accent-foreground font-semibold py-2.5 px-3 rounded-lg text-xs flex items-center justify-center">
+                <i class="fa-solid fa-directions"></i>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="recent-activity-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-card-foreground font-bold text-lg flex items-center gap-2">
+            <i class="fa-solid fa-clock-rotate-left text-primary"></i>
+            <span>Recent Activity</span>
+        </h2>
+        <button class="text-primary text-sm font-semibold">See More</button>
+    </div>
+
+    <div class="space-y-3">
+        <div id="activity-1" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-trophy text-accent"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Progress Milestone Reached</div>
+                    <p class="text-muted-foreground text-xs mb-2">Emma Rodriguez completed 20 sessions and improved reaction time by 15%</p>
+                    <div class="text-muted-foreground text-xs">2 hours ago</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-2" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-calendar-plus text-primary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">New Booking Request</div>
+                    <p class="text-muted-foreground text-xs mb-2">Sarah Martinez wants to book 3 sessions for her son next week</p>
+                    <div class="flex gap-2 mb-2">
+                        <button class="px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs font-semibold">Accept</button>
+                        <button class="px-3 py-1.5 bg-muted text-muted-foreground rounded-lg text-xs font-semibold">Decline</button>
+                    </div>
+                    <div class="text-muted-foreground text-xs">3 hours ago</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-3" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-star text-secondary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">New 5-Star Review</div>
+                    <p class="text-muted-foreground text-xs mb-2">"Ronald is an amazing coach! My daughter loves working with him and has improved so much."</p>
+                    <div class="text-muted-foreground text-xs">5 hours ago</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-4" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-dollar-sign text-accent"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">Payment Received</div>
+                    <p class="text-muted-foreground text-xs mb-2">$120 for 2 sessions with Marcus Thompson</p>
+                    <div class="text-muted-foreground text-xs">Yesterday</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="activity-5" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-message text-primary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="text-card-foreground font-semibold text-sm mb-1">New Message</div>
+                    <p class="text-muted-foreground text-xs mb-2">Jennifer Lee: "Can we reschedule Thursday's session to Friday?"</p>
+                    <div class="text-muted-foreground text-xs">Yesterday</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="performance-insights-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-card-foreground font-bold text-base flex items-center gap-2">
+                <i class="fa-solid fa-chart-line text-primary"></i>
+                <span>This Week's Performance</span>
+            </h2>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-muted-foreground text-xs font-semibold">Sessions Completed</span>
+                    <span class="text-card-foreground text-sm font-bold">12/15</span>
+                </div>
+                <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 80%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-muted-foreground text-xs font-semibold">Client Satisfaction</span>
+                    <span class="text-card-foreground text-sm font-bold">4.9/5.0</span>
+                </div>
+                <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div class="h-full bg-accent rounded-full" style="width: 98%"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-muted-foreground text-xs font-semibold">Revenue Goal</span>
+                    <span class="text-card-foreground text-sm font-bold">$1,840/$2,000</span>
+                </div>
+                <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary rounded-full" style="width: 92%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="upcoming-availability-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 shadow-sm border border-border">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-card-foreground font-bold text-base flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check text-primary"></i>
+                <span>Availability This Week</span>
+            </h2>
+            <button class="text-primary text-xs font-semibold">Edit</button>
+        </div>
+        <div class="space-y-3">
+            <div class="flex items-center justify-between py-2 border-b border-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">M</span>
+                    </div>
+                    <span class="text-card-foreground text-sm font-medium">Monday</span>
+                </div>
+                <span class="text-muted-foreground text-xs">3:00 PM - 8:00 PM</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">T</span>
+                    </div>
+                    <span class="text-card-foreground text-sm font-medium">Tuesday</span>
+                </div>
+                <span class="text-muted-foreground text-xs">4:00 PM - 9:00 PM</span>
+            </div>
+            <div class="flex items-center justify-between py-2 border-b border-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+                        <span class="text-muted-foreground text-xs font-bold">W</span>
+                    </div>
+                    <span class="text-muted-foreground text-sm font-medium">Wednesday</span>
+                </div>
+                <span class="text-muted-foreground text-xs">Not Available</span>
+            </div>
+            <div class="flex items-center justify-between py-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <span class="text-primary text-xs font-bold">T</span>
+                    </div>
+                    <span class="text-card-foreground text-sm font-medium">Thursday</span>
+                </div>
+                <span class="text-muted-foreground text-xs">3:00 PM - 7:00 PM</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="client-spotlight-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-card-foreground font-bold text-lg flex items-center gap-2">
+            <i class="fa-solid fa-users text-primary"></i>
+            <span>Top Clients</span>
+        </h2>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+        <div id="client-spotlight-1" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Emma" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
+            <div class="text-card-foreground font-semibold text-sm text-center mb-1">Emma Rodriguez</div>
+            <div class="text-muted-foreground text-xs text-center mb-3">22 Sessions</div>
+            <div class="flex items-center justify-center gap-1">
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+            </div>
+        </div>
+
+        <div id="client-spotlight-2" class="bg-card rounded-xl p-4 shadow-sm border border-border">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Marcus" class="w-16 h-16 rounded-full object-cover mx-auto mb-3">
+            <div class="text-card-foreground font-semibold text-sm text-center mb-1">Marcus Thompson</div>
+            <div class="text-muted-foreground text-xs text-center mb-3">18 Sessions</div>
+            <div class="flex items-center justify-center gap-1">
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+                <i class="fa-solid fa-star text-accent text-xs"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="coach-tips-section" class="px-5 pb-6 bg-background">
+    <div class="bg-accent/10 rounded-xl p-5 border border-accent/30">
+        <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-lightbulb text-accent text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-base mb-1">Coach Tip of the Day</h3>
+                <p class="text-muted-foreground text-xs leading-relaxed">Remember to document progress after each session. Parents love seeing detailed feedback about their athlete's development!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="earnings-summary-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-card-foreground font-bold text-base flex items-center gap-2">
+                <i class="fa-solid fa-money-bill-trend-up text-primary"></i>
+                <span>Earnings Overview</span>
+            </h2>
+            <button class="text-primary text-xs font-semibold">Details</button>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+                <div class="text-muted-foreground text-xs mb-1">This Week</div>
+                <div class="text-card-foreground text-2xl font-bold">$680</div>
+            </div>
+            <div>
+                <div class="text-muted-foreground text-xs mb-1">Last Week</div>
+                <div class="text-muted-foreground text-2xl font-bold">$520</div>
+            </div>
+        </div>
+        <div class="bg-secondary/10 rounded-lg p-3 flex items-center justify-between">
+            <div>
+                <div class="text-secondary text-xs font-semibold mb-0.5">+30.8% Growth</div>
+                <div class="text-muted-foreground text-xs">vs last week</div>
+            </div>
+            <i class="fa-solid fa-arrow-trend-up text-secondary text-2xl"></i>
+        </div>
+    </div>
+</section>
+
+<section id="session-reminders-section" class="px-5 pb-6 bg-background">
+    <div class="bg-primary/5 rounded-xl p-5 border-2 border-primary/20">
+        <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-bell text-primary text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-semibold text-sm mb-2">Upcoming Reminders</h3>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle text-primary text-[6px]"></i>
+                        <span class="text-muted-foreground text-xs">Emma's session starts in 30 minutes</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle text-primary text-[6px]"></i>
+                        <span class="text-muted-foreground text-xs">Submit progress report for Marcus by EOD</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle text-primary text-[6px]"></i>
+                        <span class="text-muted-foreground text-xs">2 booking requests pending approval</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="motivational-quote-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 shadow-sm border border-border text-center">
+        <i class="fa-solid fa-quote-left text-primary text-2xl mb-3"></i>
+        <p class="text-card-foreground text-base font-semibold italic mb-3 leading-relaxed">"Great coaches don't just teach skills, they inspire confidence and build character."</p>
+        <div class="text-muted-foreground text-xs">- Anonymous</div>
+    </div>
+</section>
+
+</main>
+
+<nav id="bottom-navigation" class="fixed bottom-0 left-0 right-0 bg-card border-t border-border px-5 py-3 z-50">
+    <div class="flex items-center justify-around">
+        <button class="flex flex-col items-center gap-1">
+            <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-house text-primary-foreground"></i>
+            </div>
+            <span class="text-primary text-[10px] font-bold">Home</span>
+        </button>
+        <button class="flex flex-col items-center gap-1">
+            <div class="w-10 h-10 bg-transparent rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-calendar text-muted-foreground"></i>
+            </div>
+            <span class="text-muted-foreground text-[10px] font-medium">Schedule</span>
+        </button>
+        <button class="flex flex-col items-center gap-1">
+            <div class="w-10 h-10 bg-transparent rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-users text-muted-foreground"></i>
+            </div>
+            <span class="text-muted-foreground text-[10px] font-medium">Clients</span>
+        </button>
+        <button class="flex flex-col items-center gap-1">
+            <div class="w-10 h-10 bg-transparent rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-user text-muted-foreground"></i>
+            </div>
+            <span class="text-muted-foreground text-[10px] font-medium">Profile</span>
+        </button>
+    </div>
+</nav>
+
+<div id="sidebar-overlay" class="fixed inset-0 bg-card-foreground/50 z-50 hidden"></div>
+<div id="sidebar" class="fixed top-0 left-0 bottom-0 w-[280px] bg-card shadow-2xl z-50 transform -translate-x-full transition-transform duration-300">
+    <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="Ronald" class="w-12 h-12 rounded-full object-cover border-2 border-primary">
+                <div>
+                    <div class="text-card-foreground font-bold text-base">Ronald</div>
+                    <div class="text-muted-foreground text-xs">Professional Coach</div>
+                </div>
+            </div>
+            <button id="close-sidebar" class="w-8 h-8 bg-muted rounded-lg flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-card-foreground"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-2">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-primary/10 rounded-lg">
+                <i class="fa-solid fa-house text-primary"></i>
+                <span class="text-primary font-semibold text-sm">Dashboard</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted">
+                <i class="fa-solid fa-calendar text-muted-foreground"></i>
+                <span class="text-card-foreground text-sm">My Schedule</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted">
+                <i class="fa-solid fa-users text-muted-foreground"></i>
+                <span class="text-card-foreground text-sm">My Clients</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted">
+                <i class="fa-solid fa-chart-line text-muted-foreground"></i>
+                <span class="text-card-foreground text-sm">Performance</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted">
+                <i class="fa-solid fa-dollar-sign text-muted-foreground"></i>
+                <span class="text-card-foreground text-sm">Earnings</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted">
+                <i class="fa-solid fa-message text-muted-foreground"></i>
+                <span class="text-card-foreground text-sm">Messages</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted">
+                <i class="fa-solid fa-gear text-muted-foreground"></i>
+                <span class="text-card-foreground text-sm">Settings</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-muted">
+                <i class="fa-solid fa-circle-question text-muted-foreground"></i>
+                <span class="text-card-foreground text-sm">Help & Support</span>
+            </a>
+        </nav>
+        
+        <div class="mt-6 pt-6 border-t border-border">
+            <button class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-destructive/10 w-full">
+                <i class="fa-solid fa-right-from-bracket text-destructive"></i>
+                <span class="text-destructive font-semibold text-sm">Log Out</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+window.addEventListener('load', function() {
+    const menuBtn = document.getElementById('menu-btn');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const closeSidebar = document.getElementById('close-sidebar');
+
+    menuBtn.addEventListener('click', function() {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('hidden');
+    });
+
+    closeSidebar.addEventListener('click', function() {
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+    });
+
+    sidebarOverlay.addEventListener('click', function() {
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+    });
+});
+</script>
+
+</body>
+</html>

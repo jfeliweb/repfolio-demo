@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.FontAwesomeConfig = {
+          autoReplaceSvg: 'nest'
+        };
+      </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Sign Up</title>
+    
+    
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<main id="main-content" class="min-h-screen flex flex-col">
+
+<section id="header-section" class="px-5 pt-8 pb-4 bg-background">
+    <div class="flex items-center justify-between">
+        <button class="w-10 h-10 bg-card rounded-lg flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+        </button>
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+            </div>
+        </div>
+        <div class="w-10"></div>
+    </div>
+</section>
+
+<section id="title-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-start gap-3 mb-3">
+        <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-users text-primary text-xl"></i>
+        </div>
+        <div>
+            <h1 class="text-card-foreground font-bold text-2xl mb-1">Join Our Community</h1>
+            <p class="text-muted-foreground text-sm leading-relaxed">Create an account to connect with top goalkeeper coaches for your athlete</p>
+        </div>
+    </div>
+</section>
+
+<section id="parent-badge-section" class="px-5 pb-6 bg-background">
+    <div class="bg-secondary rounded-xl p-4 flex items-center gap-3">
+        <div class="w-12 h-12 bg-secondary-foreground/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-user-group text-secondary-foreground text-xl"></i>
+        </div>
+        <div>
+            <h3 class="text-secondary-foreground font-bold text-sm mb-0.5">Parent/Guardian Account</h3>
+            <p class="text-secondary-foreground/80 text-xs">Manage your athlete's training journey</p>
+        </div>
+    </div>
+</section>
+
+<section id="parent-info-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-4">
+            <i class="fa-solid fa-user text-primary text-lg"></i>
+            <h2 class="text-card-foreground font-bold text-lg">Parent Information</h2>
+        </div>
+        
+        <form id="parent-form" class="space-y-5">
+            <div id="parent-name-field">
+                <label for="parent-name" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Parent/Guardian Name <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="parent-name" 
+                        placeholder="Enter your full name"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">This will be visible to coaches</p>
+            </div>
+
+            <div id="parent-email-field">
+                <label for="parent-email" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Email Address <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <input 
+                        type="email" 
+                        id="parent-email" 
+                        placeholder="parent@example.com"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">Session confirmations will be sent here</p>
+            </div>
+
+            <div id="parent-phone-field">
+                <label for="parent-phone" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Phone Number <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <input 
+                        type="tel" 
+                        id="parent-phone" 
+                        placeholder="+1 (555) 000-0000"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">For urgent communication about sessions</p>
+            </div>
+
+            <div id="parent-password-field">
+                <label for="parent-password" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Password <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <input 
+                        type="password" 
+                        id="parent-password" 
+                        placeholder="Create a secure password"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-12 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                    <button type="button" id="toggle-parent-password" class="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="password-strength-section">
+                <div class="bg-muted rounded-lg p-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-card-foreground text-xs font-semibold">Password Strength:</span>
+                        <span id="strength-text" class="text-muted-foreground text-xs">Not set</span>
+                    </div>
+                    <div class="flex gap-1">
+                        <div id="strength-1" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                        <div id="strength-2" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                        <div id="strength-3" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                        <div id="strength-4" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section id="divider-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center gap-3">
+        <div class="flex-1 h-px bg-border"></div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-futbol text-primary"></i>
+            <span class="text-muted-foreground text-sm font-semibold">Player Details</span>
+        </div>
+        <div class="flex-1 h-px bg-border"></div>
+    </div>
+</section>
+
+<section id="add-player-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 border-2 border-primary/20">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-user-plus text-primary text-lg"></i>
+                <h2 class="text-card-foreground font-bold text-lg">Add Player</h2>
+            </div>
+            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                <span class="text-primary font-bold text-xs">1</span>
+            </div>
+        </div>
+        
+        <form id="player-form" class="space-y-5">
+            <div id="player-name-field">
+                <label for="player-name" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Player Name <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-child text-sm"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="player-name" 
+                        placeholder="Enter player's full name"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">The athlete receiving training</p>
+            </div>
+
+            <div id="player-age-field">
+                <label for="player-age" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Age <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-calendar-days text-sm"></i>
+                    </div>
+                    <input 
+                        type="number" 
+                        id="player-age" 
+                        placeholder="Enter age"
+                        min="5"
+                        max="25"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">Helps match with age-appropriate coaches</p>
+            </div>
+
+            <div id="player-sport-field">
+                <label for="player-sport" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Sport <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-futbol text-sm"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="player-sport" 
+                        placeholder="e.g., Soccer, Hockey, Lacrosse"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">Primary sport for goalkeeper training</p>
+            </div>
+
+            <div id="skill-level-field">
+                <label for="skill-level" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Current Skill Level <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <i class="fa-solid fa-signal text-sm"></i>
+                    </div>
+                    <select 
+                        id="skill-level" 
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-10 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all appearance-none"
+                    >
+                        <option value="" disabled selected>Select skill level</option>
+                        <option value="beginner">Beginner - Just starting out</option>
+                        <option value="intermediate">Intermediate - Some experience</option>
+                        <option value="advanced">Advanced - Competitive level</option>
+                        <option value="elite">Elite - High performance</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                    </div>
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">Helps find coaches matching their level</p>
+            </div>
+
+            <div id="training-goals-field">
+                <label for="training-goals" class="block text-card-foreground font-semibold text-sm mb-2">
+                    Training Goals <span class="text-destructive">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute left-4 top-4 text-muted-foreground">
+                        <i class="fa-solid fa-bullseye text-sm"></i>
+                    </div>
+                    <textarea 
+                        id="training-goals" 
+                        placeholder="What do you hope to achieve? (e.g., improve reflexes, positioning, confidence...)"
+                        rows="4"
+                        required
+                        class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"
+                    ></textarea>
+                </div>
+                <p class="text-muted-foreground text-xs mt-1.5">Share specific areas of focus or development</p>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section id="add-another-player-section" class="px-5 pb-6 bg-background">
+    <button id="add-another-player-btn" class="w-full bg-muted border-2 border-dashed border-border text-card-foreground font-semibold py-4 px-6 rounded-xl text-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-plus text-primary"></i>
+        <span>Add Another Player</span>
+    </button>
+    <p class="text-muted-foreground text-xs text-center mt-2">You can manage multiple players from one account</p>
+</section>
+
+<section id="benefits-highlight-section" class="px-5 pb-6 bg-background">
+    <div class="bg-accent/10 rounded-xl p-5 border border-accent/30">
+        <div class="flex items-start gap-3 mb-4">
+            <div class="w-10 h-10 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-star text-accent text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-bold text-base mb-1">What Parents Love</h3>
+                <p class="text-muted-foreground text-xs leading-relaxed">Join thousands of families improving their goalkeeper skills</p>
+            </div>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="flex items-start gap-3">
+                <div class="w-7 h-7 bg-card rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-check text-accent text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-0.5">Vetted Coaches</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">All coaches are certified and background-checked</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-7 h-7 bg-card rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-check text-accent text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-0.5">Flexible Scheduling</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Book sessions that fit your family's schedule</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-7 h-7 bg-card rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-check text-accent text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-0.5">Track Progress</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Watch your athlete improve with detailed analytics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="terms-section" class="px-5 pb-6 bg-background">
+    <label class="flex items-start gap-3 cursor-pointer">
+        <input 
+            type="checkbox" 
+            id="terms-checkbox" 
+            class="w-5 h-5 rounded border-2 border-input text-primary focus:ring-2 focus:ring-primary/20 cursor-pointer mt-0.5 flex-shrink-0"
+        />
+        <span class="text-muted-foreground text-xs leading-relaxed">
+            I agree to the <a href="#" class="text-primary font-semibold">Terms of Service</a> and <a href="#" class="text-primary font-semibold">Privacy Policy</a>. I consent to sharing my child's information with coaches for training purposes.
+        </span>
+    </label>
+</section>
+
+<section id="marketing-section" class="px-5 pb-6 bg-background">
+    <label class="flex items-start gap-3 cursor-pointer">
+        <input 
+            type="checkbox" 
+            id="marketing-checkbox" 
+            class="w-5 h-5 rounded border-2 border-input text-primary focus:ring-2 focus:ring-primary/20 cursor-pointer mt-0.5 flex-shrink-0"
+        />
+        <span class="text-muted-foreground text-xs leading-relaxed">
+            Send me training tips, coach recommendations, and special offers
+        </span>
+    </label>
+</section>
+
+<section id="create-account-button-section" class="px-5 pb-6 bg-background">
+    <button 
+        type="submit" 
+        id="create-account-button"
+        class="w-full bg-primary text-primary-foreground font-bold py-4 px-6 rounded-xl text-base shadow-sm flex items-center justify-center gap-2"
+    >
+        <span>Create Account</span>
+        <i class="fa-solid fa-check-circle"></i>
+    </button>
+</section>
+
+<section id="security-badge-section" class="px-5 pb-6 bg-background">
+    <div class="bg-primary/5 rounded-xl p-4 border-2 border-primary/20">
+        <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-shield-check text-primary text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-semibold text-sm mb-1">Safe & Secure Platform</h3>
+                <p class="text-muted-foreground text-xs leading-relaxed">Your family's information is protected with bank-level encryption. We never share your data without permission.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="parent-testimonial-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 border border-border">
+        <div class="flex gap-1 mb-3">
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+        </div>
+        <p class="text-card-foreground text-sm leading-relaxed mb-4">"My daughter's confidence has skyrocketed since we found her coach through this platform. The booking system is so easy to use, and I love being able to track her progress."</p>
+        <div class="flex items-center gap-3">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="Parent Jennifer" class="w-10 h-10 rounded-full object-cover">
+            <div>
+                <div class="text-card-foreground font-semibold text-sm">Jennifer Martinez</div>
+                <div class="text-muted-foreground text-xs">Parent of U14 Goalkeeper</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="how-it-works-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5">
+        <h3 class="text-card-foreground font-bold text-base mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-route text-primary"></i>
+            <span>How It Works</span>
+        </h3>
+        <div class="space-y-4">
+            <div class="flex gap-3">
+                <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-primary-foreground font-bold text-sm">1</span>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-1">Browse Coaches</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Search by location, specialization, availability, and reviews</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-primary-foreground font-bold text-sm">2</span>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-1">Book Sessions</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Choose times that work for you and pay securely online</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="text-primary-foreground font-bold text-sm">3</span>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-1">Track Development</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Get detailed feedback and progress reports after each session</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="pricing-preview-section" class="px-5 pb-6 bg-background">
+    <div class="bg-muted rounded-xl p-5">
+        <div class="flex items-center gap-2 mb-3">
+            <i class="fa-solid fa-tag text-primary text-lg"></i>
+            <h3 class="text-card-foreground font-bold text-base">Transparent Pricing</h3>
+        </div>
+        <p class="text-muted-foreground text-sm leading-relaxed mb-4">Session rates vary by coach experience and location. Most sessions range from $40-$100 per hour.</p>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-accent text-sm"></i>
+                <span class="text-card-foreground text-xs font-medium">No hidden fees</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-accent text-sm"></i>
+                <span class="text-card-foreground text-xs font-medium">Cancel anytime</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="faq-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 border border-border">
+        <h3 class="text-card-foreground font-bold text-base mb-4">Quick Questions</h3>
+        <div class="space-y-4">
+            <div>
+                <h4 class="text-card-foreground font-semibold text-sm mb-1">Can I book a trial session?</h4>
+                <p class="text-muted-foreground text-xs leading-relaxed">Yes! Most coaches offer discounted first sessions to ensure it's a good fit.</p>
+            </div>
+            <div>
+                <h4 class="text-card-foreground font-semibold text-sm mb-1">What if we need to reschedule?</h4>
+                <p class="text-muted-foreground text-xs leading-relaxed">You can reschedule up to 24 hours before the session with no penalty.</p>
+            </div>
+            <div>
+                <h4 class="text-card-foreground font-semibold text-sm mb-1">Are group sessions available?</h4>
+                <p class="text-muted-foreground text-xs leading-relaxed">Many coaches offer both private and small group training options.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="trust-badges-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-certificate text-accent text-sm"></i>
+            <span class="text-muted-foreground text-xs font-medium">Verified Coaches</span>
+        </div>
+        <div class="w-px h-4 bg-border"></div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-lock text-accent text-sm"></i>
+            <span class="text-muted-foreground text-xs font-medium">Secure Payments</span>
+        </div>
+        <div class="w-px h-4 bg-border"></div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-heart text-accent text-sm"></i>
+            <span class="text-muted-foreground text-xs font-medium">5K+ Families</span>
+        </div>
+    </div>
+</section>
+
+<section id="already-account-section" class="px-5 pb-6 bg-background">
+    <div class="text-center">
+        <p class="text-muted-foreground text-sm">
+            Already have an account? 
+            <a href="#" class="text-primary font-bold ml-1">Log in</a>
+        </p>
+    </div>
+</section>
+
+<section id="help-center-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-4 text-center border border-border">
+        <i class="fa-solid fa-circle-question text-primary text-2xl mb-2"></i>
+        <h3 class="text-card-foreground font-semibold text-sm mb-1">Questions About Getting Started?</h3>
+        <p class="text-muted-foreground text-xs mb-3">We're here to help you find the perfect coach</p>
+        <button class="text-primary text-sm font-semibold flex items-center justify-center gap-1 mx-auto">
+            <i class="fa-solid fa-headset text-xs"></i>
+            <span>Contact Support</span>
+        </button>
+    </div>
+</section>
+
+<section id="footer-links-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center justify-center gap-4 text-xs text-muted-foreground flex-wrap">
+        <a href="#" class="hover:text-primary">Privacy Policy</a>
+        <span>•</span>
+        <a href="#" class="hover:text-primary">Terms of Service</a>
+        <span>•</span>
+        <a href="#" class="hover:text-primary">Help Center</a>
+    </div>
+</section>
+
+<footer id="footer" class="px-5 pb-8 bg-background">
+    <p class="text-center text-muted-foreground text-xs">© 2024 CoachLink. All rights reserved.</p>
+</footer>
+
+</main>
+
+<script>
+window.addEventListener('load', function() {
+    const parentPassword = document.getElementById('parent-password');
+    const toggleParentPassword = document.getElementById('toggle-parent-password');
+    const strengthText = document.getElementById('strength-text');
+    const createAccountButton = document.getElementById('create-account-button');
+    const termsCheckbox = document.getElementById('terms-checkbox');
+    const addAnotherPlayerBtn = document.getElementById('add-another-player-btn');
+
+    toggleParentPassword.addEventListener('click', function() {
+        const type = parentPassword.type === 'password' ? 'text' : 'password';
+        parentPassword.type = type;
+        const icon = toggleParentPassword.querySelector('i');
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    });
+
+    parentPassword.addEventListener('input', function() {
+        const password = parentPassword.value;
+        let strength = 0;
+        
+        const hasLength = password.length >= 8;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (hasLength) strength++;
+        if (hasUppercase) strength++;
+        if (hasNumber) strength++;
+        if (hasSpecial) strength++;
+
+        const strengthBars = [
+            document.getElementById('strength-1'),
+            document.getElementById('strength-2'),
+            document.getElementById('strength-3'),
+            document.getElementById('strength-4')
+        ];
+
+        strengthBars.forEach((bar, index) => {
+            if (index < strength) {
+                if (strength === 1) {
+                    bar.className = 'flex-1 h-1.5 bg-destructive rounded-full';
+                } else if (strength === 2) {
+                    bar.className = 'flex-1 h-1.5 bg-accent rounded-full';
+                } else if (strength === 3) {
+                    bar.className = 'flex-1 h-1.5 bg-secondary rounded-full';
+                } else {
+                    bar.className = 'flex-1 h-1.5 bg-primary rounded-full';
+                }
+            } else {
+                bar.className = 'flex-1 h-1.5 bg-input rounded-full';
+            }
+        });
+
+        if (strength === 0) {
+            strengthText.textContent = 'Not set';
+            strengthText.className = 'text-muted-foreground text-xs';
+        } else if (strength === 1) {
+            strengthText.textContent = 'Weak';
+            strengthText.className = 'text-destructive text-xs font-semibold';
+        } else if (strength === 2) {
+            strengthText.textContent = 'Fair';
+            strengthText.className = 'text-accent text-xs font-semibold';
+        } else if (strength === 3) {
+            strengthText.textContent = 'Good';
+            strengthText.className = 'text-secondary text-xs font-semibold';
+        } else {
+            strengthText.textContent = 'Strong';
+            strengthText.className = 'text-primary text-xs font-semibold';
+        }
+    });
+
+    addAnotherPlayerBtn.addEventListener('click', function() {
+        alert('Add another player functionality would open a new player form');
+    });
+
+    createAccountButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const parentName = document.getElementById('parent-name').value;
+        const parentEmail = document.getElementById('parent-email').value;
+        const parentPhone = document.getElementById('parent-phone').value;
+        const parentPasswordValue = parentPassword.value;
+        const playerName = document.getElementById('player-name').value;
+        const playerAge = document.getElementById('player-age').value;
+        const playerSport = document.getElementById('player-sport').value;
+        const skillLevel = document.getElementById('skill-level').value;
+        const trainingGoals = document.getElementById('training-goals').value;
+        const termsAccepted = termsCheckbox.checked;
+
+        if (!parentName || !parentEmail || !parentPhone || !parentPasswordValue) {
+            alert('Please fill in all parent information fields');
+            return;
+        }
+
+        if (!playerName || !playerAge || !playerSport || !skillLevel || !trainingGoals) {
+            alert('Please fill in all player information fields');
+            return;
+        }
+
+        if (!termsAccepted) {
+            alert('Please accept the Terms of Service and Privacy Policy');
+            return;
+        }
+
+        console.log('Parent account created successfully');
+    });
+});
+</script>
+
+</body>
+</html>

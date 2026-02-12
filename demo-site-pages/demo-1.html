@@ -1,0 +1,1432 @@
+<html>
+
+  <head>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // tailwind.config (IMPORTANT FOR STYLES)
+      tailwind.config = {
+        theme:
+        {
+          extend:
+          {
+            colors:
+            {
+              "border": "var(--border)",
+              "input": "var(--input)",
+              "ring": "var(--ring)",
+              "background": "var(--background)",
+              "foreground": "var(--foreground)",
+              "primary":
+              {
+                "DEFAULT": "var(--primary)",
+                "foreground": "var(--primary-foreground)",
+              },
+              "secondary":
+              {
+                "DEFAULT": "var(--secondary)",
+                "foreground": "var(--secondary-foreground)",
+              },
+              "destructive":
+              {
+                "DEFAULT": "var(--destructive)",
+                "foreground": "var(--destructive-foreground)",
+              },
+              "muted":
+              {
+                "DEFAULT": "var(--muted)",
+                "foreground": "var(--muted-foreground)",
+              },
+              "accent":
+              {
+                "DEFAULT": "var(--accent)",
+                "foreground": "var(--accent-foreground)",
+              },
+              "popover":
+              {
+                "DEFAULT": "var(--popover)",
+                "foreground": "var(--popover-foreground)",
+              },
+              "card":
+              {
+                "DEFAULT": "var(--card)",
+                "foreground": "var(--card-foreground)",
+              },
+              "sidebar":
+              {
+                "DEFAULT": "var(--sidebar)",
+                "foreground": "var(--sidebar-foreground)",
+                "primary": "var(--sidebar-primary)",
+                "primary-foreground": "var(--sidebar-primary-foreground)",
+                "accent": "var(--sidebar-accent)",
+                "accent-foreground": "var(--sidebar-accent-foreground)",
+                "border": "var(--sidebar-border)",
+                "ring": "var(--sidebar-ring)",
+              },
+              "chart":
+              {
+                "1": "var(--chart-1)",
+                "2": "var(--chart-2)",
+                "3": "var(--chart-3)",
+                "4": "var(--chart-4)",
+                "5": "var(--chart-5)",
+              },
+            },
+            "borderRadius":
+            {
+              "lg": "var(--radius)",
+              "md": "calc(var(--radius) - 2px)",
+              "sm": "calc(var(--radius) - 4px)",
+            },
+            "fontFamily":
+            {
+              "sans": ["var(--font-sans)"],
+              "serif": ["var(--font-serif)"],
+              "mono": ["var(--font-mono)"],
+            },
+            "boxShadow":
+            {
+              "2xs": "var(--shadow-2xs)",
+              "xs": "var(--shadow-xs)",
+              "sm": "var(--shadow-sm)",
+              "DEFAULT": "var(--shadow)",
+              "md": "var(--shadow-md)",
+              "lg": "var(--shadow-lg)",
+              "xl": "var(--shadow-xl)",
+              "2xl": "var(--shadow-2xl)",
+            },
+          },
+        }
+      }
+    </script>
+
+    <script>
+      window.FontAwesomeConfig = {
+        autoReplaceSvg: 'nest'
+      };
+    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
+      rel="stylesheet">
+    <style>
+      :root
+      {
+        --background: #f4f1f1;
+        --foreground: #705c5d;
+        --card: #ffffff;
+        --card-foreground: #1c1717;
+        --primary: #58a76d;
+        --primary-foreground: #ffffff;
+        --secondary: #54c43b;
+        --secondary-foreground: #ffffff;
+        --muted: #f4f1f1;
+        --muted-foreground: #705c5d;
+        --accent: #a1e619;
+        --accent-foreground: #1c1717;
+        --destructive: #ef4444;
+        --destructive-foreground: #ffffff;
+        --border: #d1c7c8;
+        --input: #e8e3e3;
+        --ring: #58a76d;
+        --font-sans: Inter, sans-serif;
+        --font-serif: Georgia, serif;
+        --font-mono: JetBrains Mono, monospace;
+        --radius: 0.5rem;
+        --shadow: -2px 4px 12px 4px rgba(51, 51, 51, 0.05);
+      }
+
+      ::-webkit-scrollbar
+      {
+        display: none;
+      }
+
+      body
+      {
+        font-family: var(--font-sans);
+      }
+    </style>
+    <style data-grapesjs-styles="true">
+      *
+      {
+        box-sizing: border-box;
+      }
+
+      body
+      {
+        margin: 0;
+      }
+
+      :root
+      {
+        --background: #f4f1f1;
+        --foreground: #705c5d;
+        --card: #ffffff;
+        --card-foreground: #1c1717;
+        --primary: #58a76d;
+        --primary-foreground: #ffffff;
+        --secondary: #54c43b;
+        --secondary-foreground: #ffffff;
+        --muted: #f4f1f1;
+        --muted-foreground: #705c5d;
+        --accent: #a1e619;
+        --accent-foreground: #1c1717;
+        --destructive: #ef4444;
+        --destructive-foreground: #ffffff;
+        --border: #d1c7c8;
+        --input: #e8e3e3;
+        --ring: #58a76d;
+        --font-sans: Inter, sans-serif;
+        --font-serif: Georgia, serif;
+        --font-mono: JetBrains Mono, monospace;
+        --radius: 0.5rem;
+        --shadow: -2px 4px 12px 4px rgba(51, 51, 51, 0.05);
+      }
+
+      ::-webkit-scrollbar
+      {
+        display: none;
+      }
+
+      body
+      {
+        font-family: var(--font-sans);
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+      }
+
+      *
+      {
+        box-sizing: border-box;
+      }
+
+      #ivnzeg
+      {
+        width: 85%;
+      }
+
+      #i95yg4
+      {
+        width: 72%;
+      }
+
+      #i5wuof
+      {
+        width: 78%;
+      }
+
+      #it8ioi
+      {
+        width: 90%;
+      }
+
+      #imu7of
+      {
+        max-width: 80%;
+      }
+    </style>
+  </head>
+
+  <body class="bg-background text-foreground">
+    <header id="header"
+      class="fixed top-0 left-0 right-0 bg-card border-b border-border z-50">
+      <div class="flex items-center justify-between px-5 py-4">
+        <div class="flex items-center gap-2">
+          <div
+            class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-futbol text-primary-foreground text-lg"></i>
+          </div><span
+            class="text-card-foreground font-bold text-lg">CoachLink</span>
+        </div><button
+          class="w-10 h-10 flex items-center justify-center text-foreground"><i
+            class="fa-solid fa-bars text-xl"></i></button>
+      </div>
+    </header>
+    <main id="main-content" class="pt-16">
+      <section id="hero-section" class="px-5 pt-12 pb-16 bg-card">
+        <div class="mb-8">
+          <div
+            class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
+            <i class="fa-solid fa-trophy text-primary text-3xl"></i></div>
+          <h1
+            class="text-card-foreground font-bold text-4xl leading-tight mb-4">
+            Transform Your Game with Expert Coaching</h1>
+          <p class="text-muted-foreground text-base leading-relaxed mb-8">
+            Connect with specialized coaches across all sports and skill levels.
+            From soccer to tennis, basketball to swimming - find the perfect
+            coach to help you or your athlete reach their full potential.</p>
+          <div class="space-y-3 mb-8"><button
+              class="w-full bg-primary text-primary-foreground font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2 shadow-sm"><span>Start
+                Coaching</span><i
+                class="fa-solid fa-arrow-right"></i></button><button
+              class="w-full bg-card border-2 border-border text-card-foreground font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2"><span>Find
+                a Coach</span><i class="fa-solid fa-search"></i></button></div>
+        </div>
+        <div class="h-64 rounded-2xl overflow-hidden"><img
+            src="https://storage.googleapis.com/uxpilot-auth.appspot.com/H8eqzcJJniU9EtY7xxSzj5UXU772%2F00996c39-1fa9-4ee3-aaa9-1c570d08e194.png"
+            alt="professional goalkeeper in action making a save, dynamic sports photography, high energy, modern clean aesthetic"
+            class="w-full h-full object-cover"></div>
+      </section>
+      <section id="stats-section" class="px-5 py-12 bg-background">
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-card rounded-xl p-5 text-center">
+            <div class="text-primary font-bold text-3xl mb-1">500+</div>
+            <div class="text-muted-foreground text-xs">Active Coaches</div>
+          </div>
+          <div class="bg-card rounded-xl p-5 text-center">
+            <div class="text-primary font-bold text-3xl mb-1">2.3k</div>
+            <div class="text-muted-foreground text-xs">Athletes</div>
+          </div>
+          <div class="bg-card rounded-xl p-5 text-center">
+            <div class="text-primary font-bold text-3xl mb-1">98%</div>
+            <div class="text-muted-foreground text-xs">Satisfaction</div>
+          </div>
+        </div>
+      </section>
+      <section id="how-it-works-section" class="px-5 py-12 bg-card">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            HOW IT WORKS
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Getting
+            Started is Simple</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Three easy
+            steps to begin your coaching journey</p>
+        </div>
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <div
+              class="flex-shrink-0 w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+              <span class="text-primary-foreground font-bold text-xl">1</span>
+            </div>
+            <div class="flex-1 pt-1">
+              <h3 class="text-card-foreground font-semibold text-lg mb-2">Create
+                Your Profile</h3>
+              <p class="text-muted-foreground text-sm leading-relaxed mb-3">Sign
+                up in minutes and tell us about your goals, experience level,
+                and coaching preferences.</p>
+              <div class="bg-muted rounded-xl p-4">
+                <div class="flex items-center gap-3 mb-3">
+                  <div
+                    class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-user text-primary"></i></div>
+                  <div class="flex-1">
+                    <div class="h-2 bg-input rounded-full w-full mb-1.5"></div>
+                    <div class="h-2 bg-input rounded-full w-3/4"></div>
+                  </div>
+                </div>
+                <div class="flex gap-2">
+                  <div class="h-8 bg-input rounded-lg flex-1"></div>
+                  <div class="h-8 bg-input rounded-lg flex-1"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div
+              class="flex-shrink-0 w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+              <span class="text-primary-foreground font-bold text-xl">2</span>
+            </div>
+            <div class="flex-1 pt-1">
+              <h3 class="text-card-foreground font-semibold text-lg mb-2">Browse
+                &amp; Connect</h3>
+              <p class="text-muted-foreground text-sm leading-relaxed mb-3">
+                Explore verified trainers, view their credentials, and read
+                reviews from other athletes and parents.</p>
+              <div class="bg-muted rounded-xl p-4">
+                <div class="flex gap-2 mb-3">
+                  <div class="w-12 h-12 bg-input rounded-lg"></div>
+                  <div class="flex-1">
+                    <div class="h-2 bg-input rounded-full w-full mb-1.5"></div>
+                    <div class="h-2 bg-input rounded-full w-2/3 mb-2"></div>
+                    <div class="flex gap-1"><i
+                        class="fa-solid fa-star text-accent text-xs"></i><i
+                        class="fa-solid fa-star text-accent text-xs"></i><i
+                        class="fa-solid fa-star text-accent text-xs"></i><i
+                        class="fa-solid fa-star text-accent text-xs"></i><i
+                        class="fa-solid fa-star text-accent text-xs"></i></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div
+              class="flex-shrink-0 w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+              <span class="text-primary-foreground font-bold text-xl">3</span>
+            </div>
+            <div class="flex-1 pt-1">
+              <h3 class="text-card-foreground font-semibold text-lg mb-2">Start
+                Training</h3>
+              <p class="text-muted-foreground text-sm leading-relaxed mb-3">
+                Schedule sessions, track your progress, and communicate directly
+                with your coach through our platform.</p>
+              <div class="bg-muted rounded-xl p-4">
+                <div class="flex items-center justify-between mb-3"><span
+                    class="text-xs font-medium text-muted-foreground">Next
+                    Session</span>
+                  <div
+                    class="bg-accent/20 text-accent text-xs font-semibold px-2 py-1 rounded">
+                    Confirmed</div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                    <i class="fa-solid fa-calendar text-primary-foreground"></i>
+                  </div>
+                  <div>
+                    <div class="h-2 bg-input rounded-full w-24 mb-1.5"></div>
+                    <div class="h-2 bg-input rounded-full w-16"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="featured-trainers-section" class="px-5 py-12 bg-background">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            FEATURED TRAINERS
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Meet Our Top
+            Coaches</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Learn from
+            experienced professionals who are passionate about goalkeeper
+            development</p>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="h-48 overflow-hidden"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/a0ff281796-e07c465fecdd372fe832.png"
+                alt="professional male soccer goalkeeper coach in training gear, confident pose, athletic, without background"
+                class="w-full h-full object-cover"></div>
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="text-card-foreground font-bold text-lg mb-1">Marcus
+                    Rodriguez</h3>
+                  <p class="text-muted-foreground text-sm mb-2">Elite Goalkeeper
+                    Coach</p>
+                  <div class="flex items-center gap-1 mb-2"><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><span
+                      class="text-card-foreground text-xs font-semibold ml-1">5.0</span><span
+                      class="text-muted-foreground text-xs">(127)</span></div>
+                </div>
+                <div
+                  class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <i class="fa-solid fa-shield text-primary"></i></div>
+              </div>
+              <div class="flex flex-wrap gap-2 mb-4"><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Shot
+                  Stopping</span><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Distribution</span><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Youth
+                  Dev</span></div>
+              <div
+                class="flex items-center gap-4 mb-4 text-xs text-muted-foreground">
+                <div class="flex items-center gap-1.5"><i
+                    class="fa-solid fa-clock"></i><span>8+ years</span></div>
+                <div class="flex items-center gap-1.5"><i
+                    class="fa-solid fa-users"></i><span>200+ athletes</span>
+                </div>
+              </div><button
+                class="w-full bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm">
+                View Profile
+              </button>
+            </div>
+          </div>
+          <div class="bg-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="h-48 overflow-hidden"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/7f043b1094-e7f5420ca1e674c43def.png"
+                alt="professional female soccer goalkeeper coach smiling, athletic wear, confident, without background"
+                class="w-full h-full object-cover"></div>
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="text-card-foreground font-bold text-lg mb-1">Sarah
+                    Chen</h3>
+                  <p class="text-muted-foreground text-sm mb-2">Technical
+                    Development Specialist</p>
+                  <div class="flex items-center gap-1 mb-2"><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><span
+                      class="text-card-foreground text-xs font-semibold ml-1">5.0</span><span
+                      class="text-muted-foreground text-xs">(94)</span></div>
+                </div>
+                <div
+                  class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <i class="fa-solid fa-medal text-primary"></i></div>
+              </div>
+              <div class="flex flex-wrap gap-2 mb-4"><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Positioning</span><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Footwork</span><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Mental
+                  Game</span></div>
+              <div
+                class="flex items-center gap-4 mb-4 text-xs text-muted-foreground">
+                <div class="flex items-center gap-1.5"><i
+                    class="fa-solid fa-clock"></i><span>12+ years</span></div>
+                <div class="flex items-center gap-1.5"><i
+                    class="fa-solid fa-users"></i><span>350+ athletes</span>
+                </div>
+              </div><button
+                class="w-full bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm">
+                View Profile
+              </button>
+            </div>
+          </div>
+          <div class="bg-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="h-48 overflow-hidden"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/789a01bb97-88b6c5f0662281b2efd4.png"
+                alt="professional male soccer goalkeeper coach demonstrating technique, athletic, experienced, without background"
+                class="w-full h-full object-cover"></div>
+            <div class="p-5">
+              <div class="flex items-start justify-between mb-3">
+                <div>
+                  <h3 class="text-card-foreground font-bold text-lg mb-1">James
+                    Patterson</h3>
+                  <p class="text-muted-foreground text-sm mb-2">Performance
+                    &amp; Conditioning Coach</p>
+                  <div class="flex items-center gap-1 mb-2"><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star text-accent text-xs"></i><i
+                      class="fa-solid fa-star-half-stroke text-accent text-xs"></i><span
+                      class="text-card-foreground text-xs font-semibold ml-1">4.8</span><span
+                      class="text-muted-foreground text-xs">(156)</span></div>
+                </div>
+                <div
+                  class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <i class="fa-solid fa-dumbbell text-primary"></i></div>
+              </div>
+              <div class="flex flex-wrap gap-2 mb-4"><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Agility</span><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Strength</span><span
+                  class="bg-muted text-muted-foreground text-xs px-3 py-1 rounded-full">Reflexes</span>
+              </div>
+              <div
+                class="flex items-center gap-4 mb-4 text-xs text-muted-foreground">
+                <div class="flex items-center gap-1.5"><i
+                    class="fa-solid fa-clock"></i><span>10+ years</span></div>
+                <div class="flex items-center gap-1.5"><i
+                    class="fa-solid fa-users"></i><span>280+ athletes</span>
+                </div>
+              </div><button
+                class="w-full bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm">
+                View Profile
+              </button>
+            </div>
+          </div>
+        </div><button
+          class="w-full mt-6 bg-card border-2 border-border text-card-foreground font-semibold py-3.5 px-4 rounded-xl text-sm">
+          View All Coaches
+        </button>
+      </section>
+      <section id="benefits-section" class="px-5 py-12 bg-card">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            PLATFORM BENEFITS
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Everything
+            You Need to Succeed</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Powerful
+            tools designed to make coaching and learning seamless</p>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-muted rounded-2xl p-6">
+            <div
+              class="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-4">
+              <i
+                class="fa-solid fa-calendar-check text-primary-foreground text-2xl"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-xl mb-3">Smart
+              Scheduling</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed mb-4">Book
+              sessions with ease using our intelligent calendar system.
+              Automatic reminders, rescheduling options, and conflict detection
+              keep everyone on track.</p>
+            <div class="bg-card rounded-xl p-4">
+              <div class="flex items-center justify-between mb-3"><span
+                  class="text-xs font-semibold text-card-foreground">This
+                  Week</span>
+                <div class="flex gap-1">
+                  <div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                  <div class="w-1.5 h-1.5 bg-input rounded-full"></div>
+                  <div class="w-1.5 h-1.5 bg-input rounded-full"></div>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div
+                  class="flex items-center gap-3 bg-primary/10 rounded-lg p-3">
+                  <div
+                    class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span
+                      class="text-primary-foreground text-xs font-bold">M</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="h-2 bg-primary/30 rounded-full w-3/4 mb-1">
+                    </div>
+                    <div class="h-1.5 bg-primary/20 rounded-full w-1/2"></div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 bg-muted rounded-lg p-3">
+                  <div
+                    class="w-8 h-8 bg-input rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span
+                      class="text-muted-foreground text-xs font-bold">W</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="h-2 bg-input rounded-full w-2/3 mb-1"></div>
+                    <div class="h-1.5 bg-input rounded-full w-1/3"></div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 bg-muted rounded-lg p-3">
+                  <div
+                    class="w-8 h-8 bg-input rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span
+                      class="text-muted-foreground text-xs font-bold">F</span>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="h-2 bg-input rounded-full w-3/5 mb-1"></div>
+                    <div class="h-1.5 bg-input rounded-full w-2/5"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="mt-4 space-y-2">
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Automated
+                  notifications &amp; reminders</span></li>
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Easy
+                  rescheduling with one tap</span></li>
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Sync
+                  with your personal calendar</span></li>
+            </ul>
+          </div>
+          <div class="bg-muted rounded-2xl p-6">
+            <div
+              class="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-4">
+              <i
+                class="fa-solid fa-chart-line text-primary-foreground text-2xl"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-xl mb-3">Progress
+              Tracking</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed mb-4">
+              Monitor improvement with detailed analytics, skill assessments,
+              and personalized feedback. Watch your performance grow over time
+              with visual insights.</p>
+            <div class="bg-card rounded-xl p-4">
+              <div class="flex items-center justify-between mb-4"><span
+                  class="text-xs font-semibold text-card-foreground">Skill
+                  Development</span><span
+                  class="text-xs text-primary font-semibold">+12% this
+                  month</span></div>
+              <div class="space-y-3">
+                <div>
+                  <div class="flex items-center justify-between mb-1.5"><span
+                      class="text-xs text-muted-foreground">Shot
+                      Stopping</span><span
+                      class="text-xs font-semibold text-card-foreground">85%</span>
+                  </div>
+                  <div class="h-2 bg-input rounded-full overflow-hidden">
+                    <div id="ivnzeg" class="h-full bg-primary rounded-full">
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1.5"><span
+                      class="text-xs text-muted-foreground">Distribution</span><span
+                      class="text-xs font-semibold text-card-foreground">72%</span>
+                  </div>
+                  <div class="h-2 bg-input rounded-full overflow-hidden">
+                    <div id="i95yg4" class="h-full bg-primary rounded-full">
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1.5"><span
+                      class="text-xs text-muted-foreground">Positioning</span><span
+                      class="text-xs font-semibold text-card-foreground">78%</span>
+                  </div>
+                  <div class="h-2 bg-input rounded-full overflow-hidden">
+                    <div id="i5wuof" class="h-full bg-primary rounded-full">
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex items-center justify-between mb-1.5"><span
+                      class="text-xs text-muted-foreground">Reflexes</span><span
+                      class="text-xs font-semibold text-card-foreground">90%</span>
+                  </div>
+                  <div class="h-2 bg-input rounded-full overflow-hidden">
+                    <div id="it8ioi" class="h-full bg-accent rounded-full">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="mt-4 space-y-2">
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Detailed
+                  performance metrics</span></li>
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Video
+                  analysis and feedback</span></li>
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Goal
+                  setting and achievement tracking</span></li>
+            </ul>
+          </div>
+          <div class="bg-muted rounded-2xl p-6">
+            <div
+              class="w-14 h-14 bg-primary rounded-xl flex items-center justify-center mb-4">
+              <i
+                class="fa-solid fa-comments text-primary-foreground text-2xl"></i>
+            </div>
+            <h3 class="text-card-foreground font-bold text-xl mb-3">Seamless
+              Communication</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed mb-4">Stay
+              connected with built-in messaging, video calls, and group
+              discussions. Share updates, ask questions, and collaborate in
+              real-time.</p>
+            <div class="bg-card rounded-xl p-4">
+              <div class="space-y-3">
+                <div class="flex gap-3">
+                  <div class="w-8 h-8 rounded-full bg-primary flex-shrink-0">
+                  </div>
+                  <div class="flex-1">
+                    <div class="bg-muted rounded-2xl rounded-tl-sm p-3">
+                      <div class="h-2 bg-input rounded-full w-full mb-1.5">
+                      </div>
+                      <div class="h-2 bg-input rounded-full w-3/4"></div>
+                    </div><span
+                      class="text-xs text-muted-foreground mt-1 inline-block">2:34
+                      PM</span>
+                  </div>
+                </div>
+                <div class="flex gap-3 justify-end">
+                  <div class="flex-1">
+                    <div id="imu7of"
+                      class="bg-primary/20 rounded-2xl rounded-tr-sm p-3 ml-auto">
+                      <div class="h-2 bg-primary/30 rounded-full w-full mb-1.5">
+                      </div>
+                      <div class="h-2 bg-primary/30 rounded-full w-2/3"></div>
+                    </div><span
+                      class="text-xs text-muted-foreground mt-1 inline-block float-right">2:35
+                      PM</span>
+                  </div>
+                  <div class="w-8 h-8 rounded-full bg-accent flex-shrink-0">
+                  </div>
+                </div>
+                <div class="flex gap-3">
+                  <div class="w-8 h-8 rounded-full bg-primary flex-shrink-0">
+                  </div>
+                  <div class="flex-1">
+                    <div class="bg-muted rounded-2xl rounded-tl-sm p-3">
+                      <div class="h-2 bg-input rounded-full w-4/5"></div>
+                    </div><span
+                      class="text-xs text-muted-foreground mt-1 inline-block">2:36
+                      PM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="mt-4 space-y-2">
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Instant
+                  messaging with coaches</span></li>
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Secure
+                  video conferencing</span></li>
+              <li class="flex items-center gap-2 text-sm text-muted-foreground">
+                <i class="fa-solid fa-check text-primary text-xs"></i><span>Share
+                  photos, videos, and documents</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section id="specializations-section" class="px-5 py-12 bg-background">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            SPECIALIZATIONS
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Goalkeeper
+            Training Focus Areas</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Expert
+            coaching across all aspects of goalkeeper development</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-hand text-primary text-xl"></i></div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">Shot
+              Stopping</h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Master
+              saves and reflexes</p>
+          </div>
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-bullseye text-primary text-xl"></i></div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">
+              Positioning</h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Perfect
+              your angles</p>
+          </div>
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-paper-plane text-primary text-xl"></i></div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">
+              Distribution</h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Build from
+              the back</p>
+          </div>
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-shoe-prints text-primary text-xl"></i></div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">Footwork
+            </h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Quick and
+              agile movement</p>
+          </div>
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-bolt text-primary text-xl"></i></div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">Reaction
+              Time</h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Lightning
+              fast reflexes</p>
+          </div>
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-brain text-primary text-xl"></i></div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">Mental
+              Game</h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Confidence
+              &amp; focus</p>
+          </div>
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-people-group text-primary text-xl"></i>
+            </div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">
+              Communication</h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Lead your
+              defense</p>
+          </div>
+          <div class="bg-card rounded-xl p-4">
+            <div
+              class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <i class="fa-solid fa-dumbbell text-primary text-xl"></i></div>
+            <h4 class="text-card-foreground font-semibold text-sm mb-1">
+              Conditioning</h4>
+            <p class="text-muted-foreground text-xs leading-relaxed">Strength
+              &amp; endurance</p>
+          </div>
+        </div>
+      </section>
+      <section id="testimonials-section" class="px-5 py-12 bg-card">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            TESTIMONIALS
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">What Athletes
+            &amp; Parents Say</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Real stories
+            from our community</p>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-muted rounded-2xl p-5">
+            <div class="flex items-center gap-3 mb-4"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg"
+                alt="Athlete" class="w-12 h-12 rounded-full object-cover">
+              <div class="flex-1">
+                <h4 class="text-card-foreground font-semibold text-sm">David
+                  Martinez</h4>
+                <p class="text-muted-foreground text-xs">Parent of U16
+                  Goalkeeper</p>
+              </div>
+              <div class="flex gap-0.5"><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i></div>
+            </div>
+            <p class="text-card-foreground text-sm leading-relaxed mb-3">
+              "CoachLink has been a game-changer for my son's development. The
+              progress tracking feature lets me see exactly how he's improving,
+              and the communication with Coach Marcus is seamless. Highly
+              recommend!"</p>
+            <div class="flex items-center gap-2 text-xs text-muted-foreground">
+              <i class="fa-solid fa-clock"></i><span>2 weeks ago</span></div>
+          </div>
+          <div class="bg-muted rounded-2xl p-5">
+            <div class="flex items-center gap-3 mb-4"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg"
+                alt="Athlete" class="w-12 h-12 rounded-full object-cover">
+              <div class="flex-1">
+                <h4 class="text-card-foreground font-semibold text-sm">Emma
+                  Thompson</h4>
+                <p class="text-muted-foreground text-xs">Goalkeeper, Age 15</p>
+              </div>
+              <div class="flex gap-0.5"><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i></div>
+            </div>
+            <p class="text-card-foreground text-sm leading-relaxed mb-3">
+              "Training with Coach Sarah has helped me earn a starting position
+              on my club team. The video analysis and personalized drills have
+              made such a difference. This platform makes everything so easy!"
+            </p>
+            <div class="flex items-center gap-2 text-xs text-muted-foreground">
+              <i class="fa-solid fa-clock"></i><span>1 month ago</span></div>
+          </div>
+          <div class="bg-muted rounded-2xl p-5">
+            <div class="flex items-center gap-3 mb-4"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg"
+                alt="Athlete" class="w-12 h-12 rounded-full object-cover">
+              <div class="flex-1">
+                <h4 class="text-card-foreground font-semibold text-sm">Michael
+                  Chen</h4>
+                <p class="text-muted-foreground text-xs">Parent &amp; Former Pro
+                </p>
+              </div>
+              <div class="flex gap-0.5"><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i><i
+                  class="fa-solid fa-star text-accent text-xs"></i></div>
+            </div>
+            <p class="text-card-foreground text-sm leading-relaxed mb-3">"As a
+              former goalkeeper myself, I'm impressed by the quality of coaching
+              available on CoachLink. The scheduling system is brilliant and the
+              progress metrics give real insights into development."</p>
+            <div class="flex items-center gap-2 text-xs text-muted-foreground">
+              <i class="fa-solid fa-clock"></i><span>3 weeks ago</span></div>
+          </div>
+        </div>
+        <div class="mt-6 bg-primary/10 rounded-xl p-5 text-center">
+          <div class="text-primary font-bold text-4xl mb-1">4.9/5.0</div>
+          <div class="flex justify-center gap-1 mb-2"><i
+              class="fa-solid fa-star text-accent"></i><i
+              class="fa-solid fa-star text-accent"></i><i
+              class="fa-solid fa-star text-accent"></i><i
+              class="fa-solid fa-star text-accent"></i><i
+              class="fa-solid fa-star text-accent"></i></div>
+          <p class="text-muted-foreground text-sm">Based on 1,247+ reviews</p>
+        </div>
+      </section>
+      <section id="pricing-preview-section" class="px-5 py-12 bg-background">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            FLEXIBLE PRICING
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Plans for
+            Every Goal</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Choose the
+            package that fits your training needs</p>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-card rounded-2xl p-6 border-2 border-border">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h3 class="text-card-foreground font-bold text-xl mb-1">Starter
+                </h3>
+                <p class="text-muted-foreground text-sm">Perfect for beginners
+                </p>
+              </div>
+              <div class="text-right">
+                <div class="text-card-foreground font-bold text-3xl">$49</div>
+                <div class="text-muted-foreground text-xs">/month</div>
+              </div>
+            </div>
+            <ul class="space-y-3 mb-6">
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>4
+                  sessions per month</span></li>
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>Basic
+                  progress tracking</span></li>
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>Chat
+                  support</span></li>
+              <li class="flex items-start gap-2 text-sm text-muted-foreground">
+                <i
+                  class="fa-solid fa-xmark text-muted-foreground mt-0.5 flex-shrink-0"></i><span>Video
+                  analysis</span></li>
+            </ul><button
+              class="w-full bg-card border-2 border-border text-card-foreground font-semibold py-3 px-4 rounded-xl text-sm">
+              Get Started
+            </button>
+          </div>
+          <div class="bg-primary rounded-2xl p-6 relative overflow-hidden">
+            <div
+              class="absolute top-4 right-4 bg-accent text-accent-foreground text-xs font-bold px-3 py-1 rounded-full">
+              POPULAR
+            </div>
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h3 class="text-primary-foreground font-bold text-xl mb-1">Pro
+                </h3>
+                <p class="text-primary-foreground/80 text-sm">Most popular
+                  choice</p>
+              </div>
+              <div class="text-right">
+                <div class="text-primary-foreground font-bold text-3xl">$89
+                </div>
+                <div class="text-primary-foreground/80 text-xs">/month</div>
+              </div>
+            </div>
+            <ul class="space-y-3 mb-6">
+              <li
+                class="flex items-start gap-2 text-sm text-primary-foreground">
+                <i
+                  class="fa-solid fa-check text-accent mt-0.5 flex-shrink-0"></i><span>8
+                  sessions per month</span></li>
+              <li
+                class="flex items-start gap-2 text-sm text-primary-foreground">
+                <i
+                  class="fa-solid fa-check text-accent mt-0.5 flex-shrink-0"></i><span>Advanced
+                  progress tracking</span></li>
+              <li
+                class="flex items-start gap-2 text-sm text-primary-foreground">
+                <i
+                  class="fa-solid fa-check text-accent mt-0.5 flex-shrink-0"></i><span>Priority
+                  chat &amp; video support</span></li>
+              <li
+                class="flex items-start gap-2 text-sm text-primary-foreground">
+                <i
+                  class="fa-solid fa-check text-accent mt-0.5 flex-shrink-0"></i><span>Video
+                  analysis included</span></li>
+            </ul><button
+              class="w-full bg-accent text-accent-foreground font-semibold py-3 px-4 rounded-xl text-sm">
+              Get Started
+            </button>
+          </div>
+          <div class="bg-card rounded-2xl p-6 border-2 border-border">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h3 class="text-card-foreground font-bold text-xl mb-1">Elite
+                </h3>
+                <p class="text-muted-foreground text-sm">Maximum development</p>
+              </div>
+              <div class="text-right">
+                <div class="text-card-foreground font-bold text-3xl">$149</div>
+                <div class="text-muted-foreground text-xs">/month</div>
+              </div>
+            </div>
+            <ul class="space-y-3 mb-6">
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>12
+                  sessions per month</span></li>
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>Premium
+                  analytics dashboard</span></li>
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>24/7
+                  coach access</span></li>
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>Unlimited
+                  video analysis</span></li>
+              <li class="flex items-start gap-2 text-sm text-card-foreground"><i
+                  class="fa-solid fa-check text-primary mt-0.5 flex-shrink-0"></i><span>Custom
+                  training plans</span></li>
+            </ul><button
+              class="w-full bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl text-sm">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="success-stories-section" class="px-5 py-12 bg-card">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            SUCCESS STORIES
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Athletes Who
+            Made It</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">From
+            CoachLink training to college scholarships and beyond</p>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-muted rounded-2xl overflow-hidden">
+            <div class="h-44 overflow-hidden"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/ac80bbaf71-88a9746bdcbabc3eb866.png"
+                alt="young male goalkeeper celebrating with trophy, success story, athletic achievement"
+                class="w-full h-full object-cover"></div>
+            <div class="p-5">
+              <div class="flex items-center gap-3 mb-3"><img
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-4.jpg"
+                  alt="Success story"
+                  class="w-10 h-10 rounded-full object-cover">
+                <div>
+                  <h4 class="text-card-foreground font-semibold text-sm">Jake
+                    Morrison</h4>
+                  <p class="text-muted-foreground text-xs">NCAA Division 1
+                    Scholarship</p>
+                </div>
+              </div>
+              <p class="text-card-foreground text-sm leading-relaxed mb-3">
+                "After 2 years with Coach Marcus, I earned a full scholarship to
+                play D1 soccer. The technical skills and mental preparation I
+                gained were invaluable."</p>
+              <div class="flex items-center gap-2"><span
+                  class="bg-accent/20 text-accent text-xs font-semibold px-2 py-1 rounded">Scholarship
+                  Winner</span><span
+                  class="bg-primary/20 text-primary text-xs font-semibold px-2 py-1 rounded">2
+                  Years Training</span></div>
+            </div>
+          </div>
+          <div class="bg-muted rounded-2xl overflow-hidden">
+            <div class="h-44 overflow-hidden"><img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/996148a51a-01bc0522e975c8f2ea64.png"
+                alt="young female goalkeeper training session, focused athlete, professional sports photography"
+                class="w-full h-full object-cover"></div>
+            <div class="p-5">
+              <div class="flex items-center gap-3 mb-3"><img
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-6.jpg"
+                  alt="Success story"
+                  class="w-10 h-10 rounded-full object-cover">
+                <div>
+                  <h4 class="text-card-foreground font-semibold text-sm">Sophia
+                    Williams</h4>
+                  <p class="text-muted-foreground text-xs">Youth National Team
+                  </p>
+                </div>
+              </div>
+              <p class="text-card-foreground text-sm leading-relaxed mb-3">
+                "Coach Sarah helped me make the U17 National Team. Her focus on
+                positioning and decision-making transformed my game completely."
+              </p>
+              <div class="flex items-center gap-2"><span
+                  class="bg-accent/20 text-accent text-xs font-semibold px-2 py-1 rounded">National
+                  Team</span><span
+                  class="bg-primary/20 text-primary text-xs font-semibold px-2 py-1 rounded">18
+                  Months Training</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="app-features-section" class="px-5 py-12 bg-background">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            MOBILE APP
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Train
+            Anywhere, Anytime</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Download our
+            app for iOS and Android to access all features on the go</p>
+        </div>
+        <div class="bg-card rounded-2xl p-6 mb-4">
+          <div
+            class="h-48 bg-muted rounded-xl mb-6 flex items-center justify-center">
+            <img
+              src="https://storage.googleapis.com/uxpilot-auth.appspot.com/ff64be8651-c7afab5f187f03174768.png"
+              alt="modern smartphone displaying sports training app interface, mobile mockup, clean design"
+              class="w-full h-full object-contain"></div>
+          <div class="space-y-4 mb-6">
+            <div class="flex items-start gap-3">
+              <div
+                class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-mobile-screen text-primary"></i></div>
+              <div>
+                <h4 class="text-card-foreground font-semibold text-sm mb-1">
+                  Mobile-First Design</h4>
+                <p class="text-muted-foreground text-xs leading-relaxed">
+                  Intuitive interface optimized for on-the-go access</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div
+                class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-bell text-primary"></i></div>
+              <div>
+                <h4 class="text-card-foreground font-semibold text-sm mb-1">Push
+                  Notifications</h4>
+                <p class="text-muted-foreground text-xs leading-relaxed">Never
+                  miss a session with instant alerts and reminders</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div
+                class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-cloud text-primary"></i></div>
+              <div>
+                <h4 class="text-card-foreground font-semibold text-sm mb-1">
+                  Cloud Sync</h4>
+                <p class="text-muted-foreground text-xs leading-relaxed">All
+                  your data synced across all your devices</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3"><button
+              class="flex-1 bg-card-foreground text-card font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2"><i
+                class="fa-brands fa-apple text-lg"></i><span>App
+                Store</span></button><button
+              class="flex-1 bg-card-foreground text-card font-semibold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2"><i
+                class="fa-brands fa-google-play text-lg"></i><span>Play
+                Store</span></button></div>
+        </div>
+      </section>
+      <section id="faq-section" class="px-5 py-12 bg-card">
+        <div class="mb-8">
+          <div
+            class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full mb-3">
+            FAQ
+          </div>
+          <h2 class="text-card-foreground font-bold text-3xl mb-3">Common
+            Questions</h2>
+          <p class="text-muted-foreground text-sm leading-relaxed">Everything
+            you need to know about CoachLink</p>
+        </div>
+        <div class="space-y-3">
+          <details class="bg-muted rounded-xl overflow-hidden">
+            <summary
+              class="px-5 py-4 cursor-pointer flex items-center justify-between text-card-foreground font-semibold text-sm">
+              <span>How do I find the right coach?</span><i
+                class="fa-solid fa-chevron-down text-muted-foreground"></i>
+            </summary>
+            <div
+              class="px-5 pb-4 text-muted-foreground text-sm leading-relaxed">
+              Browse our directory of verified coaches, filter by specialty,
+              location, and availability. Read reviews, check credentials, and
+              book a free consultation to ensure the perfect match.
+            </div>
+          </details>
+          <details class="bg-muted rounded-xl overflow-hidden">
+            <summary
+              class="px-5 py-4 cursor-pointer flex items-center justify-between text-card-foreground font-semibold text-sm">
+              <span>Can I switch coaches?</span><i
+                class="fa-solid fa-chevron-down text-muted-foreground"></i>
+            </summary>
+            <div
+              class="px-5 pb-4 text-muted-foreground text-sm leading-relaxed">
+              Absolutely! You can change coaches at any time. Your progress data
+              transfers seamlessly, ensuring continuity in your training
+              journey.
+            </div>
+          </details>
+          <details class="bg-muted rounded-xl overflow-hidden">
+            <summary
+              class="px-5 py-4 cursor-pointer flex items-center justify-between text-card-foreground font-semibold text-sm">
+              <span>What if I need to cancel a session?</span><i
+                class="fa-solid fa-chevron-down text-muted-foreground"></i>
+            </summary>
+            <div
+              class="px-5 pb-4 text-muted-foreground text-sm leading-relaxed">
+              Cancel up to 24 hours before your session for a full credit.
+              Emergency cancellations are handled case-by-case with your coach.
+            </div>
+          </details>
+          <details class="bg-muted rounded-xl overflow-hidden">
+            <summary
+              class="px-5 py-4 cursor-pointer flex items-center justify-between text-card-foreground font-semibold text-sm">
+              <span>Are all coaches verified?</span><i
+                class="fa-solid fa-chevron-down text-muted-foreground"></i>
+            </summary>
+            <div
+              class="px-5 pb-4 text-muted-foreground text-sm leading-relaxed">
+              Yes! Every coach undergoes background checks and credential
+              verification. We ensure they have proper certifications and
+              experience before joining our platform.
+            </div>
+          </details>
+          <details class="bg-muted rounded-xl overflow-hidden">
+            <summary
+              class="px-5 py-4 cursor-pointer flex items-center justify-between text-card-foreground font-semibold text-sm">
+              <span>Can I train virtually?</span><i
+                class="fa-solid fa-chevron-down text-muted-foreground"></i>
+            </summary>
+            <div
+              class="px-5 pb-4 text-muted-foreground text-sm leading-relaxed">
+              Yes! Many coaches offer virtual training sessions via video call.
+              You can also combine in-person and virtual sessions based on your
+              needs.
+            </div>
+          </details>
+          <details class="bg-muted rounded-xl overflow-hidden">
+            <summary
+              class="px-5 py-4 cursor-pointer flex items-center justify-between text-card-foreground font-semibold text-sm">
+              <span>What age groups do you serve?</span><i
+                class="fa-solid fa-chevron-down text-muted-foreground"></i>
+            </summary>
+            <div
+              class="px-5 pb-4 text-muted-foreground text-sm leading-relaxed">
+              We work with goalkeepers from age 8 through adult. Our coaches
+              specialize in different age groups and skill levels to provide
+              age-appropriate training.
+            </div>
+          </details>
+        </div>
+      </section>
+      <section id="cta-section" class="px-5 py-16 bg-primary">
+        <div class="text-center mb-8">
+          <div
+            class="w-16 h-16 bg-primary-foreground/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <i class="fa-solid fa-rocket text-primary-foreground text-3xl"></i>
+          </div>
+          <h2 class="text-primary-foreground font-bold text-3xl mb-4">Ready to
+            Transform Your Game?</h2>
+          <p class="text-primary-foreground/90 text-base leading-relaxed mb-8">
+            Join thousands of athletes and coaches who are already achieving
+            their goals with CoachLink</p>
+          <div class="space-y-3 mb-8"><button
+              class="w-full bg-accent text-accent-foreground font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2 shadow-lg"><span>Get
+                Started Free</span><i
+                class="fa-solid fa-arrow-right"></i></button><button
+              class="w-full bg-primary-foreground/20 text-primary-foreground font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-2 backdrop-blur-sm"><span>Schedule
+                a Demo</span><i class="fa-solid fa-calendar"></i></button></div>
+          <div
+            class="flex items-center justify-center gap-6 text-primary-foreground/80 text-xs">
+            <div class="flex items-center gap-2"><i
+                class="fa-solid fa-check-circle"></i><span>No credit card</span>
+            </div>
+            <div class="flex items-center gap-2"><i
+                class="fa-solid fa-check-circle"></i><span>14-day trial</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-primary-foreground/10 backdrop-blur-sm rounded-2xl p-5">
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div class="text-primary-foreground font-bold text-2xl mb-1">500+
+              </div>
+              <div class="text-primary-foreground/80 text-xs">Coaches</div>
+            </div>
+            <div>
+              <div class="text-primary-foreground font-bold text-2xl mb-1">2.3k
+              </div>
+              <div class="text-primary-foreground/80 text-xs">Athletes</div>
+            </div>
+            <div>
+              <div class="text-primary-foreground font-bold text-2xl mb-1">98%
+              </div>
+              <div class="text-primary-foreground/80 text-xs">Satisfaction</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer id="footer" class="bg-card border-t border-border px-5 py-12">
+      <div class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+          <div
+            class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-futbol text-primary-foreground text-lg"></i>
+          </div><span
+            class="text-card-foreground font-bold text-xl">CoachLink</span>
+        </div>
+        <p class="text-muted-foreground text-sm leading-relaxed mb-6">Connecting
+          elite goalkeeper coaches with passionate athletes worldwide.</p>
+      </div>
+      <div class="space-y-6 mb-8">
+        <div>
+          <h4 class="text-card-foreground font-semibold text-sm mb-3">Platform
+          </h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-muted-foreground text-sm">Find a
+                Coach</a></li>
+            <li><a href="#" class="text-muted-foreground text-sm">Become a
+                Coach</a></li>
+            <li><a href="#" class="text-muted-foreground text-sm">Pricing</a>
+            </li>
+            <li><a href="#" class="text-muted-foreground text-sm">Success
+                Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-card-foreground font-semibold text-sm mb-3">Resources
+          </h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-muted-foreground text-sm">Blog</a></li>
+            <li><a href="#" class="text-muted-foreground text-sm">Training
+                Tips</a></li>
+            <li><a href="#" class="text-muted-foreground text-sm">Help
+                Center</a></li>
+            <li><a href="#" class="text-muted-foreground text-sm">Community</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-card-foreground font-semibold text-sm mb-3">Company
+          </h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-muted-foreground text-sm">About Us</a>
+            </li>
+            <li><a href="#" class="text-muted-foreground text-sm">Careers</a>
+            </li>
+            <li><a href="#" class="text-muted-foreground text-sm">Contact</a>
+            </li>
+            <li><a href="#" class="text-muted-foreground text-sm">Press Kit</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-card-foreground font-semibold text-sm mb-3">Legal</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-muted-foreground text-sm">Privacy
+                Policy</a></li>
+            <li><a href="#" class="text-muted-foreground text-sm">Terms of
+                Service</a></li>
+            <li><a href="#" class="text-muted-foreground text-sm">Cookie
+                Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-border pt-6">
+        <div class="flex items-center justify-center gap-4 mb-4"><a href="#"
+            class="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"><i
+              class="fa-brands fa-facebook-f"></i></a><a href="#"
+            class="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"><i
+              class="fa-brands fa-twitter"></i></a><a href="#"
+            class="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"><i
+              class="fa-brands fa-instagram"></i></a><a href="#"
+            class="w-10 h-10 bg-muted rounded-full flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors"><i
+              class="fa-brands fa-linkedin-in"></i></a></div>
+        <p class="text-muted-foreground text-xs text-center">© 2024 CoachLink.
+          All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+
+</html>

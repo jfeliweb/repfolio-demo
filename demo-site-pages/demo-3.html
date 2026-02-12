@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Sign Up</title>
+    
+    <script> window.FontAwesomeConfig = { autoReplaceSvg: 'nest'};</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #f4f1f1;
+            --foreground: #705c5d;
+            --card: #ffffff;
+            --card-foreground: #1c1717;
+            --primary: #58a76d;
+            --primary-foreground: #ffffff;
+            --secondary: #54c43b;
+            --secondary-foreground: #ffffff;
+            --muted: #f4f1f1;
+            --muted-foreground: #705c5d;
+            --accent: #a1e619;
+            --accent-foreground: #1c1717;
+            --destructive: #ef4444;
+            --destructive-foreground: #ffffff;
+            --border: #d1c7c8;
+            --input: #e8e3e3;
+            --ring: #58a76d;
+            --font-sans: Inter, sans-serif;
+            --font-serif: Georgia, serif;
+            --font-mono: JetBrains Mono, monospace;
+            --radius: 0.5rem;
+            --shadow: -2px 4px 12px 4px rgba(51,51,51,0.05);
+        }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+<script src="https://cdn.tailwindcss.com"></script>
+            <script>
+            // tailwind.config (IMPORTANT FOR STYLES)
+            tailwind.config = {
+                        theme: {
+                            extend: {
+                                colors: {
+                                    "border": "var(--border)",
+                                    "input": "var(--input)",
+                                    "ring": "var(--ring)",
+                                    "background": "var(--background)",
+                                    "foreground": "var(--foreground)",
+                                    "primary": {
+                                        "DEFAULT": "var(--primary)",
+                                        "foreground": "var(--primary-foreground)",
+                                    },
+                                    "secondary": {
+                                        "DEFAULT": "var(--secondary)",
+                                        "foreground": "var(--secondary-foreground)",
+                                    },
+                                    "destructive": {
+                                        "DEFAULT": "var(--destructive)",
+                                        "foreground": "var(--destructive-foreground)",
+                                    },
+                                    "muted": {
+                                        "DEFAULT": "var(--muted)",
+                                        "foreground": "var(--muted-foreground)",
+                                    },
+                                    "accent": {
+                                        "DEFAULT": "var(--accent)",
+                                        "foreground": "var(--accent-foreground)",
+                                    },
+                                    "popover": {
+                                        "DEFAULT": "var(--popover)",
+                                        "foreground": "var(--popover-foreground)",
+                                    },
+                                    "card": {
+                                        "DEFAULT": "var(--card)",
+                                        "foreground": "var(--card-foreground)",
+                                    },
+                                    "sidebar": {
+                                        "DEFAULT": "var(--sidebar)",
+                                        "foreground": "var(--sidebar-foreground)",
+                                        "primary": "var(--sidebar-primary)",
+                                        "primary-foreground": "var(--sidebar-primary-foreground)",
+                                        "accent": "var(--sidebar-accent)",
+                                        "accent-foreground": "var(--sidebar-accent-foreground)",
+                                        "border": "var(--sidebar-border)",
+                                        "ring": "var(--sidebar-ring)",
+                                    },
+                                    "chart": {
+                                        "1": "var(--chart-1)",
+                                        "2": "var(--chart-2)",
+                                        "3": "var(--chart-3)",
+                                        "4": "var(--chart-4)",
+                                        "5": "var(--chart-5)",
+                                    },
+                                },
+                                "borderRadius": {
+                                    "lg": "var(--radius)",
+                                    "md": "calc(var(--radius) - 2px)",
+                                    "sm": "calc(var(--radius) - 4px)",
+                                },
+                                "fontFamily": {
+                                    "sans": ["var(--font-sans)"],
+                                    "serif": ["var(--font-serif)"],
+                                    "mono": ["var(--font-mono)"],
+                                },
+                                "boxShadow": {
+                                    "2xs": "var(--shadow-2xs)",
+                                    "xs": "var(--shadow-xs)",
+                                    "sm": "var(--shadow-sm)",
+                                    "DEFAULT": "var(--shadow)",
+                                    "md": "var(--shadow-md)",
+                                    "lg": "var(--shadow-lg)",
+                                    "xl": "var(--shadow-xl)",
+                                    "2xl": "var(--shadow-2xl)",
+                                },
+                            },
+                        }
+                    }
+            </script>
+            </head>
+<body class="bg-background text-foreground">
+
+<main id="main-content" class="min-h-screen flex flex-col">
+
+<section id="header-section" class="px-5 pt-8 pb-4 bg-background">
+    <div class="flex items-center justify-between">
+        <button class="w-10 h-10 bg-card rounded-lg flex items-center justify-center shadow-sm">
+            <i class="fa-solid fa-arrow-left text-card-foreground"></i>
+        </button>
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+                <i class="fa-solid fa-shield-halved text-primary-foreground text-lg"></i>
+            </div>
+        </div>
+        <div class="w-10"></div>
+    </div>
+</section>
+
+<section id="progress-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-4">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-card-foreground font-bold text-sm">Step 1 of 3</span>
+            <span class="text-muted-foreground text-xs">Account Details</span>
+        </div>
+        <div class="flex gap-2">
+            <div class="flex-1 h-2 bg-primary rounded-full"></div>
+            <div class="flex-1 h-2 bg-muted rounded-full"></div>
+            <div class="flex-1 h-2 bg-muted rounded-full"></div>
+        </div>
+    </div>
+</section>
+
+<section id="title-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-start gap-3 mb-3">
+        <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-user-tie text-primary text-xl"></i>
+        </div>
+        <div>
+            <h1 class="text-card-foreground font-bold text-2xl mb-1">Create Your Account</h1>
+            <p class="text-muted-foreground text-sm leading-relaxed">Join as a goalkeeper coach and start building your training business</p>
+        </div>
+    </div>
+</section>
+
+<section id="coach-badge-section" class="px-5 pb-6 bg-background">
+    <div class="bg-primary rounded-xl p-4 flex items-center gap-3">
+        <div class="w-12 h-12 bg-primary-foreground/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-certificate text-primary-foreground text-xl"></i>
+        </div>
+        <div>
+            <h3 class="text-primary-foreground font-bold text-sm mb-0.5">Coach Registration</h3>
+            <p class="text-primary-foreground/80 text-xs">Creating a professional trainer account</p>
+        </div>
+    </div>
+</section>
+
+<section id="form-section" class="px-5 pb-6 bg-background">
+    <form id="signup-form" class="space-y-5">
+        <div id="full-name-field">
+            <label for="fullname" class="block text-card-foreground font-semibold text-sm mb-2">
+                Full Name <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <input 
+                    type="text" 
+                    id="fullname" 
+                    placeholder="Enter your full name"
+                    required
+                    class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+            </div>
+            <p class="text-muted-foreground text-xs mt-1.5">This will appear on your coach profile</p>
+        </div>
+
+        <div id="email-field">
+            <label for="email" class="block text-card-foreground font-semibold text-sm mb-2">
+                Email Address <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+                <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="coach@example.com"
+                    required
+                    class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+            </div>
+            <p class="text-muted-foreground text-xs mt-1.5">We'll send booking notifications here</p>
+        </div>
+
+        <div id="phone-field">
+            <label for="phone" class="block text-card-foreground font-semibold text-sm mb-2">
+                Phone Number <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    placeholder="+1 (555) 000-0000"
+                    required
+                    class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-4 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+            </div>
+            <p class="text-muted-foreground text-xs mt-1.5">For urgent communication with parents</p>
+        </div>
+
+        <div id="password-field">
+            <label for="password" class="block text-card-foreground font-semibold text-sm mb-2">
+                Password <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Create a strong password"
+                    required
+                    class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-12 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+                <button type="button" id="toggle-password" class="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="password-strength-section">
+            <div class="bg-muted rounded-lg p-3">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-card-foreground text-xs font-semibold">Password Strength:</span>
+                    <span id="strength-text" class="text-muted-foreground text-xs">Not set</span>
+                </div>
+                <div class="flex gap-1">
+                    <div id="strength-1" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                    <div id="strength-2" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                    <div id="strength-3" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                    <div id="strength-4" class="flex-1 h-1.5 bg-input rounded-full"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="password-requirements-section">
+            <div class="space-y-2">
+                <div id="req-length" class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle text-muted-foreground text-xs"></i>
+                    <span class="text-muted-foreground text-xs">At least 8 characters</span>
+                </div>
+                <div id="req-uppercase" class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle text-muted-foreground text-xs"></i>
+                    <span class="text-muted-foreground text-xs">One uppercase letter</span>
+                </div>
+                <div id="req-number" class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle text-muted-foreground text-xs"></i>
+                    <span class="text-muted-foreground text-xs">One number</span>
+                </div>
+                <div id="req-special" class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle text-muted-foreground text-xs"></i>
+                    <span class="text-muted-foreground text-xs">One special character</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirm-password-field">
+            <label for="confirm-password" class="block text-card-foreground font-semibold text-sm mb-2">
+                Confirm Password <span class="text-destructive">*</span>
+            </label>
+            <div class="relative">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <input 
+                    type="password" 
+                    id="confirm-password" 
+                    placeholder="Re-enter your password"
+                    required
+                    class="w-full bg-card border-2 border-input text-card-foreground pl-12 pr-12 py-3.5 rounded-lg text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+                <button type="button" id="toggle-confirm-password" class="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+            <p id="password-match-message" class="text-xs mt-1.5 hidden"></p>
+        </div>
+    </form>
+</section>
+
+<section id="terms-section" class="px-5 pb-6 bg-background">
+    <label class="flex items-start gap-3 cursor-pointer">
+        <input 
+            type="checkbox" 
+            id="terms-checkbox" 
+            class="w-5 h-5 rounded border-2 border-input text-primary focus:ring-2 focus:ring-primary/20 cursor-pointer mt-0.5 flex-shrink-0"
+        />
+        <span class="text-muted-foreground text-xs leading-relaxed">
+            I agree to the <a href="#" class="text-primary font-semibold">Terms of Service</a> and <a href="#" class="text-primary font-semibold">Privacy Policy</a>. I understand that my profile will be visible to parents and athletes.
+        </span>
+    </label>
+</section>
+
+<section id="marketing-section" class="px-5 pb-6 bg-background">
+    <label class="flex items-start gap-3 cursor-pointer">
+        <input 
+            type="checkbox" 
+            id="marketing-checkbox" 
+            class="w-5 h-5 rounded border-2 border-input text-primary focus:ring-2 focus:ring-primary/20 cursor-pointer mt-0.5 flex-shrink-0"
+        />
+        <span class="text-muted-foreground text-xs leading-relaxed">
+            Send me coaching tips, platform updates, and special offers
+        </span>
+    </label>
+</section>
+
+<section id="next-button-section" class="px-5 pb-6 bg-background">
+    <button 
+        type="submit" 
+        id="next-button"
+        class="w-full bg-primary text-primary-foreground font-bold py-4 px-6 rounded-xl text-base shadow-sm flex items-center justify-center gap-2"
+    >
+        <span>Continue to Step 2</span>
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
+</section>
+
+<section id="benefits-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5">
+        <h3 class="text-card-foreground font-bold text-base mb-4">What You'll Get as a Coach</h3>
+        <div class="space-y-3">
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-calendar-days text-accent text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-0.5">Smart Scheduling</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Automated booking system that syncs with your calendar and sends reminders</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-wallet text-accent text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-0.5">Easy Payments</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Get paid instantly with automated invoicing and payment processing</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-chart-simple text-accent text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-0.5">Progress Tracking</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Track athlete development with detailed analytics and performance metrics</p>
+                </div>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 bg-accent/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-comments text-accent text-sm"></i>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-sm mb-0.5">Direct Communication</h4>
+                    <p class="text-muted-foreground text-xs leading-relaxed">Built-in messaging system to stay connected with parents and athletes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="security-info-section" class="px-5 pb-6 bg-background">
+    <div class="bg-primary/5 rounded-xl p-4 border-2 border-primary/20">
+        <div class="flex items-start gap-3">
+            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-shield-check text-primary text-lg"></i>
+            </div>
+            <div>
+                <h3 class="text-card-foreground font-semibold text-sm mb-1">Your Data is Secure</h3>
+                <p class="text-muted-foreground text-xs leading-relaxed">We use bank-level 256-bit encryption to protect your personal information and payment details. All data is stored securely and never shared with third parties.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="coach-testimonial-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-5 border border-border">
+        <div class="flex gap-1 mb-3">
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+            <i class="fa-solid fa-star text-accent text-sm"></i>
+        </div>
+        <p class="text-card-foreground text-sm leading-relaxed mb-4">"Setting up my profile took less than 10 minutes. Within a week, I had my first three bookings. The platform makes it so easy to manage my training business."</p>
+        <div class="flex items-center gap-3">
+            <img src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-8.jpg" alt="Coach Sarah" class="w-10 h-10 rounded-full object-cover">
+            <div>
+                <div class="text-card-foreground font-semibold text-sm">Sarah Mitchell</div>
+                <div class="text-muted-foreground text-xs">Professional GK Coach</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="next-steps-preview-section" class="px-5 pb-6 bg-background">
+    <div class="bg-muted rounded-xl p-5">
+        <h3 class="text-card-foreground font-bold text-sm mb-4">What's Next?</h3>
+        <div class="space-y-3">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-card rounded-lg flex items-center justify-center flex-shrink-0 border border-border">
+                    <span class="text-primary font-bold text-sm">2</span>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-xs">Professional Profile</h4>
+                    <p class="text-muted-foreground text-xs">Add your experience and certifications</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-card rounded-lg flex items-center justify-center flex-shrink-0 border border-border">
+                    <span class="text-primary font-bold text-sm">3</span>
+                </div>
+                <div>
+                    <h4 class="text-card-foreground font-semibold text-xs">Availability & Pricing</h4>
+                    <p class="text-muted-foreground text-xs">Set your schedule and session rates</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="trust-indicators-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center justify-center gap-4">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-check-circle text-accent text-sm"></i>
+            <span class="text-muted-foreground text-xs font-medium">No Setup Fees</span>
+        </div>
+        <div class="w-px h-4 bg-border"></div>
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-check-circle text-accent text-sm"></i>
+            <span class="text-muted-foreground text-xs font-medium">Cancel Anytime</span>
+        </div>
+    </div>
+</section>
+
+<section id="already-account-section" class="px-5 pb-6 bg-background">
+    <div class="text-center">
+        <p class="text-muted-foreground text-sm">
+            Already have an account? 
+            <a href="#" class="text-primary font-bold ml-1">Log in</a>
+        </p>
+    </div>
+</section>
+
+<section id="help-center-section" class="px-5 pb-6 bg-background">
+    <div class="bg-card rounded-xl p-4 text-center border border-border">
+        <i class="fa-solid fa-circle-question text-primary text-2xl mb-2"></i>
+        <h3 class="text-card-foreground font-semibold text-sm mb-1">Need Help Getting Started?</h3>
+        <p class="text-muted-foreground text-xs mb-3">Our team is here to guide you through the setup</p>
+        <button class="text-primary text-sm font-semibold flex items-center justify-center gap-1 mx-auto">
+            <i class="fa-solid fa-headset text-xs"></i>
+            <span>Contact Support</span>
+        </button>
+    </div>
+</section>
+
+<section id="footer-links-section" class="px-5 pb-6 bg-background">
+    <div class="flex items-center justify-center gap-4 text-xs text-muted-foreground flex-wrap">
+        <a href="#" class="hover:text-primary">Privacy Policy</a>
+        <span>•</span>
+        <a href="#" class="hover:text-primary">Terms of Service</a>
+        <span>•</span>
+        <a href="#" class="hover:text-primary">Help Center</a>
+    </div>
+</section>
+
+<footer id="footer" class="px-5 pb-8 bg-background">
+    <p class="text-center text-muted-foreground text-xs">© 2024 CoachLink. All rights reserved.</p>
+</footer>
+
+</main>
+
+<script>
+window.addEventListener('load', function() {
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const togglePassword = document.getElementById('toggle-password');
+    const toggleConfirmPassword = document.getElementById('toggle-confirm-password');
+    const strengthText = document.getElementById('strength-text');
+    const passwordMatchMessage = document.getElementById('password-match-message');
+    const nextButton = document.getElementById('next-button');
+    const termsCheckbox = document.getElementById('terms-checkbox');
+
+    togglePassword.addEventListener('click', function() {
+        const type = passwordInput.type === 'password' ? 'text' : 'password';
+        passwordInput.type = type;
+        const icon = togglePassword.querySelector('i');
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    });
+
+    toggleConfirmPassword.addEventListener('click', function() {
+        const type = confirmPasswordInput.type === 'password' ? 'text' : 'password';
+        confirmPasswordInput.type = type;
+        const icon = toggleConfirmPassword.querySelector('i');
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    });
+
+    passwordInput.addEventListener('input', function() {
+        const password = passwordInput.value;
+        let strength = 0;
+        
+        const hasLength = password.length >= 8;
+        const hasUppercase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        document.getElementById('req-length').querySelector('i').className = hasLength ? 'fa-solid fa-check-circle text-accent text-xs' : 'fa-solid fa-circle text-muted-foreground text-xs';
+        document.getElementById('req-uppercase').querySelector('i').className = hasUppercase ? 'fa-solid fa-check-circle text-accent text-xs' : 'fa-solid fa-circle text-muted-foreground text-xs';
+        document.getElementById('req-number').querySelector('i').className = hasNumber ? 'fa-solid fa-check-circle text-accent text-xs' : 'fa-solid fa-circle text-muted-foreground text-xs';
+        document.getElementById('req-special').querySelector('i').className = hasSpecial ? 'fa-solid fa-check-circle text-accent text-xs' : 'fa-solid fa-circle text-muted-foreground text-xs';
+
+        if (hasLength) strength++;
+        if (hasUppercase) strength++;
+        if (hasNumber) strength++;
+        if (hasSpecial) strength++;
+
+        const strengthBars = [
+            document.getElementById('strength-1'),
+            document.getElementById('strength-2'),
+            document.getElementById('strength-3'),
+            document.getElementById('strength-4')
+        ];
+
+        strengthBars.forEach((bar, index) => {
+            if (index < strength) {
+                if (strength === 1) {
+                    bar.className = 'flex-1 h-1.5 bg-destructive rounded-full';
+                } else if (strength === 2) {
+                    bar.className = 'flex-1 h-1.5 bg-accent rounded-full';
+                } else if (strength === 3) {
+                    bar.className = 'flex-1 h-1.5 bg-secondary rounded-full';
+                } else {
+                    bar.className = 'flex-1 h-1.5 bg-primary rounded-full';
+                }
+            } else {
+                bar.className = 'flex-1 h-1.5 bg-input rounded-full';
+            }
+        });
+
+        if (strength === 0) {
+            strengthText.textContent = 'Not set';
+            strengthText.className = 'text-muted-foreground text-xs';
+        } else if (strength === 1) {
+            strengthText.textContent = 'Weak';
+            strengthText.className = 'text-destructive text-xs font-semibold';
+        } else if (strength === 2) {
+            strengthText.textContent = 'Fair';
+            strengthText.className = 'text-accent text-xs font-semibold';
+        } else if (strength === 3) {
+            strengthText.textContent = 'Good';
+            strengthText.className = 'text-secondary text-xs font-semibold';
+        } else {
+            strengthText.textContent = 'Strong';
+            strengthText.className = 'text-primary text-xs font-semibold';
+        }
+    });
+
+    confirmPasswordInput.addEventListener('input', function() {
+        if (confirmPasswordInput.value.length > 0) {
+            if (passwordInput.value === confirmPasswordInput.value) {
+                passwordMatchMessage.textContent = 'Passwords match';
+                passwordMatchMessage.className = 'text-accent text-xs mt-1.5 flex items-center gap-1';
+                passwordMatchMessage.innerHTML = '<i class="fa-solid fa-check-circle"></i> Passwords match';
+                passwordMatchMessage.classList.remove('hidden');
+            } else {
+                passwordMatchMessage.textContent = 'Passwords do not match';
+                passwordMatchMessage.className = 'text-destructive text-xs mt-1.5 flex items-center gap-1';
+                passwordMatchMessage.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Passwords do not match';
+                passwordMatchMessage.classList.remove('hidden');
+            }
+        } else {
+            passwordMatchMessage.classList.add('hidden');
+        }
+    });
+
+    nextButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const fullname = document.getElementById('fullname').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        const termsAccepted = termsCheckbox.checked;
+
+        if (!fullname || !email || !phone || !password || !confirmPassword) {
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        if (!termsAccepted) {
+            alert('Please accept the Terms of Service and Privacy Policy');
+            return;
+        }
+
+        console.log('Form submitted successfully');
+    });
+});
+</script>
+
+</body>
+</html>
