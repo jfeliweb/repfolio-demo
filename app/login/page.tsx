@@ -11,7 +11,7 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === process.env.NEXT_PUBLIC_DEMO_PASSWORD) {
+    if (password === 'demo-2026') {
       localStorage.setItem('demo-auth', 'true');
       document.cookie = 'demo-auth=true; path=/; max-age=86400'; // 1 day, for middleware
       router.push('/demo/1');
