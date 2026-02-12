@@ -23,7 +23,7 @@ A password-protected demo site for **Repfolio**, a sports training SaaS platform
 | `/` | Landing: “Repfolio Demo” with link to login |
 | `/login` | Password gate; successful login redirects to `/demo/1` |
 | `/demo/[id]` | Dynamic demo page (1–21). Fallback placeholder when no numbered route exists. |
-| `/demo/1` … `/demo/21` | Individual demo pages (see list below). Some are full React pages (e.g. Home); others may still use the `[id]` placeholder. |
+| `/demo/1` … `/demo/21` | Individual demo pages (see list below). |
 
 ### Demo Pages (21 total)
 
@@ -32,26 +32,26 @@ Defined in `lib/navigation.ts` and used by `DemoNavigation` and static params:
 | ID | Title |
 |----|--------|
 | 1 | Home |
-| 2 | About |
-| 3 | Features |
-| 4 | Pricing |
-| 5 | Dashboard |
+| 2 | Login |
+| 3 | Coaches Signup |
+| 4 | Clients Signup |
+| 5 | Coaches Dashboard |
 | 6 | Coach Profile |
 | 7 | Schedule |
 | 8 | Sessions |
-| 9 | Athletes |
-| 10 | Progress |
-| 11 | Payments |
-| 12 | Messages |
-| 13 | Settings |
-| 14 | Notifications |
-| 15 | Calendar |
-| 16 | Reports |
-| 17 | Help |
+| 9 | Post Session Report |
+| 10 | Coached Client List |
+| 11 | Client Progress |
+| 12 | Availability Settings |
+| 13 | Pricing Settings |
+| 14 | Client Dashboard |
+| 15 | Booking Session |
+| 16 | My Sessions |
+| 17 | Progress Dashboard |
 | 18 | Progress History |
-| 19 | Signup |
-| 20 | Forgot Password |
-| 21 | Contact |
+| 19 | Weather Alerts/Cancel Session |
+| 20 | Messages (Coaches View) |
+| 21 | Messages (Clients View) |
 
 ---
 
@@ -126,7 +126,7 @@ repfolio-demo/
 
 ## Demo Content: Next.js vs HTML
 
-- **Next.js demo routes:** Under `app/demo/1/` … `app/demo/21/`. Demo 1 (Home) is a full React page with header, hero, stats, features, trainers, testimonials, pricing, FAQ, CTA, footer, plus `RequireAuth` and `DemoNavigation`. Other numbered routes may still be placeholders that delegate to the `[id]` page.
+- **Next.js demo routes:** Under `app/demo/1/` … `app/demo/21/`. Each has its own layout and page. Demo 1 (Home) includes header, hero, stats, features, trainers, testimonials, pricing, FAQ, CTA, footer, plus `RequireAuth` and `DemoNavigation`. The `[id]` route is a fallback for any non-existent demo ID.
 - **Static HTML reference:** `demo-site-pages/demo-1.html` … `demo-21.html` are standalone Tailwind + Font Awesome pages. They mirror the same 21 screens for reference or migration; the app does not serve these files.
 
 ---
