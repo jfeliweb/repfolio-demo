@@ -18,13 +18,22 @@ export function RepfolioLogo({
   };
 
   return (
-    <Image
-      src={logoSrc[variant]}
-      alt="Repfolio"
-      width={width}
-      height={height}
+    <span
       className={className}
-      priority
-    />
+      style={{ display: 'inline-block', width, height, maxWidth: '100%' }}
+    >
+      <Image
+        src={logoSrc[variant]}
+        alt="Repfolio"
+        width={width}
+        height={height}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
+        }}
+        priority
+      />
+    </span>
   );
 }
