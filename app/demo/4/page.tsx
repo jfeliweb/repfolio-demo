@@ -40,12 +40,12 @@ export default function Demo4() {
   const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
     setPasswordValue(password);
-    let s: StrengthLevel = 0;
+    let s = 0;
     if (password.length >= 8) s++;
     if (/[A-Z]/.test(password)) s++;
     if (/[0-9]/.test(password)) s++;
     if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) s++;
-    setStrength(s);
+    setStrength(Math.min(4, s) as StrengthLevel);
   }, []);
 
   const handleCreateAccount = (e: React.MouseEvent) => {
