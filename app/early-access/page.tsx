@@ -47,13 +47,14 @@ export default function EarlyAccessPage() {
           <RepfolioLogo variant="primary" width={130} height={36} />
           <a
             href="#waitlist"
-            className="bg-fern-600 hover:bg-fern-500 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+            className="bg-fern-700 hover:bg-fern-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
           >
             Get Early Access
           </a>
         </div>
       </nav>
 
+      <main>
       <section
         className="pt-28 pb-20 px-5"
         style={{
@@ -74,14 +75,14 @@ export default function EarlyAccessPage() {
                 key={sport.label}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border bg-fern-900/60 text-fern-300 border-fern-700"
               >
-                <i className={`fa-solid ${sport.icon} text-xs`} />
+                <i aria-hidden="true" className={`fa-solid ${sport.icon} text-xs`} />
                 {sport.label}
               </span>
             ))}
           </div>
 
           <h1
-            className="text-white font-bold leading-tight mb-5"
+            className="text-white font-bold leading-tight mb-5 drop-shadow-sm"
             style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
           >
             Stop Running Your Coaching Business
@@ -89,7 +90,10 @@ export default function EarlyAccessPage() {
             on Texts and <span className="text-fern-400">Spreadsheets.</span>
           </h1>
 
-          <p className="text-charcoal-300 leading-relaxed mb-10 max-w-2xl mx-auto text-lg">
+          <p
+            className="text-charcoal-200 leading-relaxed mb-10 max-w-2xl mx-auto"
+            style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}
+          >
             Repfolio is the all-in-one platform built exclusively for private sports
             coaches — scheduling, payments, athlete progress tracking, and parent
             communication in one place.
@@ -98,19 +102,19 @@ export default function EarlyAccessPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="#waitlist"
-              className="bg-fern-600 hover:bg-fern-500 text-white font-bold px-8 py-4 rounded-2xl transition-colors w-full sm:w-auto text-center"
+              className="bg-fern-700 hover:bg-fern-600 text-white font-bold px-8 py-4 rounded-2xl transition-colors w-full sm:w-auto text-center"
             >
               Claim My Early Access Spot →
             </a>
             <a
               href="/demo/1"
-              className="border border-charcoal-600 hover:border-charcoal-400 text-charcoal-300 hover:text-white font-semibold px-8 py-4 rounded-2xl transition-colors w-full sm:w-auto text-center"
+              className="border border-charcoal-600 hover:border-charcoal-300 text-charcoal-200 hover:text-white font-semibold px-8 py-4 rounded-2xl transition-colors w-full sm:w-auto text-center"
             >
               See the Demo →
             </a>
           </div>
 
-          <p className="text-charcoal-500 text-sm mt-8">
+          <p className="text-charcoal-300 text-sm mt-8 font-medium">
             🔒 No credit card. No commitment. Just early access.
           </p>
         </div>
@@ -118,7 +122,7 @@ export default function EarlyAccessPage() {
 
       <section className="py-20 px-5 bg-white">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-block text-fern-600 text-sm font-bold uppercase tracking-widest mb-4">
+          <span className="inline-block text-fern-700 text-sm font-bold uppercase tracking-widest mb-4">
             Sound familiar?
           </span>
           <h2 className="font-bold text-charcoal-900 mb-6 text-3xl sm:text-4xl">
@@ -184,7 +188,7 @@ export default function EarlyAccessPage() {
               <div
                 className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${pain.iconBox}`}
               >
-                <i className={`fa-solid ${pain.icon} text-lg`} />
+                <i aria-hidden="true" className={`fa-solid ${pain.icon} text-lg`} />
               </div>
               <h3 className="font-bold text-charcoal-900 mb-2">{pain.title}</h3>
               <p className="text-charcoal-600 text-sm leading-relaxed">
@@ -198,7 +202,7 @@ export default function EarlyAccessPage() {
       <section className="py-20 px-5 bg-mocha-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
-            <span className="inline-block text-fern-600 text-sm font-bold uppercase tracking-widest mb-4">
+            <span className="inline-block text-fern-700 text-sm font-bold uppercase tracking-widest mb-4">
               The solution
             </span>
             <h2 className="font-bold text-charcoal-900 mb-4 text-3xl sm:text-4xl">
@@ -248,7 +252,7 @@ export default function EarlyAccessPage() {
                 className="bg-white rounded-2xl p-7 border border-mocha-100 flex flex-col sm:flex-row gap-6 items-start"
               >
                 <div className="w-14 h-14 rounded-2xl bg-fern-600 flex items-center justify-center flex-shrink-0">
-                  <i className={`fa-solid ${feature.icon} text-white text-xl`} />
+                  <i aria-hidden="true" className={`fa-solid ${feature.icon} text-white text-xl`} />
                 </div>
                 <div>
                   <h3 className="font-bold text-charcoal-900 text-lg mb-2">
@@ -266,7 +270,7 @@ export default function EarlyAccessPage() {
 
       <section className="py-20 px-5 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-block text-fern-600 text-sm font-bold uppercase tracking-widest mb-4">
+          <span className="inline-block text-fern-700 text-sm font-bold uppercase tracking-widest mb-4">
             Who it's for
           </span>
           <h2 className="font-bold text-charcoal-900 mb-5 text-3xl sm:text-4xl">
@@ -292,7 +296,7 @@ export default function EarlyAccessPage() {
                 className="bg-mocha-50 rounded-2xl p-5 border border-mocha-100 text-center"
               >
                 <div className="w-12 h-12 bg-fern-50 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <i className={`fa-solid ${sport.icon} text-fern-600 text-xl`} />
+                  <i aria-hidden="true" className={`fa-solid ${sport.icon} text-fern-600 text-xl`} />
                 </div>
                 <p className="font-semibold text-charcoal-800 text-sm">
                   {sport.label}
@@ -307,7 +311,11 @@ export default function EarlyAccessPage() {
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex justify-center gap-1 mb-5">
             {Array.from({ length: 5 }).map((_, index) => (
-              <i key={index} className="fa-solid fa-star text-yellow-400" />
+              <i
+                key={index}
+                aria-hidden="true"
+                className="fa-solid fa-star text-yellow-400"
+              />
             ))}
           </div>
           <blockquote className="italic text-fern-100 text-xl leading-relaxed mb-6">
@@ -323,6 +331,11 @@ export default function EarlyAccessPage() {
 
       <section id="waitlist" className="py-24 px-5 bg-charcoal-900">
         <div className="max-w-2xl mx-auto text-center">
+          <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
+            {status === 'loading' && 'Submitting your email.'}
+            {status === 'success' && "You're on the waitlist."}
+            {status === 'error' && errorMsg}
+          </div>
           <div className="inline-flex items-center gap-2 bg-fern-900 border border-fern-700 rounded-full px-4 py-2 mb-8">
             <span className="w-2 h-2 bg-fern-400 rounded-full animate-pulse" />
             <span className="text-fern-300 text-sm font-semibold">
@@ -333,7 +346,7 @@ export default function EarlyAccessPage() {
           <h2 className="text-white font-bold mb-5 text-3xl sm:text-5xl">
             Be First. Shape the Future of Coaching.
           </h2>
-          <p className="text-charcoal-400 text-lg leading-relaxed mb-10">
+          <p className="text-charcoal-300 text-lg leading-relaxed mb-10">
             We're building Repfolio alongside coaches who know what they actually
             need. Join the founding coach waitlist and get direct input on what we
             build first.
@@ -341,15 +354,15 @@ export default function EarlyAccessPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-10">
             <div className="flex items-center gap-2 text-fern-300 text-sm">
-              <i className="fa-solid fa-check" />
+              <i aria-hidden="true" className="fa-solid fa-check" />
               <span>Free early access before public launch</span>
             </div>
             <div className="flex items-center gap-2 text-fern-300 text-sm">
-              <i className="fa-solid fa-check" />
+              <i aria-hidden="true" className="fa-solid fa-check" />
               <span>Founding member pricing — locked in for life</span>
             </div>
             <div className="flex items-center gap-2 text-fern-300 text-sm">
-              <i className="fa-solid fa-check" />
+              <i aria-hidden="true" className="fa-solid fa-check" />
               <span>Direct line to the product team</span>
             </div>
           </div>
@@ -357,9 +370,14 @@ export default function EarlyAccessPage() {
           {status !== 'success' && (
             <form
               onSubmit={handleSubmit}
+              aria-busy={status === 'loading'}
               className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto"
             >
+              <label htmlFor="waitlist-email" className="sr-only">
+                Email address
+              </label>
               <input
+                id="waitlist-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -371,11 +389,11 @@ export default function EarlyAccessPage() {
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                className="bg-fern-600 hover:bg-fern-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold px-7 py-4 rounded-2xl text-base transition-colors whitespace-nowrap shadow-lg"
+                className="bg-fern-700 hover:bg-fern-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold px-7 py-4 rounded-2xl text-base transition-colors whitespace-nowrap shadow-lg"
               >
                 {status === 'loading' ? (
                   <span className="flex items-center gap-2">
-                    <i className="fa-solid fa-spinner fa-spin" />
+                    <i aria-hidden="true" className="fa-solid fa-spinner fa-spin" />
                     Saving...
                   </span>
                 ) : (
@@ -386,18 +404,23 @@ export default function EarlyAccessPage() {
           )}
 
           {status === 'error' && (
-            <p className="text-red-400 text-sm mt-3 text-center">{errorMsg}</p>
+            <p role="alert" className="text-red-400 text-sm mt-3 text-center">
+              {errorMsg}
+            </p>
           )}
 
           {status === 'success' && (
             <div className="bg-fern-900/50 border border-fern-700 rounded-2xl px-6 py-5 max-w-lg mx-auto">
               <div className="flex items-center gap-3 text-fern-300">
-                <i className="fa-solid fa-circle-check text-fern-500 text-2xl flex-shrink-0" />
+                <i
+                  aria-hidden="true"
+                  className="fa-solid fa-circle-check text-fern-500 text-2xl flex-shrink-0"
+                />
                 <div>
                   <p className="font-bold text-fern-200 text-base">
                     You're on the list!
                   </p>
-                  <p className="text-sm text-fern-400 mt-1">
+                  <p className="text-sm text-fern-200 mt-1">
                     We'll be in touch with early access details. Thanks for helping
                     shape Repfolio.
                   </p>
@@ -406,11 +429,12 @@ export default function EarlyAccessPage() {
             </div>
           )}
 
-          <p className="text-charcoal-600 text-sm mt-6">
+          <p className="text-charcoal-400 text-sm mt-6">
             🔒 No spam. No credit card. Cancel anytime.
           </p>
         </div>
       </section>
+      </main>
 
       <footer className="bg-charcoal-900 border-t border-charcoal-800 py-10 px-5">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -418,11 +442,11 @@ export default function EarlyAccessPage() {
             <span className="text-charcoal-400">Rep</span>
             <span className="text-fern-600">folio</span>
           </div>
-          <p className="text-charcoal-600 text-sm text-center">
+          <p className="text-charcoal-400 text-sm text-center">
             Built by a sports parent who got tired of watching great coaches waste time
             on bad tools.
           </p>
-          <p className="text-charcoal-700 text-xs">
+          <p className="text-charcoal-400 text-xs">
             © 2025 Repfolio. All rights reserved.
           </p>
         </div>
