@@ -13,7 +13,7 @@ export default function LoginPage() {
     e.preventDefault();
     if (password === 'demo-2026') {
       localStorage.setItem('demo-auth', 'true');
-      document.cookie = 'demo-auth=true; path=/; max-age=86400'; // 1 day, for middleware
+      document.cookie = 'demo-auth=true; path=/; max-age=86400'; // 1 day
       router.push('/demo/1');
     } else {
       setError('Incorrect password');
