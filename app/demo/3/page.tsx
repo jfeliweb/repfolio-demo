@@ -677,8 +677,8 @@ export default function Demo3() {
             <div className="text-center">
               <p className="text-charcoal-700 text-sm">
                 Already have an account?{' '}
-                <Link href="/login" className="text-fern-600 font-bold ml-1">
-                  Log in
+                <Link href="/demo/1" className="text-fern-600 font-bold ml-1">
+                  Go to Demo
                 </Link>
               </p>
             </div>
